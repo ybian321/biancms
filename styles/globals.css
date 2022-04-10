@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 html,
 body {
   padding: 0;
@@ -13,4 +15,14 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.site-layout-content {
+  min-height: 280px;
+  padding: 50px;
+  background: #fff;
+}
+
+.formItem {
+  justify-content: center;
 }
