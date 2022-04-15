@@ -26,3 +26,11 @@ a {
 .formItem {
   justify-content: center;
 }
+
+.formItem a{
+  color:#0050b3;
+}
+
+.formItem a:hover{
+  color:#1890ff;
+}
