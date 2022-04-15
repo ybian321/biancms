@@ -1,19 +1,16 @@
 import React from "react";
 import Link from "next/link";
 import axios from "axios";
-import { Form, Input, Button, Checkbox, Radio, Alert, notification } from "antd";
+import { AES } from "crypto-js";
+import { Form, Input, Button, Checkbox, Radio, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
-var AES = require("crypto-js/aes");
 const url = "http://cms.chtoma.com/api/login";
 
 function Login() {
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
-    localStorage.setItem("type", values.type);
-    localStorage.setItem("email", values.email);
-    localStorage.setItem("password", values.password);
 
     axios.post(url, {
       email: values.email,
@@ -27,6 +24,7 @@ function Login() {
     })
     .catch(function (error) {
       console.log(error);
+      message.error('Please select a login type.');
     });
   };
 
@@ -45,7 +43,7 @@ function Login() {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-
+        
         <h1 style={{ textAlign: "center", fontSize: "2.5rem" }}>
           <b>Course Management Assistant</b>
         </h1>
