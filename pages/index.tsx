@@ -1,16 +1,19 @@
-import { Layout } from "antd";
-import { Content } from "antd/lib/layout/layout";
-import type { NextPage } from "next";
-import Login from "../components/Login";
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
-const Home: NextPage = () => {
-  return (
-    <Layout>
-      <Content className="site-layout-content">
-        <Login />
-      </Content>
-    </Layout>
-  );
-};
+const useUser = () => ({ user: null, loading: false })
 
-export default Home;
+export default function Page() {
+  const { user, loading } = useUser()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!(user || loading)) {
+      router.push('/login')
+    } else {
+      router.push('/dashboard')
+    }
+  }, [user, loading])
+
+  return <p>Redirecting...</p>
+}

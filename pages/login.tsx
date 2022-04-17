@@ -1,36 +1,36 @@
-import React from "react";
-import Link from "next/link";
-import axios from "axios";
-import { AES } from "crypto-js";
-import { Form, Input, Button, Checkbox, Radio, message } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import React from 'react'
+import Link from 'next/link'
+import router from 'next/router'
+import axios from 'axios'
+import { AES } from 'crypto-js'
+import { Form, Input, Button, Checkbox, Radio, message } from 'antd'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
-const url = "http://cms.chtoma.com/api/login";
+const url = 'http://cms.chtoma.com/api/login'
 
 function Login() {
-
   const onFinish = (values: any) => {
-    console.log("Success:", values);
+    console.log('Success:', values)
 
-    axios.post(url, {
-      email: values.email,
-      password: AES.encrypt(values.password, 'cms').toString(),
-      role: values.type
-    })
-    .then(function (response) {
-      window.location.href = "/dashboard";
-      localStorage.setItem("login-type", response.data.data.role);
-      localStorage.setItem("token", response.data.data.token);
-    })
-    .catch(function (error) {
-      console.log(error);
-      message.error('Please select a login type.');
-    });
-  };
+    axios
+      .post(url, {
+        email: values.email,
+        password: AES.encrypt(values.password, 'cms').toString(),
+        role: values.type,
+      })
+      .then((response) => {
+        router.push('/dashboard')
+        localStorage.setItem('cms', JSON.stringify(response.data.data))
+      })
+      .catch((error) => {
+        console.log(error)
+        message.error('Please select a login type.')
+      })
+  }
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
+    console.log('Failed:', errorInfo)
+  }
 
   return (
     <>
@@ -43,16 +43,15 @@ function Login() {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        
-        <h1 style={{ textAlign: "center", fontSize: "2.5rem" }}>
+        <h1 style={{ textAlign: 'center', fontSize: '2.5rem' }}>
           <b>Course Management Assistant</b>
         </h1>
-        
+
         <Form.Item
           className="formItem"
           name="type"
           initialValue="student"
-          rules={[{ required: true, message: "Please pick an item!" }]}
+          rules={[{ required: true, message: 'Please pick an item!' }]}
         >
           <Radio.Group>
             <Radio.Button value="student">Student</Radio.Button>
@@ -63,9 +62,9 @@ function Login() {
 
         <Form.Item
           className="formItem"
-          name={["email"]}
+          name={['email']}
           rules={[
-            { type: "email", required: true, message: "Please input email" },
+            { type: 'email', required: true, message: 'Please input email' },
           ]}
         >
           <Input prefix={<UserOutlined className="site-form-item-icon" />} />
@@ -74,7 +73,7 @@ function Login() {
         <Form.Item
           className="formItem"
           name="password"
-          rules={[{ required: true, message: "Please input password" }]}
+          rules={[{ required: true, message: 'Please input password' }]}
         >
           <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
@@ -92,14 +91,16 @@ function Login() {
             Sign in
           </Button>
         </Form.Item>
-        
+
         <Form.Item className="formItem">
-          No account? <Link href="/"><a>Sign up</a></Link>
+          No account?{' '}
+          <Link href="/">
+            <a>Sign up</a>
+          </Link>
         </Form.Item>
-        
       </Form>
     </>
-  );
+  )
 }
 
-export default Login;
+export default Login

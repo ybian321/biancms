@@ -1,4 +1,4 @@
-@import "~antd/dist/antd.css";
+@import '~antd/dist/antd.css';
 
 html,
 body {
@@ -27,10 +27,20 @@ a {
   justify-content: center;
 }
 
-.formItem a{
-  color:#0050b3;
+.formItem a {
+  color: #0050b3;
 }
 
-.formItem a:hover{
-  color:#1890ff;
+.formItem a:hover {
+  color: #1890ff;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
 }
