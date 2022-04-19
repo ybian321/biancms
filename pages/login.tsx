@@ -20,7 +20,7 @@ function Login() {
       })
       .then((response) => {
         router.push('/dashboard')
-        localStorage.setItem('cms', JSON.stringify(response.data.data))
+        localStorage.setItem('token', JSON.stringify(response.data.data.token))
       })
       .catch((error) => {
         console.log(error)

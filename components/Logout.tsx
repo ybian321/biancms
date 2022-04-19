@@ -6,7 +6,8 @@ import { Form, Button, message } from 'antd'
 const url = 'http://cms.chtoma.com/api/logout'
 
 function Logout() {
-  const token = localStorage.getItem('cms')
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAYWRtaW4uY29tIiwicm9sZSI6InRlYWNoZXIiLCJpZCI6MSwiaWF0IjoxNjUwMzYwNjQwLCJleHAiOjE2NTgxMzY2NDB9.ESkE2alRsytXfu1R36VE9V0E1hNEXhFUqE8672D3TCg'
 
   const onFinish = (values: any) => {
     console.log('Success:', values)

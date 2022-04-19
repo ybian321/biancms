@@ -1,15 +1,14 @@
 import React from 'react'
 import { Breadcrumb } from 'antd'
 
-function BreadcrumbCMS() {
+function BreadcrumbCMS(props) {
+  // const role = localStorage.getItem("cms");
+  console.log('role')
+
   return (
     <>
       <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item key="overview" href="/dashboard">
-          CMS MANAGER SYSTEM
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Overview</Breadcrumb.Item>
-        <Breadcrumb.Item>Overview</Breadcrumb.Item>
+        <Breadcrumb.Item key="overview" href="/dashboard"></Breadcrumb.Item>
       </Breadcrumb>
     </>
   )
