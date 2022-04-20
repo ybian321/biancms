@@ -1,20 +1,21 @@
-import { Button, Layout } from 'antd'
-import { useState } from 'react'
-import SiderNav from '../../components/SiderNav'
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import React from 'react'
-import Manager from './manager'
-import BreadcrumbCMS from '../../components/BreadcrumbCMS'
-import Logout from '../../components/Logout'
+import { useState } from 'react'
+import { Button, Dropdown, Layout } from 'antd'
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  UserOutlined,
+  BellOutlined,
+} from '@ant-design/icons'
+import SiderNav from '../components/SiderNav'
+import Logout from '../components/Logout'
 
 const { Header, Footer, Sider, Content } = Layout
 
-export default function Dashboard() {
+export default function Dashboard(props: React.PropsWithChildren<any>) {
+  const { children } = props
   const [collapsed, setCollapse] = useState(false)
-  const [crumbs, setCrumbs] = useState(['Home', 'Category', 'Sub Category'])
-  const selected = (crumb: any) => {
-    console.log(crumb)
-  }
+  const menu = <Logout />
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -34,13 +35,14 @@ export default function Dashboard() {
               collapsed ? MenuUnfoldOutlined : MenuFoldOutlined
             )}
           </Button>
-          <Logout />
+
+          <Button style={{ border: 'none' }} icon={<BellOutlined />}></Button>
+          <Dropdown overlay={menu}>
+            <Button shape="circle" icon={<UserOutlined />}></Button>
+          </Dropdown>
         </Header>
 
-        <Content style={{ padding: '0 50px' }}>
-          {/* <BreadcrumbCMS crumb={crumbs} selected={selected} /> */}
-          <Manager />
-        </Content>
+        <Content style={{ padding: '0 50px' }}>{children}</Content>
 
         <Footer>Footer</Footer>
       </Layout>

@@ -1,10 +1,9 @@
-import BreadcrumbCMS from '../../../components/BreadcrumbCMS'
+import Dashboard from '../../../../components/Dashboard'
 
 export default function Student() {
   return (
-    <>
-      <BreadcrumbCMS />
+    <Dashboard>
       <div className="site-layout-content">Student Content</div>
-    </>
+    </Dashboard>
   )
 }

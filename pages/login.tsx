@@ -1,10 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
-import router from 'next/router'
 import axios from 'axios'
 import { AES } from 'crypto-js'
 import { Form, Input, Button, Checkbox, Radio, message } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import router from 'next/router'
 
 const url = 'http://cms.chtoma.com/api/login'
 
@@ -19,8 +19,8 @@ function Login() {
         role: values.type,
       })
       .then((response) => {
-        router.push('/dashboard')
-        localStorage.setItem('token', JSON.stringify(response.data.data.token))
+        localStorage.setItem('token', response.data.data.token)
+        router.push(`/dashboard/${response.data.data.role}`)
       })
       .catch((error) => {
         console.log(error)
