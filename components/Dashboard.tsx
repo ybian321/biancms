@@ -15,7 +15,6 @@ const { Header, Footer, Sider, Content } = Layout
 export default function Dashboard(props: React.PropsWithChildren<any>) {
   const { children } = props
   const [collapsed, setCollapse] = useState(false)
-  const menu = <Logout />
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -37,7 +36,7 @@ export default function Dashboard(props: React.PropsWithChildren<any>) {
           </Button>
 
           <Button style={{ border: 'none' }} icon={<BellOutlined />}></Button>
-          <Dropdown overlay={menu}>
+          <Dropdown overlay={<Logout />}>
             <Button shape="circle" icon={<UserOutlined />}></Button>
           </Dropdown>
         </Header>

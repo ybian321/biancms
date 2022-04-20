@@ -20,4 +20,5 @@ https://cms-lyart.vercel.app/
 
 ## Mind Map
 
-![Login]](/public/login.png "Login Page")
+![Login]](/public/login.png)
+![Dashboard](/public/dashboard.png)

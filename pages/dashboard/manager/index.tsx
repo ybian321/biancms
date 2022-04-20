@@ -4,7 +4,7 @@ import Dashboard from '../../../components/Dashboard'
 export default function Manager() {
   return (
     <Dashboard>
-      <Breadcrumb>
+      <Breadcrumb style={{ margin: '16px 0' }}>
         <Breadcrumb.Item href="/dashboard/manager">
           <a href="">CMS MANAGER SYSTEM</a>
         </Breadcrumb.Item>

@@ -9,6 +9,7 @@ import {
   DeploymentUnitOutlined,
   EditOutlined,
 } from '@ant-design/icons'
+import Link from 'next/link'
 
 function SiderNav() {
   return (
@@ -20,11 +21,11 @@ function SiderNav() {
         mode="inline"
       >
         <Menu.Item key="1" icon={<DashboardOutlined />}>
-          Overview
+          <Link href="/dashboard/manager">Overview</Link>
         </Menu.Item>
         <SubMenu key="sub1" icon={<MailOutlined />} title="Student">
           <Menu.Item key="2" icon={<TeamOutlined />}>
-            Student List
+            <Link href="/dashboard/manager/students">Student List</Link>
           </Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" icon={<DeploymentUnitOutlined />} title="Teacher">

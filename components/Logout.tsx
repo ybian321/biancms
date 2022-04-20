@@ -39,7 +39,7 @@ function Logout() {
   return (
     <>
       <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <Button type="primary" htmlType="submit" icon={<LoginOutlined />} block>
+        <Button htmlType="submit" icon={<LoginOutlined />}>
           Logout
         </Button>
       </Form>
