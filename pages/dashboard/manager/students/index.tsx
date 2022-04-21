@@ -1,15 +1,13 @@
-import { Breadcrumb, Button, Form, message, Table } from 'antd'
+import { useEffect } from 'react'
 import axios from 'axios'
-import { useState } from 'react'
+import { message, Table } from 'antd'
 import Dashboard from '../../../../components/Dashboard'
 
 const url = 'http://cms.chtoma.com/api/students?page=1&limit=2'
 
 export default function Student() {
-  const onFinish = (values: any) => {
-    const token = localStorage.getItem('token')
-    console.log('Success:', values)
-
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
     axios
       .get(url, {
         headers: {
@@ -19,16 +17,16 @@ export default function Student() {
       })
       .then((response) => {
         console.log(response)
+        localStorage.setItem(
+          'data',
+          JSON.stringify(response.data.data.students)
+        )
       })
       .catch((error) => {
         console.log(error)
         message.error('Unknown Error')
       })
-  }
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
+  }, [])
 
   const columns = [
     {
@@ -101,21 +99,7 @@ export default function Student() {
 
   return (
     <Dashboard>
-      {/* <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item href="/dashboard/manager">
-          <a href="">CMS MANAGER SYSTEM</a>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item><a href="">Student</a></Breadcrumb.Item>
-        <Breadcrumb.Item>Student List</Breadcrumb.Item>
-      </Breadcrumb> */}
-
       <div className="site-layout-content">
-        <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
-          <Button type="primary" htmlType="submit">
-            + Add
-          </Button>
-        </Form>
-
         <Table
           columns={columns}
           dataSource={data}
