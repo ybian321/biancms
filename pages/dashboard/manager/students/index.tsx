@@ -1,11 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { message, Table } from 'antd'
 import Dashboard from '../../../../components/Dashboard'
 
-const url = 'http://cms.chtoma.com/api/students?page=1&limit=2'
+const url = 'http://cms.chtoma.com/api/students?page=1&limit=100'
 
 export default function Student() {
+  const [data, setData] = useState([])
+
   useEffect(() => {
     const token = window.localStorage.getItem('token')
     axios
@@ -17,6 +19,7 @@ export default function Student() {
       })
       .then((response) => {
         console.log(response)
+        setData(response.data.data.students)
         localStorage.setItem(
           'data',
           JSON.stringify(response.data.data.students)
@@ -28,11 +31,21 @@ export default function Student() {
       })
   }, [])
 
+  const dataSource = data.map((data) => ({
+    name: data.name,
+    area: data.country,
+    email: data.email,
+    curriculum: data.courses[0].name,
+    type: data.type.name,
+    time: data.createdAt,
+  }))
+
   const columns = [
     {
       title: 'No.',
       dataIndex: 'key',
       width: '5%',
+      render: (_1: any, _2: any, index: number) => index + 1,
     },
     {
       title: 'Name',
@@ -82,27 +95,14 @@ export default function Student() {
     },
   ]
 
-  const data = []
-  for (let i = 0; i < 100; i++) {
-    data.push({
-      key: i,
-      name: `Edrward ${i}`,
-      area: 32,
-      email: `London Park no. ${i}`,
-      curriculum: 66,
-      type: `developer`,
-      time: `2020,`,
-    })
-  }
-
-  const pagination = { current: 1, pageSize: 20 }
+  const pagination = { defaultCurrent: 1, pageSize: 20 }
 
   return (
     <Dashboard>
       <div className="site-layout-content">
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={dataSource}
           pagination={pagination}
           scroll={{ x: '100vw' }}
         />
