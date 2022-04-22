@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { message, Table } from 'antd'
+import { Input, message, Table } from 'antd'
 import Dashboard from '../../../../components/Dashboard'
 
 const url = 'http://cms.chtoma.com/api/students?page=1&limit=100'
 
 export default function Student() {
+  const { Search } = Input
+  const onSearch = (value: any) => console.log(value)
+
   const [data, setData] = useState([])
 
   useEffect(() => {
@@ -100,6 +103,11 @@ export default function Student() {
   return (
     <Dashboard>
       <div className="site-layout-content">
+        <Search
+          placeholder="Search Name"
+          onSearch={onSearch}
+          style={{ width: 200, marginBottom: 20 }}
+        />
         <Table
           columns={columns}
           dataSource={dataSource}
