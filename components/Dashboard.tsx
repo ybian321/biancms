@@ -35,9 +35,9 @@ export default function Dashboard({ children }: React.PropsWithChildren<any>) {
           </Button>
 
           <Button style={{ border: 'none' }} icon={<BellOutlined />}></Button>
-          {/* <Dropdown overlay={<Logout />} placement="bottomLeft">
+          <Dropdown overlay={<Logout />} placement="bottomLeft">
             <Button shape="circle" icon={<UserOutlined />}></Button>
-          </Dropdown> */}
+          </Dropdown>
         </Header>
 
         <Content style={{ padding: '0 50px' }}>{children}</Content>
