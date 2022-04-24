@@ -37,13 +37,11 @@ function Logout() {
   }
 
   return (
-    <>
-      <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <Button htmlType="submit" icon={<LoginOutlined />}>
-          Logout
-        </Button>
-      </Form>
-    </>
+    <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
+      <Button htmlType="submit" icon={<LoginOutlined />}>
+        Logout
+      </Button>
+    </Form>
   )
 }
 

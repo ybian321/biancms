@@ -12,8 +12,7 @@ import Logout from '../components/Logout'
 
 const { Header, Footer, Sider, Content } = Layout
 
-export default function Dashboard(props: React.PropsWithChildren<any>) {
-  const { children } = props
+export default function Dashboard({ children }: React.PropsWithChildren<any>) {
   const [collapsed, setCollapse] = useState(false)
 
   return (
@@ -36,9 +35,9 @@ export default function Dashboard(props: React.PropsWithChildren<any>) {
           </Button>
 
           <Button style={{ border: 'none' }} icon={<BellOutlined />}></Button>
-          <Dropdown overlay={<Logout />}>
+          {/* <Dropdown overlay={<Logout />} placement="bottomLeft">
             <Button shape="circle" icon={<UserOutlined />}></Button>
-          </Dropdown>
+          </Dropdown> */}
         </Header>
 
         <Content style={{ padding: '0 50px' }}>{children}</Content>

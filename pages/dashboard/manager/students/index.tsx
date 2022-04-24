@@ -1,7 +1,48 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Input, message, Table } from 'antd'
+import { Input, message, PageHeader, Table } from 'antd'
 import Dashboard from '../../../../components/Dashboard'
+import { formatDistanceToNow } from 'date-fns'
+
+export interface Student {
+  data: Data
+  code: number
+  msg: string
+}
+
+export interface Data {
+  total: number
+  students: Student[]
+  paginator: Paginator
+}
+
+export interface Student {
+  createdAt: string
+  updatedAt: string
+  id: number
+  email: string
+  name: string
+  country: string
+  profileId: number
+  type: Type
+  courses: Course[]
+}
+
+export interface Type {
+  id: number
+  name: string
+}
+
+export interface Course {
+  id: number
+  courseId: number
+  name: string
+}
+
+export interface Paginator {
+  page: number
+  limit: number
+}
 
 const url = 'http://cms.chtoma.com/api/students?page=1&limit=100'
 
@@ -9,7 +50,7 @@ export default function Student() {
   const { Search } = Input
   const onSearch = (value: any) => console.log(value)
 
-  const [data, setData] = useState([])
+  const [data, setData] = useState<Student[]>([])
 
   useEffect(() => {
     const token = window.localStorage.getItem('token')
@@ -23,25 +64,12 @@ export default function Student() {
       .then((response) => {
         console.log(response)
         setData(response.data.data.students)
-        localStorage.setItem(
-          'data',
-          JSON.stringify(response.data.data.students)
-        )
       })
       .catch((error) => {
         console.log(error)
         message.error('Unknown Error')
       })
   }, [])
-
-  const dataSource = data.map((data) => ({
-    name: data.name,
-    area: data.country,
-    email: data.email,
-    curriculum: data.courses[0].name,
-    type: data.type.name,
-    time: data.createdAt,
-  }))
 
   const columns = [
     {
@@ -58,7 +86,7 @@ export default function Student() {
     },
     {
       title: 'Area',
-      dataIndex: 'area',
+      dataIndex: 'country',
       filters: [
         { text: 'China', value: 'china' },
         { text: 'New Zealand', value: 'newZealand' },
@@ -74,8 +102,11 @@ export default function Student() {
     },
     {
       title: 'Selected Curriculum',
-      dataIndex: 'curriculum',
+      dataIndex: 'courses',
       width: '20%',
+      render(value: Course[]) {
+        return value.map((item) => item.name).join(',')
+      },
     },
     {
       title: 'Student Type',
@@ -85,11 +116,17 @@ export default function Student() {
         { text: 'tester', value: 'tester' },
       ],
       width: '10%',
+      render(value: Type) {
+        return value.name
+      },
     },
     {
       title: 'Join Time',
-      dataIndex: 'time',
+      dataIndex: 'createdAt',
       width: '10%',
+      render(value: string) {
+        return formatDistanceToNow(new Date(value))
+      },
     },
     {
       title: 'Action',
@@ -100,17 +137,35 @@ export default function Student() {
 
   const pagination = { defaultCurrent: 1, pageSize: 20 }
 
+  const routes = [
+    {
+      path: '/dashboard/manager',
+      breadcrumbName: 'CMS MANAGER SYSTEM',
+    },
+    {
+      path: '',
+      breadcrumbName: 'Overview',
+    },
+    {
+      path: '/dashboard/manager/students',
+      breadcrumbName: 'Student List',
+    },
+  ]
+
   return (
     <Dashboard>
+      <PageHeader breadcrumb={{ routes }} style={{ margin: '16px 0' }} />
+
       <div className="site-layout-content">
         <Search
           placeholder="Search Name"
           onSearch={onSearch}
           style={{ width: 200, marginBottom: 20 }}
         />
+
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={data}
           pagination={pagination}
           scroll={{ x: '100vw' }}
         />
