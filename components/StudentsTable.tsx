@@ -52,7 +52,7 @@ export default function StudentsTable() {
 
   const [id, setId] = useState()
   const handleId = (record: any) => {
-    setId(record.id)
+    setId(record)
     console.log(record.id)
   }
 

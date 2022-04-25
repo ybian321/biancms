@@ -13,7 +13,7 @@ function UpdateStudent(id: any) {
       .put(
         url,
         {
-          id: id.id,
+          id: id.id.id,
           name: values.name,
           email: values.email,
           country: values.country,
@@ -41,7 +41,16 @@ function UpdateStudent(id: any) {
   }
 
   return (
-    <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
+    <Form
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      initialValues={{
+        name: id?.name,
+        email: id?.email,
+        country: id?.country,
+        typeId: id?.type,
+      }}
+    >
       <Form.Item name="name" label="Name" rules={[{ required: true }]}>
         <Input placeholder="student name" />
       </Form.Item>

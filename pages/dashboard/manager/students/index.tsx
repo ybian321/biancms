@@ -20,7 +20,7 @@ export default function Student() {
 
   return (
     <Dashboard>
-      <PageHeader breadcrumb={{ routes }} style={{ margin: '16px 0' }} />
+      <PageHeader breadcrumb={{ routes }} style={{ margin: '10px 0' }} />
 
       <div className="site-layout-content">
         <StudentsTable />

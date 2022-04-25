@@ -31,14 +31,17 @@ export default function Dashboard({ children }: React.PropsWithChildren<any>) {
           </Button>
 
           <div>
-            <Button style={{ border: 'none' }} icon={<BellOutlined />}></Button>
+            <Button
+              style={{ border: 'none', margin: '0 20px' }}
+              icon={<BellOutlined />}
+            ></Button>
             <Dropdown overlay={<Logout />} placement="bottomLeft">
               <Button shape="circle" icon={<UserOutlined />}></Button>
             </Dropdown>
           </div>
         </Header>
 
-        <Content style={{ padding: '0 50px' }}>{children}</Content>
+        <Content style={{ padding: '0 20px' }}>{children}</Content>
 
         <Footer>Footer</Footer>
       </Layout>
