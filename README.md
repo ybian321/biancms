@@ -17,8 +17,3 @@ Check out live website at [https://biancms.vercel.app/](https://biancms.vercel.a
 ## Project Reference
 
 https://cms-lyart.vercel.app/
-
-## Mind Map
-
-![Login]](/public/login.png)
-![Dashboard](/public/dashboard.png)

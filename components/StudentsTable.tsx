@@ -1,7 +1,9 @@
-import { Button, message, Modal, Popconfirm, Space, Table } from 'antd'
+import { Button, Input, message, Modal, Popconfirm, Space, Table } from 'antd'
 import axios from 'axios'
 import { formatDistanceToNow } from 'date-fns'
 import { useEffect, useState } from 'react'
+import AddStudent from './studentList/AddStudent'
+import UpdateStudent from './studentList/UpdateStudent'
 
 export interface Student {
   data: Data
@@ -47,7 +49,20 @@ const url = 'http://cms.chtoma.com/api/students?page=1&limit=100'
 
 export default function StudentsTable() {
   const [data, setData] = useState<Student[]>([])
+
+  const [id, setId] = useState()
+  const handleId = (record: any) => {
+    setId(record.id)
+    console.log(record.id)
+  }
+
   const [modal1Visible, setModal1Visible] = useState(false)
+  const [modal2Visible, setModal2Visible] = useState(false)
+
+  const handleCancel = () => {
+    setModal1Visible(false)
+    setModal2Visible(false)
+  }
 
   useEffect(() => {
     const token = window.localStorage.getItem('token')
@@ -68,18 +83,50 @@ export default function StudentsTable() {
       })
   }, [])
 
-  function confirm(e: any) {
-    console.log(e)
-    message.success('Click on Yes')
+  const deleteStudent = (record: any) => {
+    const id = record.id
+    console.log(id)
+    const token = localStorage.getItem('token')
+    const urlDelete = 'http://cms.chtoma.com/api/students/' + id
+    axios
+      .delete(urlDelete, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+      .then((response) => {
+        console.log(response)
+        message.success('This is a success message.')
+      })
+      .catch((error) => {
+        console.log(error)
+        message.error('Unknown Error')
+      })
   }
 
-  function cancel(e: any) {
-    console.log(e)
-    message.error('Click on No')
-  }
-
-  const handleCancel = () => {
-    setModal1Visible(false)
+  const { Search } = Input
+  const onSearch = (value: any) => {
+    const token = window.localStorage.getItem('token')
+    axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+        },
+        params: {
+          query: value,
+        },
+      })
+      .then((response) => {
+        console.log(response)
+        setData(response.data.data.students)
+        message.success('This is a success message.')
+      })
+      .catch((error) => {
+        console.log(error)
+        message.error('Unknown Error')
+      })
   }
 
   const columns = [
@@ -92,7 +139,7 @@ export default function StudentsTable() {
     {
       title: 'Name',
       dataIndex: 'name',
-      sorter: (a: { name: string | any[] }, b: { name: string | any[] }) =>
+      sorter: (a: { name: string }, b: { name: string }) =>
         a.name.length - b.name.length,
       width: '15%',
     },
@@ -105,7 +152,7 @@ export default function StudentsTable() {
         { text: 'Canada', value: 'Canada' },
         { text: 'Australia', value: 'Australia' },
       ],
-      onFilter: (value: any, record: { country: string | any[] }) =>
+      onFilter: (value: string, record: Student) =>
         record.country.indexOf(value) === 0,
       width: '10%',
     },
@@ -129,10 +176,10 @@ export default function StudentsTable() {
         { text: 'developer', value: 'developer' },
         { text: 'tester', value: 'tester' },
       ],
-      //todo onFilter
+      onFilter: (value: string, record: Student) => record.type.name === value,
       width: '10%',
       render(value: Type) {
-        return value.name
+        return value?.name
       },
     },
     {
@@ -147,18 +194,25 @@ export default function StudentsTable() {
       title: 'Action',
       dataIndex: 'action',
       width: '10%',
-      render: () => (
+      render: (_value: any, record: Student) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => setModal1Visible(true)}>
+          <Button
+            type="primary"
+            onClick={() => {
+              setModal1Visible(true)
+              handleId(record)
+            }}
+          >
             Edit
           </Button>
 
           <Popconfirm
             title="Are you sure to delete this record?"
-            onConfirm={confirm}
-            onCancel={cancel}
-            okText="Yes"
-            cancelText="No"
+            okText="Confirm"
+            onConfirm={() => {
+              deleteStudent(record)
+            }}
+            cancelText="Cancel"
           >
             <a href="#">Delete</a>
           </Popconfirm>
@@ -184,10 +238,36 @@ export default function StudentsTable() {
           </Button>,
         ]}
       >
-        <p>some contents...</p>
-        <p>some contents...</p>
-        <p>some contents...</p>
+        <UpdateStudent id={id} />
       </Modal>
+
+      <Modal
+        title="Add Student"
+        style={{ top: 20 }}
+        visible={modal2Visible}
+        footer={[
+          <Button key="submit" type="primary">
+            Add
+          </Button>,
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+        ]}
+      >
+        <AddStudent />
+      </Modal>
+
+      <div className="flex-container">
+        <Button type="primary" onClick={() => setModal2Visible(true)}>
+          + Add
+        </Button>
+
+        <Search
+          placeholder="Search by name"
+          onSearch={onSearch}
+          style={{ width: 200, marginBottom: 20 }}
+        />
+      </div>
 
       <Table columns={columns} dataSource={data} pagination={pagination} />
     </>

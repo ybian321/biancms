@@ -23,21 +23,19 @@ export default function Dashboard({ children }: React.PropsWithChildren<any>) {
       </Sider>
 
       <Layout>
-        <Header>
-          <Button
-            type="primary"
-            onClick={() => setCollapse(!collapsed)}
-            style={{ marginBottom: 16 }}
-          >
+        <Header className="flex-container">
+          <Button type="primary" onClick={() => setCollapse(!collapsed)}>
             {React.createElement(
               collapsed ? MenuUnfoldOutlined : MenuFoldOutlined
             )}
           </Button>
 
-          <Button style={{ border: 'none' }} icon={<BellOutlined />}></Button>
-          <Dropdown overlay={<Logout />} placement="bottomLeft">
-            <Button shape="circle" icon={<UserOutlined />}></Button>
-          </Dropdown>
+          <div>
+            <Button style={{ border: 'none' }} icon={<BellOutlined />}></Button>
+            <Dropdown overlay={<Logout />} placement="bottomLeft">
+              <Button shape="circle" icon={<UserOutlined />}></Button>
+            </Dropdown>
+          </div>
         </Header>
 
         <Content style={{ padding: '0 50px' }}>{children}</Content>
