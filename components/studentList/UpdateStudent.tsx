@@ -3,8 +3,9 @@ import axios from 'axios';
 import { Form, Button, message, Input, Select } from 'antd';
 
 const url = 'http://cms.chtoma.com/api/students';
+const { Option } = Select;
 
-function UpdateStudent(id: any) {
+function UpdateStudent(props: any) {
   const onFinish = (values: any) => {
     const token = localStorage.getItem('token');
     console.log('Success:', values);
@@ -13,7 +14,7 @@ function UpdateStudent(id: any) {
       .put(
         url,
         {
-          id: id.id.id,
+          id: props.record.id,
           name: values.name,
           email: values.email,
           country: values.country,
@@ -45,10 +46,10 @@ function UpdateStudent(id: any) {
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       initialValues={{
-        name: id?.name,
-        email: id?.email,
-        country: id?.country,
-        typeId: id?.type
+        name: props.record?.name,
+        email: props.record?.email,
+        country: props.record?.country,
+        type: props.record?.type.id
       }}
     >
       <Form.Item name="name" label="Name" rules={[{ required: true }]}>
@@ -66,7 +67,7 @@ function UpdateStudent(id: any) {
         </Select>
       </Form.Item>
 
-      <Form.Item name="Student" label="Student Type" rules={[{ required: true }]}>
+      <Form.Item name="type" label="Student Type" rules={[{ required: true }]}>
         <Select>
           <Select.Option value={1}>tester</Select.Option>
           <Select.Option value={2}>developer</Select.Option>
