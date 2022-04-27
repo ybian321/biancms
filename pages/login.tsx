@@ -1,36 +1,27 @@
-import React from 'react'
-import Link from 'next/link'
-import axios from 'axios'
-import { AES } from 'crypto-js'
-import { Form, Input, Button, Checkbox, Radio, message } from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import router from 'next/router'
-
-const url = 'http://cms.chtoma.com/api/login'
+import React from 'react';
+import Link from 'next/link';
+import { AES } from 'crypto-js';
+import { Form, Input, Button, Checkbox, Radio } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { getLoginToken } from '../lib/api';
 
 function Login() {
   const onFinish = (values: any) => {
-    console.log('Success:', values)
-
-    axios
-      .post(url, {
+    console.log('Success:', values);
+    getLoginToken(
+      '/login',
+      {
         email: values.email,
         password: AES.encrypt(values.password, 'cms').toString(),
-        role: values.type,
-      })
-      .then((response) => {
-        localStorage.setItem('token', response.data.data.token)
-        router.push(`/dashboard/${response.data.data.role}`)
-      })
-      .catch((error) => {
-        console.log(error)
-        message.error('Please select a login type.')
-      })
-  }
+        role: values.type
+      },
+      {}
+    );
+  };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
+    console.log('Failed:', errorInfo);
+  };
 
   return (
     <>
@@ -47,12 +38,7 @@ function Login() {
           <b>Course Management Assistant</b>
         </h1>
 
-        <Form.Item
-          className="formItem"
-          name="type"
-          initialValue="student"
-          rules={[{ required: true, message: 'Please pick an item!' }]}
-        >
+        <Form.Item className="formItem" name="type" initialValue="student" rules={[{ required: true, message: 'Please pick an item!' }]}>
           <Radio.Group>
             <Radio.Button value="student">Student</Radio.Button>
             <Radio.Button value="teacher">Teacher</Radio.Button>
@@ -60,26 +46,12 @@ function Login() {
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item
-          className="formItem"
-          name={['email']}
-          rules={[
-            { type: 'email', required: true, message: 'Please input email' },
-          ]}
-        >
+        <Form.Item className="formItem" name={['email']} rules={[{ type: 'email', required: true, message: 'Please input email' }]}>
           <Input prefix={<UserOutlined className="site-form-item-icon" />} />
         </Form.Item>
 
-        <Form.Item
-          className="formItem"
-          name="password"
-          rules={[{ required: true, message: 'Please input password' }]}
-        >
-          <Input.Password
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            minLength={4}
-            maxLength={16}
-          />
+        <Form.Item className="formItem" name="password" rules={[{ required: true, message: 'Please input password' }]}>
+          <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} minLength={4} maxLength={16} />
         </Form.Item>
 
         <Form.Item className="formItem" name="remember" valuePropName="checked">
@@ -100,7 +72,7 @@ function Login() {
         </Form.Item>
       </Form>
     </>
-  )
+  );
 }
 
-export default Login
+export default Login;
