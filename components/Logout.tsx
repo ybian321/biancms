@@ -1,13 +1,13 @@
 import React from 'react';
 import { Form, Button } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
-import { reqLogout } from '../lib/api';
+import { API } from '../lib/api';
 
 function Logout() {
   const onFinish = (values: any) => {
     const token = localStorage.getItem('token');
     console.log('Success:', values);
-    reqLogout({
+    API({
       url: '/logout',
       method: 'post',
       headers: { Authorization: `Bearer ${token}` }

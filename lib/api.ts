@@ -1,10 +1,45 @@
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { message } from 'antd';
-import axios from 'axios';
 import router from 'next/router';
 
 const instance = axios.create({
-  baseURL: 'http://cms.chtoma.com/api'
+  baseURL: 'http://cms.chtoma.com/api',
+  headers: { 'Access-Control-Allow-Origin': '*' }
 });
+
+instance.interceptors.request.use(
+  function (config: AxiosRequestConfig): AxiosRequestConfig {
+    console.info(`[request] [${JSON.stringify(config)}]`);
+    return config;
+  },
+  function (error: AxiosError): Promise<AxiosError> {
+    console.error(`[request error] [${JSON.stringify(error)}]`);
+    return Promise.reject(error);
+  }
+);
+
+instance.interceptors.response.use(
+  function (response: AxiosResponse): Promise<object[]> {
+    console.info(`[response] [${JSON.stringify(response)}]`);
+    return response;
+  },
+  function (error: AxiosError): Promise<AxiosError> {
+    console.error(`[response error] [${JSON.stringify(error)}]`);
+    return Promise.reject(error);
+  }
+);
+
+export async function API(reqConfig: AxiosRequestConfig) {
+  await instance(reqConfig)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+      message.error('Unknown Error');
+    });
+  return;
+}
 
 export async function getLoginToken(url: string, params: object, config: object) {
   await instance
@@ -25,19 +60,6 @@ export async function reqLogout(reqConfig: any) {
     .then((response) => {
       console.log(response);
       router.push('/');
-    })
-    .catch((error) => {
-      console.log(error);
-      message.error('Unknown Error');
-    });
-  return;
-}
-
-export async function api(reqConfig: any) {
-  await instance(reqConfig)
-    .then((response) => {
-      console.log(response);
-      message.success('This is a success message.');
     })
     .catch((error) => {
       console.log(error);
