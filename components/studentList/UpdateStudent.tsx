@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, message, Input, Select } from 'antd';
+import { Form, Button, Input, Select } from 'antd';
 import { editStudentById } from '../../lib/api/students.api';
 
 const url = 'http://cms.chtoma.com/api/students';

@@ -1,6 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import { Form, Button, message, Input, Select } from 'antd';
+import { Form, Button, Input, Select } from 'antd';
 import { addStudent } from '../../lib/api/students.api';
 
 function AddStudent() {
