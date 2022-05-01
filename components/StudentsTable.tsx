@@ -1,6 +1,7 @@
 import { Button, Input, message, Modal, Popconfirm, Space, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { formatDistanceToNow } from 'date-fns';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { deleteStudentById, getStudents, searchStudentsByName } from '../lib/api/students.api';
 import { Course, Student, Type } from '../lib/types/students.type';
@@ -70,6 +71,9 @@ export default function StudentsTable() {
       title: 'Name',
       dataIndex: 'name',
       sorter: (a: { name: string }, b: { name: string }) => a.name.length - b.name.length,
+      render(_1: any, record: Student, _3: number) {
+        return <Link href={`/dashboard/manager/students/${record.id}`}>{record.name}</Link>;
+      },
       width: '15%'
     },
     {

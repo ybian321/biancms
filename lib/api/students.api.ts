@@ -61,3 +61,11 @@ export function searchStudentsByName(props: any) {
   });
   return result;
 }
+
+export function getStudentDetail(id: string) {
+  const result = axiosApi({
+    url: '/students/' + id,
+    method: 'get'
+  });
+  return result;
+}
