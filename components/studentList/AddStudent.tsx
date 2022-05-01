@@ -1,37 +1,18 @@
 import React from 'react';
 import axios from 'axios';
 import { Form, Button, message, Input, Select } from 'antd';
-
-const url = 'http://cms.chtoma.com/api/students';
+import { addStudent } from '../../lib/api/students.api';
 
 function AddStudent() {
   const onFinish = (values: any) => {
-    const token = localStorage.getItem('token');
     console.log('Success:', values);
 
-    axios
-      .post(
-        url,
-        {
-          name: values.name,
-          email: values.email,
-          country: values.country,
-          type: values.type
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Origin': '*'
-          }
-        }
-      )
+    addStudent(values)
       .then((response) => {
-        console.log(response);
-        message.success('This is a success message.');
+        console.log(`[add success]`, response);
       })
       .catch((error) => {
-        console.log(error);
-        message.error('Unknown Error');
+        console.log(`[unknown error]`, error);
       });
   };
 

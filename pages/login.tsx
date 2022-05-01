@@ -1,31 +1,23 @@
 import React from 'react';
 import Link from 'next/link';
-import { AES } from 'crypto-js';
 import { Form, Input, Button, Checkbox, Radio, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { API } from '../lib/api';
+import { loginAuth } from '../lib/api/auth.api';
 import router from 'next/router';
 
 function Login() {
   const onFinish = (values: any) => {
-    console.log('Success:', values);
-    API({
-      url: '/login',
-      method: 'post',
-      data: {
-        email: values.email,
-        password: AES.encrypt(values.password, 'cms').toString(),
-        role: values.type
-      }
-    })
+    console.log('[submit success]', values);
+
+    loginAuth(values)
       .then((response) => {
-        console.log(response);
-        localStorage.setItem('token', response.data.token);
-        router.push(`/dashboard/${response.data.role}`);
+        console.log(`[login success]`, response);
+        localStorage.setItem('token', response.data.data.token);
+        router.push(`/dashboard/${response.data.data.role}`);
       })
       .catch((error) => {
-        console.log(error);
-        message.error('Please select a correct type.');
+        console.log(`[login error]`, error.message);
+        message.error('Please select a correct role.');
       });
   };
 

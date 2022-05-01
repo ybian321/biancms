@@ -1,12 +1,11 @@
 import { Button, Input, message, Modal, Popconfirm, Space, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
-import axios from 'axios';
 import { formatDistanceToNow } from 'date-fns';
 import { useEffect, useState } from 'react';
+import { deleteStudentById, getStudents, searchStudentsByName } from '../lib/api/students.api';
+import { Course, Student, Type } from '../lib/types/students.type';
 import AddStudent from './studentList/AddStudent';
 import UpdateStudent from './studentList/UpdateStudent';
-
-const url = 'http://cms.chtoma.com/api/students?page=1&limit=100';
 
 export default function StudentsTable() {
   const [data, setData] = useState<Student[]>([]);
@@ -26,63 +25,33 @@ export default function StudentsTable() {
   };
 
   useEffect(() => {
-    const token = window.localStorage.getItem('token');
-    axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': '*'
-        }
-      })
+    getStudents()
       .then((response) => {
-        console.log(response);
+        console.log(`[fetch success]`, response);
         setData(response.data.data.students);
       })
       .catch((error) => {
-        console.log(error);
-        message.error('Unknown Error');
+        console.log(`[unknown error]`, error);
       });
   }, []);
 
   const deleteStudent = (record: any) => {
     const id = record.id;
-    console.log(id);
-    const token = localStorage.getItem('token');
-    const urlDelete = 'http://cms.chtoma.com/api/students/' + id;
-    axios
-      .delete(urlDelete, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': '*'
-        }
-      })
+    deleteStudentById(id)
       .then((response) => {
-        console.log(response);
-        message.success('This is a success message.');
+        console.log(`[delete success]`, response);
       })
       .catch((error) => {
-        console.log(error);
-        message.error('Unknown Error');
+        console.log(`[unknown error]`, error);
       });
   };
 
   const { Search } = Input;
   const onSearch = (value: any) => {
-    const token = window.localStorage.getItem('token');
-    axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': '*'
-        },
-        params: {
-          query: value
-        }
-      })
+    searchStudentsByName(value)
       .then((response) => {
         console.log(response);
         setData(response.data.data.students);
-        message.success('This is a success message.');
       })
       .catch((error) => {
         console.log(error);

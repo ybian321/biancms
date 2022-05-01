@@ -1,17 +1,33 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 const instance = axios.create({
-  baseURL: process.env.BASEURL
+  baseURL: 'http://cms.chtoma.com/api'
 });
 
-// Add a request interceptor
 instance.interceptors.request.use(
-  function (config) {
-    // Do something before request is sent
+  function (config: AxiosRequestConfig): AxiosRequestConfig {
+    console.info(`[request success]`);
+    if (config.url != '/login') {
+      const token = `Bearer ${localStorage.getItem('token')}`;
+      config.headers.Authorization = token;
+    }
     return config;
   },
-  function (error) {
-    // Do something with request error
+  function (error: AxiosError): Promise<AxiosError> {
+    console.error(`[request error]`, error);
     return Promise.reject(error);
   }
 );
+
+export function axiosApi(reqConfig: AxiosRequestConfig) {
+  const result = instance(reqConfig)
+    .then((response) => {
+      console.log(`[response success]`);
+      return response;
+    })
+    .catch((error) => {
+      console.log(`[response error]`, error.message);
+      return error;
+    });
+  return result;
+}

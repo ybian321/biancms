@@ -1,39 +1,21 @@
 import React from 'react';
-import axios from 'axios';
 import { Form, Button, message, Input, Select } from 'antd';
+import { editStudentById } from '../../lib/api/students.api';
 
 const url = 'http://cms.chtoma.com/api/students';
 const { Option } = Select;
 
 function UpdateStudent(props: any) {
   const onFinish = (values: any) => {
-    const token = localStorage.getItem('token');
     console.log('Success:', values);
+    const studentId = props.record.id;
 
-    axios
-      .put(
-        url,
-        {
-          id: props.record.id,
-          name: values.name,
-          email: values.email,
-          country: values.country,
-          type: values.type
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Origin': '*'
-          }
-        }
-      )
+    editStudentById(values, studentId)
       .then((response) => {
-        console.log(response);
-        message.success('This is a success message.');
+        console.log(`[add student success]`, response);
       })
       .catch((error) => {
-        console.log(error);
-        message.error('Unknown Error');
+        console.log(`[unknown error]`, error);
       });
   };
 

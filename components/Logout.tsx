@@ -1,17 +1,21 @@
 import React from 'react';
-import { Form, Button } from 'antd';
+import { Form, Button, message } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
-import { API } from '../lib/api';
+import { logoutAuth } from '../lib/api/auth.api';
+import router from 'next/router';
 
 function Logout() {
   const onFinish = (values: any) => {
-    const token = localStorage.getItem('token');
     console.log('Success:', values);
-    API({
-      url: '/logout',
-      method: 'post',
-      headers: { Authorization: `Bearer ${token}` }
-    });
+
+    logoutAuth()
+      .then((response) => {
+        console.log(`[logout success]`);
+        response ? router.push(`/login`) : message.error('logout fail');
+      })
+      .catch((error) => {
+        console.log(`[logout error]`, error.message);
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {
