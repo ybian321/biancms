@@ -1,9 +1,3 @@
-export interface Student {
-  data: Data;
-  code: number;
-  msg: string;
-}
-
 export interface Data {
   total: number;
   students: Student[];
@@ -36,4 +30,21 @@ export interface Course {
 export interface Paginator {
   page: number;
   limit: number;
+}
+
+export interface StudentProfile {
+  id: number;
+  name: string;
+  country: string;
+  email: string;
+  address: string;
+  phone: number;
+  gender: number;
+  education: string;
+  age: number;
+  interest: string[];
+  avatar: string;
+  memberStartAt: string;
+  memberEndAt: string;
+  description: string;
 }

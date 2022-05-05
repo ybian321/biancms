@@ -4,8 +4,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -49,4 +48,10 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.about-heading {
+  color: rgb(115, 86, 241);
+  margin: 20px 0px;
+  font-size: 24px;
 }

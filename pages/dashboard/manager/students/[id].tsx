@@ -1,13 +1,14 @@
 import { Avatar, Card, Col, Divider, PageHeader, Row, Table, Tabs, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { AntDesignOutlined } from '@ant-design/icons';
-import { Key, useEffect, useState } from 'react';
-import { Course, Student } from '../../../../lib/types/students.type';
+import { useEffect, useState } from 'react';
+import { Course, StudentProfile } from '../../../../lib/types/students.type';
 import { getStudentDetail } from '../../../../lib/api/students.api';
 import Dashboard from '../../../../components/Dashboard';
+import { programLanguageColors } from '../../../../lib/constant/config';
 
 export default function StudentDetail() {
-  const [data, setData] = useState<Student[]>([]);
+  const [data, setData] = useState<StudentProfile>();
   const [courses, setCourses] = useState<Course[]>([]);
   const [info, setInfo] = useState<{ label: string; value: string | number }[]>([]);
   const [about, setAbout] = useState<{ label: string; value: string | number }[]>([]);
@@ -16,35 +17,30 @@ export default function StudentDetail() {
     (async () => {
       const currentUrl = window.location.href;
       const id = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-      await getStudentDetail(id)
-        .then((response) => {
-          console.log(`[fetch detail success]`, response);
-          setData(response.data.data);
-          setCourses(response.data.data.courses);
+      const response = await getStudentDetail(id);
+      const data = response.data.data;
 
-          const info = [
-            { label: 'Name', value: data.name },
-            { label: 'Age', value: data.age },
-            { label: 'Email', value: data.email },
-            { label: 'Phone', value: data.phone }
-          ];
+      const info = [
+        { label: 'Name', value: data.name },
+        { label: 'Age', value: data.age },
+        { label: 'Email', value: data.email },
+        { label: 'Phone', value: data.phone }
+      ];
 
-          const about = [
-            { label: 'Eduction', value: data.education },
-            { label: 'Area', value: data.country },
-            { label: 'Gender', value: data.gender === 1 ? 'Male' : 'Female' },
-            { label: 'Member Period', value: data.memberStartAt + ' - ' + data.memberEndAt },
-            { label: 'Type', value: data.type.name },
-            { label: 'Create Time', value: data.createAt },
-            { label: 'Update Time', value: data.updateAt }
-          ];
+      const about = [
+        { label: 'Eduction', value: data.education },
+        { label: 'Area', value: data.country },
+        { label: 'Gender', value: data.gender === 1 ? 'Male' : 'Female' },
+        { label: 'Member Period', value: data.memberStartAt + ' - ' + data.memberEndAt },
+        { label: 'Type', value: data.type.name },
+        { label: 'Create Time', value: data.createdAt },
+        { label: 'Update Time', value: data.updatedAt }
+      ];
 
-          setInfo(info);
-          setAbout(about);
-        })
-        .catch((error) => {
-          console.log(`[unknown error]`, error);
-        });
+      setData(data);
+      setCourses(data.courses);
+      setInfo(info);
+      setAbout(about);
     })();
   }, []);
 
@@ -128,33 +124,35 @@ export default function StudentDetail() {
 
           <Col span={16}>
             <Card>
-              <Tabs defaultActiveKey="1">
+              <Tabs defaultActiveKey="1" animated={true}>
                 <Tabs.TabPane tab="About" key="1">
-                  <h2>Information</h2>
+                  <h2 className="about-heading">Information</h2>
                   <Row>
                     {about.map((item) => (
                       <Col span={24} key={item.label}>
-                        <b style={{ marginRight: 16, minWidth: 150, display: 'inline-block' }}>{item.label}:</b>
+                        <b style={{ marginRight: 16, marginBottom: 10, minWidth: 150, display: 'inline-block' }}>{item.label}:</b>
                         <span>{item.value}</span>
                       </Col>
                     ))}
                   </Row>
 
-                  <h2>Interesting</h2>
+                  <h2 className="about-heading">Interesting</h2>
                   <Row>
                     <Col span={24}>
                       <div>
-                        {/* {data?.interest.map((item: { label: Key | null | undefined; })=>(
-                          <Tag key={item.label} color="magenta">{item}</Tag>
-                        ))} */}
+                        {data?.interest.map((item, index) => (
+                          <Tag key={item} color={programLanguageColors[index]}>
+                            {item}
+                          </Tag>
+                        ))}
                       </div>
                     </Col>
                   </Row>
 
-                  <h2 style={{ marginTop: '15px' }}>Description</h2>
+                  <h2 className="about-heading">Description</h2>
                   <Row>
                     <Col span={24}>
-                      <p>{data.description}</p>
+                      <p>{data?.description}</p>
                     </Col>
                   </Row>
                 </Tabs.TabPane>

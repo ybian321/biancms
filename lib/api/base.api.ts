@@ -8,8 +8,9 @@ instance.interceptors.request.use(
   function (config: AxiosRequestConfig): AxiosRequestConfig {
     console.info(`[request success]`);
     if (config.url != '/login') {
-      const authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
-      config.headers = authHeader;
+      const auth = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+      config.headers = auth;
+      console.log('header', config.headers);
     }
     return config;
   },

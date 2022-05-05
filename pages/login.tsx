@@ -17,7 +17,7 @@ function Login() {
       })
       .catch((error) => {
         console.log(`[login error]`, error.message);
-        message.error('Please select a correct role.');
+        message.error('Unknown Error');
       });
   };
 

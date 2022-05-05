@@ -1,19 +1,14 @@
-import React from 'react'
-import { useState } from 'react'
-import { Button, Dropdown, Layout } from 'antd'
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  BellOutlined,
-} from '@ant-design/icons'
-import SiderNav from '../components/SiderNav'
-import Logout from '../components/Logout'
+import React from 'react';
+import { useState } from 'react';
+import { Button, Dropdown, Layout } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined, BellOutlined } from '@ant-design/icons';
+import SiderNav from '../components/SiderNav';
+import Logout from '../components/Logout';
 
-const { Header, Footer, Sider, Content } = Layout
+const { Header, Footer, Sider, Content } = Layout;
 
 export default function Dashboard({ children }: React.PropsWithChildren<any>) {
-  const [collapsed, setCollapse] = useState(false)
+  const [collapsed, setCollapse] = useState(false);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -25,16 +20,11 @@ export default function Dashboard({ children }: React.PropsWithChildren<any>) {
       <Layout>
         <Header className="flex-container">
           <Button type="primary" onClick={() => setCollapse(!collapsed)}>
-            {React.createElement(
-              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined
-            )}
+            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
           </Button>
 
           <div>
-            <Button
-              style={{ border: 'none', margin: '0 20px' }}
-              icon={<BellOutlined />}
-            ></Button>
+            <Button style={{ border: 'none', margin: '0 20px' }} icon={<BellOutlined />}></Button>
             <Dropdown overlay={<Logout />} placement="bottomLeft">
               <Button shape="circle" icon={<UserOutlined />}></Button>
             </Dropdown>
@@ -43,8 +33,8 @@ export default function Dashboard({ children }: React.PropsWithChildren<any>) {
 
         <Content style={{ padding: '0 20px' }}>{children}</Content>
 
-        <Footer>Footer</Footer>
+        <Footer></Footer>
       </Layout>
     </Layout>
-  )
+  );
 }
