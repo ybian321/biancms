@@ -1,7 +1,9 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://cms.chtoma.com/api'
+  baseURL: 'http://cms.chtoma.com/api',
+  withCredentials: true,
+  responseType: 'json'
 });
 
 instance.interceptors.request.use(
@@ -10,7 +12,6 @@ instance.interceptors.request.use(
     if (config.url != '/login') {
       const auth = { Authorization: `Bearer ${localStorage.getItem('token')}` };
       config.headers = auth;
-      console.log('header', config.headers);
     }
     return config;
   },

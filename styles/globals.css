@@ -8,7 +8,7 @@ body {
 }
 
 a {
-  color: inherit;
+  color: #1890ff;
   text-decoration: none;
 }
 
@@ -26,22 +26,22 @@ a {
   justify-content: center;
 }
 
-.formItem a {
-  color: #0050b3;
-}
-
-.formItem a:hover {
-  color: #1890ff;
-}
-
 .site-layout .site-layout-background {
   background: #fff;
 }
 
 .logo {
-  height: 32px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 0.3);
+  height: 64px;
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: #fff;
+  letter-space: 5px;
+  text-shadow: 5px 1px 5px;
+  transform: rotateX(45deg);
+  font-family: monospace;
 }
 
 .flex-container {

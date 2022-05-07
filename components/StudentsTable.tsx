@@ -72,7 +72,11 @@ export default function StudentsTable() {
       dataIndex: 'name',
       sorter: (a: { name: string }, b: { name: string }) => a.name.length - b.name.length,
       render(_1: any, record: Student, _3: number) {
-        return <Link href={`/dashboard/manager/students/${record.id}`}>{record.name}</Link>;
+        return (
+          <Link href={`/dashboard/manager/students/${record.id}`}>
+            <a>{record.name}</a>
+          </Link>
+        );
       },
       width: '15%'
     },
@@ -129,7 +133,7 @@ export default function StudentsTable() {
       render: (_value: any, record: Student) => (
         <Space size="middle">
           <Button
-            type="primary"
+            type="link"
             onClick={() => {
               setModal1Visible(true);
               handleStudent(record);
