@@ -2,8 +2,9 @@ import React from 'react';
 import { useState } from 'react';
 import { Button, Dropdown, Layout } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined, BellOutlined } from '@ant-design/icons';
-import SiderNav from '../components/SiderNav';
 import Logout from '../components/Logout';
+import SmartSiderNav from './SmartSiderNav';
+import SmartBreadcrumb from './SmartBreadcrumb';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -14,7 +15,7 @@ export default function Dashboard({ children }: React.PropsWithChildren<any>) {
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={setCollapse}>
         <div className="logo">CMS</div>
-        <SiderNav />
+        <SmartSiderNav />
       </Sider>
 
       <Layout>
@@ -31,7 +32,10 @@ export default function Dashboard({ children }: React.PropsWithChildren<any>) {
           </div>
         </Header>
 
-        <Content style={{ padding: '0 20px' }}>{children}</Content>
+        <Content style={{ padding: '0 20px' }}>
+          <SmartBreadcrumb />
+          {children}
+        </Content>
 
         <Footer></Footer>
       </Layout>

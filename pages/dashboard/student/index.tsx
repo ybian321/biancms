@@ -1,9 +1,9 @@
 import Dashboard from '../../../components/Dashboard';
 
-export default function Manager() {
+export default function Student() {
   return (
     <Dashboard>
-      <div className="site-layout-content">Manager Content</div>
+      <div className="site-layout-content">Student Content</div>
     </Dashboard>
   );
 }

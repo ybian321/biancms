@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Course, StudentProfile } from '../../../../lib/types/students.type';
 import { getStudentDetail } from '../../../../lib/api/students.api';
 import Dashboard from '../../../../components/Dashboard';
-import { programLanguageColors } from '../../../../lib/constant/config';
+import { programLanguageColors } from '../../../../lib/constants/config';
 
 export default function StudentDetail() {
   const [data, setData] = useState<StudentProfile>();
@@ -44,25 +44,6 @@ export default function StudentDetail() {
     })();
   }, []);
 
-  const routes = [
-    {
-      path: '/dashboard/manager',
-      breadcrumbName: 'CMS MANAGER SYSTEM'
-    },
-    {
-      path: '',
-      breadcrumbName: 'Overview'
-    },
-    {
-      path: '/dashboard/manager/students',
-      breadcrumbName: 'Student List'
-    },
-    {
-      path: '',
-      breadcrumbName: 'Detail'
-    }
-  ];
-
   const columns: ColumnType<Course>[] = [
     {
       title: 'No.',
@@ -92,8 +73,6 @@ export default function StudentDetail() {
 
   return (
     <Dashboard>
-      <PageHeader breadcrumb={{ routes }} style={{ margin: '10px 0' }} />
-
       <div className="site-layout-content">
         <Row>
           <Col span={8}>
