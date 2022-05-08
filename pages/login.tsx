@@ -13,6 +13,7 @@ function Login() {
       .then((response) => {
         console.log(`[login success]`, response);
         localStorage.setItem('token', response.data.data.token);
+        localStorage.setItem('role', response.data.data.role);
         router.push(`/dashboard/${response.data.data.role}`);
       })
       .catch((error) => {

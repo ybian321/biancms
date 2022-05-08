@@ -10,16 +10,20 @@ import {
   EditOutlined
 } from '@ant-design/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 function SiderNav() {
+  const currentUrl = useRouter().asPath;
+  const currenNav = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+
   return (
     <div>
-      <Menu theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} mode="inline">
+      <Menu theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={[currenNav]} mode="inline">
         <Menu.Item key="1" icon={<DashboardOutlined />}>
           <Link href="/dashboard/manager">Overview</Link>
         </Menu.Item>
 
-        <SubMenu key="sub1" icon={<MailOutlined />} title="Student">
+        <SubMenu key="students" icon={<MailOutlined />} title="Student">
           <Menu.Item key="2" icon={<TeamOutlined />}>
             <Link href="/dashboard/manager/students">Student List</Link>
           </Menu.Item>

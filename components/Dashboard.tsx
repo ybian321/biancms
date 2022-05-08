@@ -5,10 +5,12 @@ import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined, BellOutlined } from
 import Logout from '../components/Logout';
 import SmartSiderNav from './SmartSiderNav';
 import SmartBreadcrumb from './SmartBreadcrumb';
+import useLoginState from './custom-hooks/useLoginState';
 
 const { Header, Footer, Sider, Content } = Layout;
 
 export default function Dashboard({ children }: React.PropsWithChildren<any>) {
+  useLoginState();
   const [collapsed, setCollapse] = useState(false);
 
   return (
