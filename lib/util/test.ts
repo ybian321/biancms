@@ -1,4 +1,4 @@
-const source = [
+const obj = [
   {
     title: 'Car',
     subNav: [
@@ -76,19 +76,20 @@ const source = [
     ]
   }
 ];
-console.log(source);
+console.log(obj);
 
+//https://www.cnblogs.com/yuer20180726/p/11377897.html 遍歷爲什麽需要拷貝？
 export function deepSearch(props: string) {
-  const node1 = source.slice(0, 1)[0];
-  console.log(node1);
+  const objValues = Object.values(obj);
+  console.log(objValues);
 }
 
 export function breadthSearch(props: string) {}
 
-export function fib(data: any) {
-  const f0 = 1;
-  const f1 = 1;
-  const f2 = f0 + f1;
-  fn = data;
-  return n;
+//https://segmentfault.com/a/1190000040308406
+export function fibonacci(n: any) {
+  if (n == 1 || n == 2) {
+    return 1;
+  }
+  return fibonacci(n - 2) + fibonacci(n - 1);
 }

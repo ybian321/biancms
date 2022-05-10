@@ -1,12 +1,13 @@
-import { breadthSearch, deepSearch, fib } from '../lib/util/test';
+import { breadthSearch, deepSearch, fibonacci } from '../lib/util/test';
 
 function test() {
   const value = 'china';
-  const result = 30;
+  const n = 30;
 
   console.log(deepSearch(value));
-  // console.log(breadthSearch(value))
-  // console.log(fib(result))
+  console.log(breadthSearch(value));
+  const fib = fibonacci(n);
+  console.log(fib);
   return;
 }
 
