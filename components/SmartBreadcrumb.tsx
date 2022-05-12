@@ -1,7 +1,7 @@
-import { Breadcrumb } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { deepClone } from '../lib/util/deepClone';
+import { Breadcrumb } from 'antd';
+import { deepClone } from '../lib/util/deep-search';
 
 function SmartBreadcrumb() {
   const path = useRouter().asPath;
