@@ -16,10 +16,47 @@ function SiderNav() {
   const currentUrl = useRouter().asPath;
   const currenNav = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
 
+  //test1
+  const currentPath = useRouter().pathname;
+  console.log(currentPath);
+
+  const menuItems1 = [
+    { label: '/dashboard/manager', value: 'Overview', icon: '' },
+    { label: '/dashboard/manager/students', value: 'Student List', icon: '' }
+  ];
+
+  //test2
+  const menuItems2 = {
+    '/dashboard/manager': 'Overview',
+    '/dashboard/manager/students': 'Student List'
+  };
+
   return (
     <div>
       <Menu theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={[currenNav]} mode="inline">
-        <Menu.Item key="1" icon={<DashboardOutlined />}>
+        {menuItems1.map((menuItem) => (
+          //test1
+          // console.log(`[1]`, menuItem.label)
+          // console.log(`[1]`, menuItem.value)
+          <Menu.Item key="1" icon={<DashboardOutlined />}>
+            <Link href={menuItem.label}>{menuItem.value}</Link>
+          </Menu.Item>
+        ))}
+
+        {/* {menuItems2.map((menuItem)=>{
+          //test2
+          console.log(`[2]`, menuItem.value)
+        })} */}
+
+        {Object.entries(menuItems2).forEach(
+          //test2
+          ([key, value]) => console.log(key, value)
+          // <Menu.Item key="1" icon={<DashboardOutlined />}>
+          //   <Link href={key}>{value}</Link>
+          // </Menu.Item>
+        )}
+
+        {/* <Menu.Item key="1" icon={<DashboardOutlined />}>
           <Link href="/dashboard/manager">Overview</Link>
         </Menu.Item>
 
@@ -45,7 +82,7 @@ function SiderNav() {
 
         <Menu.Item key="7" icon={<DesktopOutlined />}>
           Message
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu>
     </div>
   );
