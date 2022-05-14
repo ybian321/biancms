@@ -16,73 +16,54 @@ function SiderNav() {
   const currentUrl = useRouter().asPath;
   const currenNav = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
 
-  //test1
-  const currentPath = useRouter().pathname;
-  console.log(currentPath);
-
-  const menuItems1 = [
-    { label: '/dashboard/manager', value: 'Overview', icon: '' },
-    { label: '/dashboard/manager/students', value: 'Student List', icon: '' }
+  const items = [
+    { key: 'manager', path: '/dashboard/manager', title: 'Overview', icon: <DashboardOutlined /> },
+    {
+      key: 'student',
+      title: 'Student',
+      icon: <MailOutlined />,
+      subNav: [{ path: '/dashboard/manager/students', title: 'Student List', icon: <TeamOutlined /> }]
+    },
+    {
+      key: 'teacher',
+      title: 'Teacher',
+      icon: <DeploymentUnitOutlined />,
+      subNav: [{ path: '/dashboard/manager/teachers', title: 'Teacher List', icon: <TeamOutlined /> }]
+    },
+    {
+      key: 'courses',
+      title: 'Courses',
+      icon: <AppstoreOutlined />,
+      subNav: [
+        { path: '/dashboard/manager/courses', title: 'All Courses' },
+        { path: '/dashboard/manager/courses/edit-course', title: 'Edit Course', icon: <EditOutlined /> }
+      ]
+    },
+    { key: 'message', path: '/dashboard/manager/message', title: 'Message', icon: <DesktopOutlined /> }
   ];
 
-  //test2
-  const menuItems2 = {
-    '/dashboard/manager': 'Overview',
-    '/dashboard/manager/students': 'Student List'
-  };
+  function setMenuItem(data: any) {
+    return data.map((item: any) => {
+      if (item.subNav) {
+        return (
+          <SubMenu key={item.key} title={item.title} icon={item.icon}>
+            {setMenuItem(item.subNav)}
+          </SubMenu>
+        );
+      } else {
+        return (
+          <Menu.Item key={item.key} icon={item.icon}>
+            <Link href={item.path}>{item.title}</Link>
+          </Menu.Item>
+        );
+      }
+    });
+  }
 
   return (
     <div>
-      <Menu theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={[currenNav]} mode="inline">
-        {menuItems1.map((menuItem) => (
-          //test1
-          // console.log(`[1]`, menuItem.label)
-          // console.log(`[1]`, menuItem.value)
-          <Menu.Item key="1" icon={<DashboardOutlined />}>
-            <Link href={menuItem.label}>{menuItem.value}</Link>
-          </Menu.Item>
-        ))}
-
-        {/* {menuItems2.map((menuItem)=>{
-          //test2
-          console.log(`[2]`, menuItem.value)
-        })} */}
-
-        {Object.entries(menuItems2).forEach(
-          //test2
-          ([key, value]) => console.log(key, value)
-          // <Menu.Item key="1" icon={<DashboardOutlined />}>
-          //   <Link href={key}>{value}</Link>
-          // </Menu.Item>
-        )}
-
-        {/* <Menu.Item key="1" icon={<DashboardOutlined />}>
-          <Link href="/dashboard/manager">Overview</Link>
-        </Menu.Item>
-
-        <SubMenu key="students" icon={<MailOutlined />} title="Student">
-          <Menu.Item key="2" icon={<TeamOutlined />}>
-            <Link href="/dashboard/manager/students">Student List</Link>
-          </Menu.Item>
-        </SubMenu>
-
-        <SubMenu key="sub2" icon={<DeploymentUnitOutlined />} title="Teacher">
-          <Menu.Item key="3" icon={<TeamOutlined />}>
-            Teacher List
-          </Menu.Item>
-        </SubMenu>
-
-        <SubMenu key="sub3" icon={<AppstoreOutlined />} title="Course">
-          <Menu.Item key="4">All Course</Menu.Item>
-          <Menu.Item key="5">Add Course</Menu.Item>
-          <Menu.Item key="6" icon={<EditOutlined />}>
-            Edit Course
-          </Menu.Item>
-        </SubMenu>
-
-        <Menu.Item key="7" icon={<DesktopOutlined />}>
-          Message
-        </Menu.Item> */}
+      <Menu theme="dark" defaultSelectedKeys={[currenNav]} defaultOpenKeys={[currenNav]} mode="inline">
+        {setMenuItem(items)}
       </Menu>
     </div>
   );
