@@ -1,12 +1,12 @@
 import Dashboard from '../../../../components/Dashboard';
-import StudentsTable from '../../../../components/StudentsTable';
+import StudentTable from '../../../../components/StudentTable';
 
 export default function Student() {
-  return (
-    <Dashboard>
-      <div className="site-layout-content">
-        <StudentsTable />
-      </div>
-    </Dashboard>
-  );
+    return (
+        <Dashboard>
+            <div className="site-layout-content">
+                <StudentTable />
+            </div>
+        </Dashboard>
+    );
 }
