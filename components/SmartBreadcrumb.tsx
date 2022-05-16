@@ -17,17 +17,11 @@ function SmartBreadcrumb() {
    const role = path.split('/').slice(2, 3).toString();
    const root = `/dashboard/` + role;
 
-   //Role Breadcrumb Name
-   const roleName = role.replace(role[0], role[0].toUpperCase());
-
    //third layer
    const thirdLayer = path.split('/').slice(3, 4).toString();
 
    //forth layer
    const forthLayer = path.split('/').slice(4, 5).toString();
-
-   //last layer
-   const lastLayer = path.substring(path.lastIndexOf('/') + 1);
 
    const routes: Route[] = [
       {

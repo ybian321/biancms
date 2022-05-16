@@ -1,10 +1,10 @@
+import { useEffect, useState } from 'react';
 import { Button, Card, Divider, List, message, Spin } from 'antd';
 import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
-import { useEffect, useState } from 'react';
+import { Course } from '../lib/types/courses.type';
 import { getCourses } from '../lib/api/course';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Course } from '../lib/types/courses.type';
 
 function CourseList() {
    const [loading, setLoading] = useState(false);
