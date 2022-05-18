@@ -50,6 +50,12 @@ function SmartBreadcrumb() {
          breadcrumbName: 'All Courses'
       },
       {
+         path: root + '/courses/' + forthLayer,
+         grandparent: 'Course',
+         parentBreadcrumb: 'All Courses',
+         breadcrumbName: 'Detail'
+      },
+      {
          path: root + '/courses/add-course',
          parentBreadcrumb: 'Course',
          breadcrumbName: 'Add Course'
@@ -78,8 +84,8 @@ function SmartBreadcrumb() {
             );
          }
          if (item.path === path && forthLayer) {
-            console.log(`[current path]`, path);
-            console.log(`[breadcrumb name]`, item.breadcrumbName);
+            // console.log(`[current path]`, path);
+            // console.log(`[breadcrumb name]`, item.breadcrumbName);
             return (
                <>
                   <Breadcrumb.Item>{item.grandparent}</Breadcrumb.Item>

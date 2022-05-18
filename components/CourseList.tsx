@@ -3,7 +3,7 @@ import { Button, Card, Divider, List, message, Spin } from 'antd';
 import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
 import { Course } from '../lib/types/courses.type';
-import { getCourses } from '../lib/api/course';
+import { getCourses } from '../lib/api/course.api';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 function CourseList() {
@@ -59,7 +59,9 @@ function CourseList() {
                </span>
                <b>{source.maxStudents}</b>
             </div>
-            <Button type="primary">Read More</Button>
+            <Button type="primary" href={`/dashboard/manager/courses/${source.id}`}>
+               Read More
+            </Button>
          </Card>
       );
    }

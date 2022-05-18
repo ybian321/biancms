@@ -1,13 +1,15 @@
 import { Menu } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
 import {
-   AppstoreOutlined,
    DashboardOutlined,
    TeamOutlined,
-   DesktopOutlined,
-   MailOutlined,
+   SolutionOutlined,
    DeploymentUnitOutlined,
-   EditOutlined
+   EditOutlined,
+   ReadOutlined,
+   MessageOutlined,
+   ProjectOutlined,
+   FileAddOutlined
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -28,7 +30,7 @@ function SiderNav() {
       {
          path: 'students',
          title: 'Student',
-         icon: <MailOutlined />,
+         icon: <SolutionOutlined />,
          subNav: [{ path: '/dashboard/manager/students', title: 'Student List', icon: <TeamOutlined /> }]
       },
       {
@@ -40,13 +42,14 @@ function SiderNav() {
       {
          path: 'courses',
          title: 'Courses',
-         icon: <AppstoreOutlined />,
+         icon: <ReadOutlined />,
          subNav: [
-            { path: '/dashboard/manager/courses', title: 'All Courses', icon: <AppstoreOutlined /> },
+            { path: '/dashboard/manager/courses', title: 'All Courses', icon: <ProjectOutlined /> },
+            { path: '/dashboard/manager/courses/add-course', title: 'Add Course', icon: <FileAddOutlined /> },
             { path: '/dashboard/manager/courses/edit-course', title: 'Edit Course', icon: <EditOutlined /> }
          ]
       },
-      { path: '/dashboard/manager/message', title: 'Message', icon: <DesktopOutlined /> }
+      { path: '/dashboard/manager/message', title: 'Message', icon: <MessageOutlined /> }
    ];
 
    function setMenuItem(data: any) {
