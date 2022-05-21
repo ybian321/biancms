@@ -26,43 +26,43 @@ function SiderNav() {
    const currenNav = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
 
    const items: SideNav[] = [
-      { path: '/dashboard/manager', title: 'Overview', icon: <DashboardOutlined /> },
+      { path: '/dashboard/manager', title: 'Overview', icon: DashboardOutlined },
       {
          path: 'students',
          title: 'Student',
-         icon: <SolutionOutlined />,
-         subNav: [{ path: '/dashboard/manager/students', title: 'Student List', icon: <TeamOutlined /> }]
+         icon: SolutionOutlined,
+         subNav: [{ path: '/dashboard/manager/students', title: 'Student List', icon: TeamOutlined }]
       },
       {
          path: 'teachers',
          title: 'Teacher',
-         icon: <DeploymentUnitOutlined />,
-         subNav: [{ path: '/dashboard/manager/teachers', title: 'Teacher List', icon: <TeamOutlined /> }]
+         icon: DeploymentUnitOutlined,
+         subNav: [{ path: '/dashboard/manager/teachers', title: 'Teacher List', icon: TeamOutlined }]
       },
       {
          path: 'courses',
          title: 'Courses',
-         icon: <ReadOutlined />,
+         icon: ReadOutlined,
          subNav: [
-            { path: '/dashboard/manager/courses', title: 'All Courses', icon: <ProjectOutlined /> },
-            { path: '/dashboard/manager/courses/add-course', title: 'Add Course', icon: <FileAddOutlined /> },
-            { path: '/dashboard/manager/courses/edit-course', title: 'Edit Course', icon: <EditOutlined /> }
+            { path: '/dashboard/manager/courses', title: 'All Courses', icon: ProjectOutlined },
+            { path: '/dashboard/manager/courses/add-course', title: 'Add Course', icon: FileAddOutlined },
+            { path: '/dashboard/manager/courses/edit-course', title: 'Edit Course', icon: EditOutlined }
          ]
       },
-      { path: '/dashboard/manager/message', title: 'Message', icon: <MessageOutlined /> }
+      { path: '/dashboard/manager/message', title: 'Message', icon: MessageOutlined }
    ];
 
    function setMenuItem(data: any) {
       return data.map((item: any) => {
          if (item.subNav) {
             return (
-               <SubMenu key={item.path} title={item.title} icon={item.icon}>
+               <SubMenu key={item.path} title={item.title} icon={<item.icon />}>
                   {setMenuItem(item.subNav)}
                </SubMenu>
             );
          } else {
             return (
-               <Menu.Item key={item.path} icon={item.icon}>
+               <Menu.Item key={item.path} icon={<item.icon />}>
                   <Link href={item.path}>{item.title}</Link>
                </Menu.Item>
             );

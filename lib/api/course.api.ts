@@ -14,8 +14,7 @@ export function getCourses() {
 
 export function getCourseDetail(id: string) {
    const result = axiosApi({
-      url: '/courses/detail',
-      params: { id: id },
+      url: '/courses/detail?id=' + id,
       method: 'get'
    });
    return result;

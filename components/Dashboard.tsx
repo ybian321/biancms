@@ -40,7 +40,8 @@ export default function Dashboard({ children }: React.PropsWithChildren<any>) {
 
             <Content style={{ padding: '0 20px' }}>
                <SmartBreadcrumb />
-               {children}
+
+               <div className="site-layout-content">{children}</div>
 
                <BackTop className="back-to-top item-center">
                   <VerticalAlignTopOutlined style={{ color: 'white', fontSize: '50px' }} />

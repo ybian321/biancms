@@ -2,87 +2,91 @@
 
 html,
 body {
-    padding: 0;
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+   padding: 0;
+   margin: 0;
+   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
-    color: #1890ff;
-    text-decoration: none;
+   color: #1890ff;
+   text-decoration: none;
 }
 
 * {
-    box-sizing: border-box;
+   box-sizing: border-box;
 }
 
 .flex {
-    display: flex;
+   display: flex;
 }
 
 .justify-between {
-    justify-content: space-between;
+   justify-content: space-between;
+}
+
+.align-center {
+   align-items: center;
 }
 
 .text-blue {
-    color: #1890ff;
+   color: #1890ff;
 }
 
 .item-center {
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
+   display: flex;
+   align-content: center;
+   justify-content: center;
+   align-items: center;
 }
 
 .site-layout-content {
-    min-height: 280px;
-    padding: 20px;
-    background: #fff;
+   min-height: 280px;
+   padding: 20px;
+   background: #fff;
 }
 
 .formItem {
-    justify-content: center;
+   justify-content: center;
 }
 
 .site-layout .site-layout-background {
-    background: #fff;
+   background: #fff;
 }
 
 .logo {
-    height: 64px;
-    display: inline-flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    color: #fff;
-    text-shadow: 5px 1px 5px;
-    transform: rotateX(45deg);
-    font-family: monospace;
+   height: 64px;
+   display: inline-flex;
+   width: 100%;
+   justify-content: center;
+   align-items: center;
+   font-size: 24px;
+   color: #fff;
+   text-shadow: 5px 1px 5px;
+   transform: rotateX(45deg);
+   font-family: monospace;
 }
 
 .flex-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
 }
 
 .about-heading {
-    color: rgb(115, 86, 241);
-    margin: 20px 0px;
-    font-size: 24px;
+   color: rgb(115, 86, 241);
+   margin: 20px 0px;
+   font-size: 24px;
 }
 
 .card-item {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid rgb(243, 240, 240);
-    margin-bottom: 10px;
+   display: flex;
+   justify-content: space-between;
+   border-bottom: 1px solid rgb(243, 240, 240);
+   margin-bottom: 10px;
 }
 
 .back-to-top {
-    background-color: rgba(128, 128, 128, 0.3);
-    height: 70px;
-    width: 70px;
+   background-color: rgba(128, 128, 128, 0.3);
+   height: 70px;
+   width: 70px;
 }
