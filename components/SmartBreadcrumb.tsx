@@ -13,14 +13,9 @@ export default function SmartBreadcrumb() {
    const path = useRouter().asPath;
    const paths = path.split('/').slice(1);
 
-   //Dashboard Path
    const role = path.split('/').slice(2, 3).toString();
    const root = `/dashboard/` + role;
-
-   //third layer
    const thirdLayer = path.split('/').slice(3, 4).toString();
-
-   //forth layer
    const forthLayer = path.split('/').slice(4, 5).toString();
 
    const routes: Route[] = [
@@ -49,12 +44,12 @@ export default function SmartBreadcrumb() {
          parentBreadcrumb: 'Course',
          breadcrumbName: 'All Courses'
       },
-      {
-         path: root + '/courses/' + forthLayer,
-         grandparent: 'Course',
-         parentBreadcrumb: 'All Courses',
-         breadcrumbName: 'Detail'
-      },
+      // {
+      //    path: root + '/courses/' + forthLayer,
+      //    grandparent: 'Course',
+      //    parentBreadcrumb: 'All Courses',
+      //    breadcrumbName: 'Detail'
+      // },
       {
          path: root + '/courses/add-course',
          parentBreadcrumb: 'Course',
@@ -70,8 +65,6 @@ export default function SmartBreadcrumb() {
    function deepSearch(path: string, data: Route[]) {
       return data.map((item: any) => {
          if (item.path === path && !forthLayer) {
-            // console.log(`[current path]`, path)
-            // console.log(`[breadcrumb name]`, item.breadcrumbName)
             return (
                <>
                   <Breadcrumb.Item>{item.parentBreadcrumb}</Breadcrumb.Item>
@@ -84,8 +77,6 @@ export default function SmartBreadcrumb() {
             );
          }
          if (item.path === path && forthLayer) {
-            // console.log(`[current path]`, path);
-            // console.log(`[breadcrumb name]`, item.breadcrumbName);
             return (
                <>
                   <Breadcrumb.Item>{item.grandparent}</Breadcrumb.Item>

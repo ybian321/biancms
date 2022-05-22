@@ -1,5 +1,6 @@
 import { Steps } from 'antd';
 import { useState } from 'react';
+import CreateCourseForm from '../../../../components/course/createCourseForm';
 
 export default function AddCourseForm() {
    const { current, setCurrent } = useState();
@@ -9,10 +10,14 @@ export default function AddCourseForm() {
    };
 
    return (
-      <Steps type="navigation" current={current} onChange={onChange} className="site-navigation-steps">
-         <Steps.Step status="finish" title="Step 1" />
-         <Steps.Step status="process" title="Step 2" />
-         <Steps.Step status="wait" title="Step 3" />
-      </Steps>
+      <>
+         <Steps type="navigation" current={current} onChange={onChange} style={{ marginBottom: '30px' }}>
+            <Steps.Step title="Course Detail" />
+            <Steps.Step title="Course Schedule" />
+            <Steps.Step title="Success" />
+         </Steps>
+
+         <CreateCourseForm />
+      </>
    );
 }

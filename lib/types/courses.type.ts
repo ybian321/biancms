@@ -1,38 +1,28 @@
 export interface Course {
+   createdAt: Date;
+   updatedAt: Date;
    id: number;
-   name: string;
-   uid: string;
+   cover: string;
    detail: string;
-   startTime: string;
-   classTime: string[];
-   price: number;
-   maxStudents: number;
-   payStudents: number;
-   star: number;
-   status: number;
    duration: number;
    durationUnit: number;
-   cover: string;
-   teacher: string;
-   typeId: number;
-   ctime: string;
+   maxStudents: number;
+   name: string;
+   price: number;
+   uid: string;
+   star: number;
+   startTime: Date;
+   status: number;
+   scheduleId: number;
+   teacherId: number;
+   type: CourseType[];
+   teacherName: string;
 }
 
-export interface CourseDetail {
-   id: number;
-   name: string;
-   uid: string; //code
-   detail: string;
-   startTime: string;
-   price: number;
-   maxStudents: number;
-   star: number;
-   duration: number;
-   cover: string;
-   teacherName: string;
-   teacherId: number;
-   ctime: string;
-   scheduleId: number;
+export interface CourseDetail extends Course {
+   teacher: CourseTeacher;
+   schedule: Schedule;
+   sales: Sales;
 }
 
 export interface Sales {
@@ -45,7 +35,13 @@ export interface Sales {
    paidIds: number[];
 }
 
-export interface Process {
+export interface CourseType {
+   id: number;
+   name: string;
+   courseId?: number;
+}
+
+export interface Schedule {
    id: number;
    status: number;
    current: number;
@@ -57,4 +53,16 @@ export interface Chapter {
    name: string;
    id: number;
    content: string;
+}
+
+export interface CourseTeacher {
+   createdAt: Date;
+   updatedAt: Date;
+   id: number;
+   country: string;
+   courseAmount: number;
+   email: string;
+   name: string;
+   phone: string;
+   profileId: number;
 }

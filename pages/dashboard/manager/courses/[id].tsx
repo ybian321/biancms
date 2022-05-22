@@ -6,6 +6,7 @@ import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import { getCourseDetail } from '../../../../lib/api/course.api';
 import { CourseStatusBadge } from '../../../../lib/constant/course';
 import ClassTable from '../../../../components/course/ClassTable';
+import { CourseDetail } from '../../../../lib/types/courses.type';
 
 const H2 = styled.h2`
    color: #7356f1;
@@ -46,7 +47,7 @@ const StyledCol = styled(Col)`
 `;
 
 export default function CourseDetailPage() {
-   const [course, setCourse] = useState({});
+   const [course, setCourse] = useState<CourseDetail>({});
    const [activeStep, setActiveStep] = useState(0);
    const [sales, setSales] = useState<{ label: string; value: string | number }[]>([]);
 
@@ -65,8 +66,7 @@ export default function CourseDetailPage() {
 
          setSales(info);
          setCourse(response.data.data);
-         setActiveStep(response.data.data.schedule.chapters.findIndex((item) => item.id === response.data.data.schedule.current));
-         console.log('🚀 ~ file: [id].tsx ~ line 71 ~ getCourseDetail ~ response.data.data', response.data.data);
+         setActiveStep(response.data.data.schedule.chapters.findIndex((item: { id: any }) => item.id === response.data.data.schedule.current));
       });
    }, []);
 
