@@ -9,12 +9,10 @@ export default function AddCourseForm() {
    };
 
    return (
-      <div className="site-layout-content">
-         <Steps type="navigation" current={current} onChange={onChange} className="site-navigation-steps">
-            <Steps.Step status="finish" title="Step 1" />
-            <Steps.Step status="process" title="Step 2" />
-            <Steps.Step status="wait" title="Step 3" />
-         </Steps>
-      </div>
+      <Steps type="navigation" current={current} onChange={onChange} className="site-navigation-steps">
+         <Steps.Step status="finish" title="Step 1" />
+         <Steps.Step status="process" title="Step 2" />
+         <Steps.Step status="wait" title="Step 3" />
+      </Steps>
    );
 }

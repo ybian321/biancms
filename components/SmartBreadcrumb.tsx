@@ -9,7 +9,7 @@ interface Route {
    grandparent?: string;
 }
 
-function SmartBreadcrumb() {
+export default function SmartBreadcrumb() {
    const path = useRouter().asPath;
    const paths = path.split('/').slice(1);
 
@@ -122,5 +122,3 @@ function SmartBreadcrumb() {
       </Breadcrumb>
    );
 }
-
-export default SmartBreadcrumb;

@@ -6,7 +6,7 @@ import { Course, StudentProfile } from '../../../../lib/types/students.type';
 import { getStudentDetail } from '../../../../lib/api/students.api';
 import { programLanguageColors } from '../../../../lib/constants/config';
 
-export default function StudentDetail() {
+export default function StudentDetailPage() {
    const [data, setData] = useState<StudentProfile>();
    const [courses, setCourses] = useState<Course[]>([]);
    const [info, setInfo] = useState<{ label: string; value: string | number }[]>([]);
@@ -71,76 +71,74 @@ export default function StudentDetail() {
    ];
 
    return (
-      <div className="site-layout-content">
-         <Row>
-            <Col span={8}>
-               <Card style={{ marginRight: '20px' }}>
-                  <Avatar
-                     src={data?.avatar}
-                     size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
-                     icon={<AntDesignOutlined />}
-                     style={{ display: 'block', margin: 'auto' }}
-                  />
-                  <Divider />
-                  <Row>
-                     {info.map((item) => (
-                        <Col span={12} key={item.label} style={{ textAlign: 'center' }}>
-                           <b>{item.label}</b>
-                           <p>{item.value}</p>
-                        </Col>
-                     ))}
-                  </Row>
-                  <Row>
-                     <Col span={24} style={{ textAlign: 'center' }}>
-                        <b>Address</b>
-                        <p>{data?.address}</p>
+      <Row>
+         <Col span={8}>
+            <Card style={{ marginRight: '20px' }}>
+               <Avatar
+                  src={data?.avatar}
+                  size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
+                  icon={<AntDesignOutlined />}
+                  style={{ display: 'block', margin: 'auto' }}
+               />
+               <Divider />
+               <Row>
+                  {info.map((item) => (
+                     <Col span={12} key={item.label} style={{ textAlign: 'center' }}>
+                        <b>{item.label}</b>
+                        <p>{item.value}</p>
                      </Col>
-                  </Row>
-               </Card>
-            </Col>
+                  ))}
+               </Row>
+               <Row>
+                  <Col span={24} style={{ textAlign: 'center' }}>
+                     <b>Address</b>
+                     <p>{data?.address}</p>
+                  </Col>
+               </Row>
+            </Card>
+         </Col>
 
-            <Col span={16}>
-               <Card>
-                  <Tabs defaultActiveKey="1" animated={true}>
-                     <Tabs.TabPane tab="About" key="1">
-                        <h2 className="about-heading">Information</h2>
-                        <Row>
-                           {about.map((item) => (
-                              <Col span={24} key={item.label}>
-                                 <b style={{ marginRight: 16, marginBottom: 10, minWidth: 150, display: 'inline-block' }}>{item.label}:</b>
-                                 <span>{item.value}</span>
-                              </Col>
-                           ))}
-                        </Row>
-
-                        <h2 className="about-heading">Interesting</h2>
-                        <Row>
-                           <Col span={24}>
-                              <div>
-                                 {data?.interest.map((item, index) => (
-                                    <Tag key={item} color={programLanguageColors[index]}>
-                                       {item}
-                                    </Tag>
-                                 ))}
-                              </div>
+         <Col span={16}>
+            <Card>
+               <Tabs defaultActiveKey="1" animated={true}>
+                  <Tabs.TabPane tab="About" key="1">
+                     <h2 className="about-heading">Information</h2>
+                     <Row>
+                        {about.map((item) => (
+                           <Col span={24} key={item.label}>
+                              <b style={{ marginRight: 16, marginBottom: 10, minWidth: 150, display: 'inline-block' }}>{item.label}:</b>
+                              <span>{item.value}</span>
                            </Col>
-                        </Row>
+                        ))}
+                     </Row>
 
-                        <h2 className="about-heading">Description</h2>
-                        <Row>
-                           <Col span={24}>
-                              <p>{data?.description}</p>
-                           </Col>
-                        </Row>
-                     </Tabs.TabPane>
+                     <h2 className="about-heading">Interesting</h2>
+                     <Row>
+                        <Col span={24}>
+                           <div>
+                              {data?.interest.map((item, index) => (
+                                 <Tag key={item} color={programLanguageColors[index]}>
+                                    {item}
+                                 </Tag>
+                              ))}
+                           </div>
+                        </Col>
+                     </Row>
 
-                     <Tabs.TabPane tab="Courses" key="2">
-                        <Table columns={columns} dataSource={courses} pagination={false} />
-                     </Tabs.TabPane>
-                  </Tabs>
-               </Card>
-            </Col>
-         </Row>
-      </div>
+                     <h2 className="about-heading">Description</h2>
+                     <Row>
+                        <Col span={24}>
+                           <p>{data?.description}</p>
+                        </Col>
+                     </Row>
+                  </Tabs.TabPane>
+
+                  <Tabs.TabPane tab="Courses" key="2">
+                     <Table columns={columns} dataSource={courses} pagination={false} />
+                  </Tabs.TabPane>
+               </Tabs>
+            </Card>
+         </Col>
+      </Row>
    );
 }

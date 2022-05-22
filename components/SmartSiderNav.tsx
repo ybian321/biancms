@@ -21,7 +21,7 @@ interface SideNav {
    icon: any;
 }
 
-function SiderNav() {
+export default function SiderNav() {
    const currentUrl = useRouter().asPath;
    const currenNav = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
 
@@ -78,5 +78,3 @@ function SiderNav() {
       </div>
    );
 }
-
-export default SiderNav;

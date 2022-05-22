@@ -1,19 +1,17 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import Dashboard from '../components/Dashboard';
+import DashboardLayout from '../components/DashboardLayout';
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps) {
    const currentUrl = useRouter().asPath;
    if (currentUrl.includes('dashboard')) {
       return (
-         <Dashboard>
+         <DashboardLayout>
             <Component {...pageProps} />
-         </Dashboard>
+         </DashboardLayout>
       );
    } else {
       return <Component {...pageProps} />;
    }
 }
-
-export default MyApp;

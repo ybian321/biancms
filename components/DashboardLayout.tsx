@@ -2,14 +2,14 @@ import React from 'react';
 import { useState } from 'react';
 import { Affix, BackTop, Button, Dropdown, Layout } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined, BellOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
-import Logout from '../components/Logout';
+import Logout from './Logout';
 import SmartSiderNav from './SmartSiderNav';
 import SmartBreadcrumb from './SmartBreadcrumb';
 import useLoginState from './custom-hooks/useLoginState';
 
 const { Header, Footer, Sider, Content } = Layout;
 
-export default function Dashboard({ children }: React.PropsWithChildren<any>) {
+export default function DashboardLayout({ children }: React.PropsWithChildren<any>) {
    useLoginState();
    const [collapsed, setCollapse] = useState(false);
 

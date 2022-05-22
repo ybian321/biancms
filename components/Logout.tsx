@@ -4,31 +4,29 @@ import { LoginOutlined } from '@ant-design/icons';
 import { logoutAuth } from '../lib/api/auth.api';
 import router from 'next/router';
 
-function Logout() {
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
+export default function Logout() {
+   const onFinish = (values: any) => {
+      console.log('Success:', values);
 
-    logoutAuth()
-      .then((response) => {
-        console.log(`[logout success]`);
-        response ? router.push(`/login`) : message.error('logout fail');
-      })
-      .catch((error) => {
-        console.log(`[logout error]`, error.message);
-      });
-  };
+      logoutAuth()
+         .then((response) => {
+            console.log(`[logout success]`);
+            response ? router.push(`/login`) : message.error('logout fail');
+         })
+         .catch((error) => {
+            console.log(`[logout error]`, error.message);
+         });
+   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
+   const onFinishFailed = (errorInfo: any) => {
+      console.log('Failed:', errorInfo);
+   };
 
-  return (
-    <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
-      <Button htmlType="submit" icon={<LoginOutlined />}>
-        Logout
-      </Button>
-    </Form>
-  );
+   return (
+      <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
+         <Button htmlType="submit" icon={<LoginOutlined />}>
+            Logout
+         </Button>
+      </Form>
+   );
 }
-
-export default Logout;

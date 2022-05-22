@@ -18,7 +18,7 @@ export interface Course {
    ctime: string;
 }
 
-export interface CourseProfile {
+export interface CourseDetail {
    id: number;
    name: string;
    uid: string;

@@ -1,3 +1,3 @@
-export default function Manager() {
+export default function ManagerDashboard() {
    return 'Manager Content';
 }
