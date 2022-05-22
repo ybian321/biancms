@@ -4,7 +4,6 @@ import Meta from 'antd/lib/card/Meta';
 import styled from 'styled-components';
 import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import { getCourseDetail } from '../../../../lib/api/course.api';
-import { CourseDetail } from '../../../../lib/types/courses.type';
 
 const H2 = styled.h2`
    color: #7356f1;
@@ -13,8 +12,9 @@ const H2 = styled.h2`
 `;
 
 const H3 = styled.h3`
-   fontweight: '500';
-   fontsize: '1.17em';
+   fontWeight: '500';
+   fontSize: '1.17em';
+   marginTop
 `;
 
 const StyledRow = styled(Row)`
@@ -44,7 +44,7 @@ const StyledCol = styled(Col)`
 `;
 
 export default function CourseDetailPage() {
-   const [course, setCourse] = useState();
+   const [course, setCourse] = useState({});
    const [sales, setSales] = useState<{ label: string; value: string | number }[]>([]);
 
    const text = `
@@ -72,8 +72,8 @@ export default function CourseDetailPage() {
    }, []);
 
    return (
-      <Row>
-         <Col span={6}>
+      <Row gutter={[6, 16]}>
+         <Col span={8}>
             <Card className="course-detail" key={course.id} cover={<img alt="placeholder" src="/placeholder.png" />}>
                <Meta title={course.name} style={{ marginBottom: '10px' }} />
                <div className="card-item">
@@ -110,45 +110,45 @@ export default function CourseDetailPage() {
             </Card>
          </Col>
 
-         <Col span={1}></Col>
-
-         <Col span={17}>
+         <Col offset={1} span={15}>
             <Card>
                <H2>Course Detail</H2>
+
                <H3>Create Time</H3>
-               <p>{course.createdAt}</p>
+               <p>{course?.createdAt}</p>
+
                <H3>Start Time</H3>
-               <p>{course.startTime}</p>
+               <p>{course?.startTime}</p>
+
                <H3>Status</H3>
+
                <H3>Course Code</H3>
-               <p>{course.uid}</p>
+               <p>{course?.uid}</p>
 
                <H3>Class Time</H3>
 
                <H3>Category</H3>
                <Row>
                   {/* {course?.type.map((item) => (
-                           <Tag color={'geekblue'} key={item.id}>
-                              {item.name}
-                           </Tag>
-                        ))} */}
+                     <Tag color={'geekblue'} key={item.id}>
+                        {item.name}
+                     </Tag>
+                  ))} */}
                </Row>
 
                <H3>Description</H3>
                <p>{course.detail}</p>
 
                <H3>Chapter</H3>
-               <Collapse defaultActiveKey={['1']}>
-                  <Collapse.Panel header="This is panel header 1" key="1">
-                     <div>{text}</div>
-                  </Collapse.Panel>
-                  <Collapse.Panel header="This is panel header 2" key="2">
-                     <div>{text}</div>
-                  </Collapse.Panel>
-                  <Collapse.Panel header="This is panel header 3" key="3">
-                     <div>{text}</div>
-                  </Collapse.Panel>
-               </Collapse>
+               {course?.schedule && (
+                  <Collapse defaultActiveKey={course.schedule.current}>
+                     {course.schedule.chapters.map((item) => (
+                        <Collapse.Panel header={item.name} key={item.id}>
+                           <p>{item.content}</p>
+                        </Collapse.Panel>
+                     ))}
+                  </Collapse>
+               )}
             </Card>
          </Col>
       </Row>
