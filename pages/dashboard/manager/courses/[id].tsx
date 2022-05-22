@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Card, Col, Collapse, Row, Tag } from 'antd';
+import { Badge, Card, Col, Collapse, Row, Steps, Tag } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import styled from 'styled-components';
 import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import { getCourseDetail } from '../../../../lib/api/course.api';
+import { CourseStatusBadge } from '../../../../lib/constant/course';
+import ClassTable from '../../../../components/course/ClassTable';
 
 const H2 = styled.h2`
    color: #7356f1;
@@ -12,9 +14,9 @@ const H2 = styled.h2`
 `;
 
 const H3 = styled.h3`
-   fontWeight: '500';
-   fontSize: '1.17em';
-   marginTop
+   fontweight: '500';
+   fontsize: '1.17em';
+   margintop: '5px';
 `;
 
 const StyledRow = styled(Row)`
@@ -45,13 +47,8 @@ const StyledCol = styled(Col)`
 
 export default function CourseDetailPage() {
    const [course, setCourse] = useState({});
+   const [activeStep, setActiveStep] = useState(0);
    const [sales, setSales] = useState<{ label: string; value: string | number }[]>([]);
-
-   const text = `
-      A dog is a type of domesticated animal.
-      Known for its loyalty and faithfulness,
-      it can be found as a welcome guest in many households across the world.
-   `;
 
    useEffect(() => {
       const currentUrl = window.location.href;
@@ -66,8 +63,10 @@ export default function CourseDetailPage() {
             { label: 'Earings', value: sales.earnings }
          ];
 
-         setCourse(response.data.data);
          setSales(info);
+         setCourse(response.data.data);
+         setActiveStep(response.data.data.schedule.chapters.findIndex((item) => item.id === response.data.data.schedule.current));
+         console.log('🚀 ~ file: [id].tsx ~ line 71 ~ getCourseDetail ~ response.data.data', response.data.data);
       });
    }, []);
 
@@ -120,12 +119,20 @@ export default function CourseDetailPage() {
                <H3>Start Time</H3>
                <p>{course?.startTime}</p>
 
-               <H3>Status</H3>
+               <Badge dot status={CourseStatusBadge[course?.status] as any} offset={[5, 8]}>
+                  <H3>Status</H3>
+               </Badge>
+               <Steps size="small" current={activeStep} style={{ marginBottom: '15px', width: 'auto' }}>
+                  {/* {course?.schedule.chapters.map((item) => (
+                     <Steps.Step title={item.name} key={item.id}></Steps.Step>
+                  ))} */}
+               </Steps>
 
                <H3>Course Code</H3>
                <p>{course?.uid}</p>
 
                <H3>Class Time</H3>
+               <ClassTable />
 
                <H3>Category</H3>
                <Row>

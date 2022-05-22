@@ -42,10 +42,6 @@ export default function DashboardLayout({ children }: React.PropsWithChildren<an
                <SmartBreadcrumb />
 
                <div className="site-layout-content">{children}</div>
-
-               <BackTop className="back-to-top item-center">
-                  <VerticalAlignTopOutlined style={{ color: 'white', fontSize: '50px' }} />
-               </BackTop>
             </Content>
 
             <Footer></Footer>

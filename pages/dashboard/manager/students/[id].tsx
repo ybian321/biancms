@@ -4,7 +4,7 @@ import { AntDesignOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { Course, StudentProfile } from '../../../../lib/types/students.type';
 import { getStudentDetail } from '../../../../lib/api/students.api';
-import { programLanguageColors } from '../../../../lib/constants/config';
+import { programLanguageColors } from '../../../../lib/constant/config';
 
 export default function StudentDetailPage() {
    const [data, setData] = useState<StudentProfile>();

@@ -21,23 +21,18 @@ export interface Course {
 export interface CourseDetail {
    id: number;
    name: string;
-   uid: string;
+   uid: string; //code
    detail: string;
    startTime: string;
    price: number;
    maxStudents: number;
-   salesId: number;
-   processId: number;
    star: number;
-   status: number;
    duration: number;
-   durationUnit: number;
    cover: string;
-   teacher: string;
-   typeName: string;
+   teacherName: string;
+   teacherId: number;
    ctime: string;
-   sales: Sales;
-   process: Process;
+   scheduleId: number;
 }
 
 export interface Sales {
