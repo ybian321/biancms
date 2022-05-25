@@ -9,8 +9,6 @@ import { LoginFormValues } from '../lib/types/login.type';
 
 export default function LoginPage() {
    const onFinish = (values: LoginFormValues) => {
-      console.log('[submit success]', values);
-
       loginAuth(values)
          .then((response) => {
             localStorage.setItem('token', response.data.data.token);

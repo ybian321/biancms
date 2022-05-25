@@ -6,8 +6,6 @@ import router from 'next/router';
 
 export default function Logout() {
    const onFinish = (values: any) => {
-      console.log('Success:', values);
-
       logoutAuth().then((response) => {
          console.log(`[logout success]`);
          response ? router.push(`/login`) : message.error('logout fail');

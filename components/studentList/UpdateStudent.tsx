@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Input, Select } from 'antd';
+import { Form, Button, Input, Select, message } from 'antd';
 import { editStudentById } from '../../lib/api/students.api';
 
 const url = 'http://cms.chtoma.com/api/students';
@@ -7,26 +7,20 @@ const { Option } = Select;
 
 export default function UpdateStudent(props: any) {
    const onFinish = (values: any) => {
-      console.log('Success:', values);
       const studentId = props.record.id;
 
       editStudentById(values, studentId)
-         .then((response) => {
-            console.log(`[add student success]`, response);
+         .then(() => {
+            message.info('edit success');
          })
-         .catch((error) => {
-            console.log(`[unknown error]`, error);
+         .catch(() => {
+            message.info('edit fail');
          });
-   };
-
-   const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo);
    };
 
    return (
       <Form
          onFinish={onFinish}
-         onFinishFailed={onFinishFailed}
          initialValues={{
             name: props.record?.name,
             email: props.record?.email,

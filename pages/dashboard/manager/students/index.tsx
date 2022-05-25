@@ -16,7 +16,6 @@ export default function StudentListPage() {
 
    const handleStudent = (record: any) => {
       setStudent(record);
-      console.log(record.id);
    };
 
    const handleCancel = () => {
@@ -33,8 +32,8 @@ export default function StudentListPage() {
    const deleteStudent = (record: Student) => {
       const id = record.id;
       deleteStudentById(id)
-         .then((response) => {
-            console.log(`[delete success]`, response);
+         .then(() => {
+            message.info('delete success');
          })
          .catch(() => {
             message.info('delete fail');

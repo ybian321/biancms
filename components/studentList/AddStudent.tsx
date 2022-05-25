@@ -1,26 +1,20 @@
 import React from 'react';
-import { Form, Button, Input, Select } from 'antd';
+import { Form, Button, Input, Select, message } from 'antd';
 import { addStudent } from '../../lib/api/students.api';
 
 export default function AddStudent() {
    const onFinish = (values: any) => {
-      console.log('Success:', values);
-
       addStudent(values)
-         .then((response) => {
-            console.log(`[add success]`, response);
+         .then(() => {
+            message.info('add success');
          })
-         .catch((error) => {
-            console.log(`[unknown error]`, error);
+         .catch(() => {
+            message.info('add fail');
          });
    };
 
-   const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo);
-   };
-
    return (
-      <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
+      <Form onFinish={onFinish}>
          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
             <Input type="text" placeholder="student name" />
          </Form.Item>
