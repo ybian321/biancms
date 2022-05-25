@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Affix, Button, Dropdown, Layout } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined, BellOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined, BellOutlined } from '@ant-design/icons';
 import Logout from './Logout';
 import SmartSiderNav from './SmartSiderNav';
 import SmartBreadcrumb from './SmartBreadcrumb';

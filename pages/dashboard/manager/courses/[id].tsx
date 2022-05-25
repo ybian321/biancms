@@ -136,11 +136,11 @@ export default function CourseDetailPage() {
 
                <H3>Category</H3>
                <Row>
-                  {/* {course?.type.map((item) => (
+                  {course?.type?.map((item) => (
                      <Tag color={'geekblue'} key={item.id}>
                         {item.name}
                      </Tag>
-                  ))} */}
+                  ))}
                </Row>
 
                <H3>Description</H3>

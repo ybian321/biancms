@@ -31,8 +31,8 @@ export default function AddCourseForm() {
    return (
       <>
          <Steps type="navigation" current={current}>
-            {steps.map((item) => (
-               <Steps.Step key={item.title} title={item.title} />
+            {steps.map((item, index) => (
+               <Steps.Step key={index} title={item.title} />
             ))}
          </Steps>
 

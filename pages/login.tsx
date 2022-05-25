@@ -1,29 +1,25 @@
 import React from 'react';
 import Link from 'next/link';
+import router from 'next/router';
 import { Form, Input, Button, Checkbox, Radio, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { loginAuth } from '../lib/api/auth.api';
-import router from 'next/router';
+
+import { LoginFormValues } from '../lib/types/login.type';
 
 export default function LoginPage() {
-   const onFinish = (values: any) => {
+   const onFinish = (values: LoginFormValues) => {
       console.log('[submit success]', values);
 
       loginAuth(values)
          .then((response) => {
-            console.log(`[login success]`, response);
             localStorage.setItem('token', response.data.data.token);
             localStorage.setItem('role', response.data.data.role);
             router.push(`/dashboard/${response.data.data.role}`);
          })
-         .catch((error) => {
-            console.log(`[login error]`, error.message);
+         .catch(() => {
             message.error('Unknown Error');
          });
-   };
-
-   const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo);
    };
 
    return (
@@ -34,7 +30,6 @@ export default function LoginPage() {
             wrapperCol={{ span: 10 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
          >
             <h1 style={{ textAlign: 'center', fontSize: '2.5rem' }}>

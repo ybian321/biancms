@@ -52,8 +52,8 @@ export default function SiderNav() {
       { path: '/dashboard/manager/message', title: 'Message', icon: MessageOutlined }
    ];
 
-   function setMenuItem(data: any) {
-      return data.map((item: any) => {
+   function setMenuItem(data: SideNav[]) {
+      return data.map((item) => {
          if (item.subNav) {
             return (
                <SubMenu key={item.path} title={item.title} icon={<item.icon />}>

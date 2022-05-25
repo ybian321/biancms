@@ -8,22 +8,14 @@ export default function Logout() {
    const onFinish = (values: any) => {
       console.log('Success:', values);
 
-      logoutAuth()
-         .then((response) => {
-            console.log(`[logout success]`);
-            response ? router.push(`/login`) : message.error('logout fail');
-         })
-         .catch((error) => {
-            console.log(`[logout error]`, error.message);
-         });
-   };
-
-   const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo);
+      logoutAuth().then((response) => {
+         console.log(`[logout success]`);
+         response ? router.push(`/login`) : message.error('logout fail');
+      });
    };
 
    return (
-      <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
+      <Form onFinish={onFinish}>
          <Button htmlType="submit" icon={<LoginOutlined />}>
             Logout
          </Button>

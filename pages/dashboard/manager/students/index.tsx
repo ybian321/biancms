@@ -1,24 +1,23 @@
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Button, Input, message, Modal, Popconfirm, Space, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { formatDistanceToNow } from 'date-fns';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { deleteStudentById, getStudents, searchStudentsByName } from '../../../../lib/api/students.api';
 import AddStudent from '../../../../components/studentList/AddStudent';
 import UpdateStudent from '../../../../components/studentList/UpdateStudent';
-import { deleteStudentById, getStudents, searchStudentsByName } from '../../../../lib/api/students.api';
 import { Course, Student, Type } from '../../../../lib/types/students.type';
 
 export default function StudentListPage() {
    const [data, setData] = useState<Student[]>([]);
-
    const [student, setStudent] = useState();
+   const [modal1Visible, setModal1Visible] = useState(false);
+   const [modal2Visible, setModal2Visible] = useState(false);
+
    const handleStudent = (record: any) => {
       setStudent(record);
       console.log(record.id);
    };
-
-   const [modal1Visible, setModal1Visible] = useState(false);
-   const [modal2Visible, setModal2Visible] = useState(false);
 
    const handleCancel = () => {
       setModal1Visible(false);
@@ -26,36 +25,29 @@ export default function StudentListPage() {
    };
 
    useEffect(() => {
-      getStudents()
-         .then((response) => {
-            console.log(`[fetch success]`, response);
-            setData(response.data.data.students);
-         })
-         .catch((error) => {
-            console.log(`[unknown error]`, error);
-         });
+      getStudents().then((response) => {
+         setData(response.data.data.students);
+      });
    }, []);
 
-   const deleteStudent = (record: any) => {
+   const deleteStudent = (record: Student) => {
       const id = record.id;
       deleteStudentById(id)
          .then((response) => {
             console.log(`[delete success]`, response);
          })
-         .catch((error) => {
-            console.log(`[unknown error]`, error);
+         .catch(() => {
+            message.info('delete fail');
          });
    };
 
    const { Search } = Input;
-   const onSearch = (value: any) => {
+   const onSearch = (value: string) => {
       searchStudentsByName(value)
          .then((response) => {
-            console.log(response);
             setData(response.data.data.students);
          })
-         .catch((error) => {
-            console.log(error);
+         .catch(() => {
             message.error('Unknown Error');
          });
    };
