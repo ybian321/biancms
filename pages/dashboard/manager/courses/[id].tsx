@@ -47,7 +47,7 @@ const StyledCol = styled(Col)`
 `;
 
 export default function CourseDetailPage() {
-   const [course, setCourse] = useState<CourseDetail>({});
+   const [course, setCourse] = useState<CourseDetail>();
    const [activeStep, setActiveStep] = useState(0);
    const [sales, setSales] = useState<{ label: string; value: string | number }[]>([]);
 
@@ -73,29 +73,29 @@ export default function CourseDetailPage() {
    return (
       <Row gutter={[6, 16]}>
          <Col span={8}>
-            <Card className="course-detail" key={course.id} cover={<img alt="placeholder" src="/placeholder.png" />}>
-               <Meta title={course.name} style={{ marginBottom: '10px' }} />
+            <Card className="course-detail" key={course?.id} cover={<img alt="placeholder" src="/placeholder.png" />}>
+               <Meta title={course?.name} style={{ marginBottom: '10px' }} />
                <div className="card-item">
-                  <span>{course.createdAt}</span>
+                  <span>{course?.createdAt}</span>
                   <b>
                      <HeartFilled style={{ color: 'red', marginRight: '5px' }} />
-                     {course.star}
+                     {course?.star}
                   </b>
                </div>
                <div className="card-item">
                   <span>Duration:</span>
-                  <b>{course.duration} years</b>
+                  <b>{course?.duration} years</b>
                </div>
                <div className="card-item">
                   <span>Teacher:</span>
-                  <b className="text-blue">{course.teacherName}</b>
+                  <b className="text-blue">{course?.teacherName}</b>
                </div>
                <div className="flex justify-between" style={{ marginBottom: '15px' }}>
                   <span>
                      <UserOutlined style={{ color: 'rgb(24, 144, 255)', marginRight: '5px' }} />
                      Student Limit:
                   </span>
-                  <b>{course.maxStudents}</b>
+                  <b>{course?.maxStudents}</b>
                </div>
 
                <StyledRow>
@@ -119,13 +119,13 @@ export default function CourseDetailPage() {
                <H3>Start Time</H3>
                <p>{course?.startTime}</p>
 
-               <Badge dot status={CourseStatusBadge[course?.status] as any} offset={[5, 8]}>
+               <Badge dot status={CourseStatusBadge[course?.status ?? 0] as any} offset={[5, 8]}>
                   <H3>Status</H3>
                </Badge>
                <Steps size="small" current={activeStep} style={{ marginBottom: '15px', width: 'auto' }}>
-                  {/* {course?.schedule.chapters.map((item) => (
+                  {course?.schedule?.chapters?.map((item) => (
                      <Steps.Step title={item.name} key={item.id}></Steps.Step>
-                  ))} */}
+                  ))}
                </Steps>
 
                <H3>Course Code</H3>
@@ -135,7 +135,7 @@ export default function CourseDetailPage() {
                <ClassTable />
 
                <H3>Category</H3>
-               <Row>
+               <Row style={{ marginBottom: '15px' }}>
                   {course?.type?.map((item) => (
                      <Tag color={'geekblue'} key={item.id}>
                         {item.name}
@@ -144,7 +144,7 @@ export default function CourseDetailPage() {
                </Row>
 
                <H3>Description</H3>
-               <p>{course.detail}</p>
+               <p>{course?.detail}</p>
 
                <H3>Chapter</H3>
                {course?.schedule && (
