@@ -1,9 +1,13 @@
-import { Col, DatePicker, Form, Input, InputNumber, Row, Select } from 'antd';
+import { Col, DatePicker, Form, Input, InputNumber, Row, Select, UploadProps } from 'antd';
+import ImgCrop from 'antd-img-crop';
 import TextArea from 'antd/lib/input/TextArea';
 import Dragger from 'antd/lib/upload/Dragger';
 import { InboxOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { Course } from '../../lib/types/students.type';
+import { useState } from 'react';
+import { RcFile, UploadFile } from 'antd/lib/upload/interface';
+import { getTime } from 'date-fns';
 
 export interface AddCourseFormProps {
    course?: Course;
@@ -28,7 +32,34 @@ const UploadItem = styled(Form.Item)`
    }
 `;
 
+const UploadInner = styled.div`
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   background: rgb(240, 240, 240);
+   width: 100%;
+   .anticon {
+      font-size: 44px;
+      color: #1890ff;
+   }
+   p {
+      font-size: 24px;
+      color: #999;
+   }
+`;
+
 export default function CreateCourseForm() {
+   const [courseTypes, setCourseTypes] = useState<CourseType[]>([]);
+   const [fileList, setFileList] = useState<UploadFile[]>([
+      {
+         uid: '-1',
+         name: 'image.png',
+         status: 'done',
+         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+      }
+   ]);
+
    const onFinish = (values: any) => {
       console.log('Success:', values);
    };
@@ -42,6 +73,25 @@ export default function CreateCourseForm() {
          <Select.Option value="hour">hour</Select.Option>
       </Select>
    );
+
+   const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+      setFileList(newFileList);
+   };
+
+   const onPreview = async (file: UploadFile) => {
+      let src = file.url as string;
+      if (!src) {
+         src = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file.originFileObj as RcFile);
+            reader.onload = () => resolve(reader.result as string);
+         });
+      }
+      const image = new Image();
+      image.src = src;
+      const imgWindow = window.open(src);
+      imgWindow?.document.write(image.outerHTML);
+   };
 
    return (
       <Form layout="vertical" onFinish={onFinish}>
@@ -88,12 +138,13 @@ export default function CreateCourseForm() {
                <Form.Item label="Start Date" name="startTime">
                   <DatePicker
                      style={{ width: '100%' }}
-                     // disabledDate={(current: Date) => {
-                     //    const today = getTime(new Date());
-                     //    const date = current.valueOf();
+                     // @ts-ignore
+                     disabledDate={(current: Date) => {
+                        const today = getTime(new Date());
+                        const date = current.valueOf();
 
-                     //    return date < today;
-                     // }}
+                        return date < today;
+                     }}
                   />
                </Form.Item>
 
@@ -111,7 +162,7 @@ export default function CreateCourseForm() {
                   <InputNumber min={1} max={10} style={{ width: '100%' }} />
                </Form.Item>
 
-               <Form.Item style={{ marginBottom: 0 }} label="Duration" name="duration">
+               <Form.Item style={{ marginBottom: 0 }} label="Duration" name="duration" rules={[{ required: true }]}>
                   <InputNumber addonAfter={selectAfter} style={{ width: '100%' }} />
                </Form.Item>
             </Col>
@@ -135,16 +186,26 @@ export default function CreateCourseForm() {
             </Col>
 
             <Col span={8} style={{ paddingLeft: 20 }}>
-               <UploadItem label="Cover" style={{ height: '100%' }}>
-                  <Dragger>
-                     <p className="ant-upload-drag-icon">
-                        <InboxOutlined />
-                     </p>
-                     <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                     <p className="ant-upload-hint">
-                        Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
-                     </p>
-                  </Dragger>
+               <UploadItem label="Cover" name="cover" style={{ height: '100%' }}>
+                  <ImgCrop rotate aspect={16 / 9}>
+                     <Dragger
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        listType="picture-card"
+                        fileList={fileList}
+                        onChange={onChange}
+                        onPreview={onPreview}
+                        style={{ backgroundColor: 'rgb(240, 240, 240)' }}
+                     >
+                        {fileList.length >= 1 ? null : (
+                           <UploadInner>
+                              <InboxOutlined />
+                              <p className="ant-upload-text" style={{ fontSize: 24, color: 'rgb(153, 153, 153)' }}>
+                                 Click or drag file to this area to upload
+                              </p>
+                           </UploadInner>
+                        )}
+                     </Dragger>
+                  </ImgCrop>
                </UploadItem>
             </Col>
          </Row>

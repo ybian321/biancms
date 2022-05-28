@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, message, Steps } from 'antd';
 import CreateCourseForm from '../../../../components/course/CreateCourseForm';
+import UpdateCourseSchedule from '../../../../components/course/UpdateCourseSchedule';
 
 export default function AddCourseForm() {
    const [current, setCurrent] = useState(0);
@@ -12,7 +13,7 @@ export default function AddCourseForm() {
       },
       {
          title: 'Course Schedule',
-         content: 'Second-content'
+         content: <UpdateCourseSchedule />
       },
       {
          title: 'Success',

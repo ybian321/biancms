@@ -18,7 +18,6 @@ export default function AllCoursesPage() {
       setLoading(true);
       getCourses().then((response) => {
          setData([...data, ...response.data.data.courses]);
-         message.success(`${response.data.data.courses.length} more items loaded!`);
          setLoading(false);
       });
    };
