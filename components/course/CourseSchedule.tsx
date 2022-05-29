@@ -3,7 +3,14 @@ import { MinusCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { gutter, weekDays } from '../../lib/constant/config';
 
-export default function UpdateCourseSchedule() {
+export interface AddChapterFormProps {
+   courseId?: number;
+   scheduleId?: number;
+   onSuccess?: (res: boolean) => void;
+   isAdd?: boolean;
+}
+
+export default function CourseScheduleForm({ courseId, onSuccess, scheduleId, isAdd = true }: AddChapterFormProps) {
    const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
 
    return (
@@ -94,6 +101,11 @@ export default function UpdateCourseSchedule() {
                </Form.List>
             </Col>
          </Row>
+         <Form.Item>
+            <Button type="primary" htmlType="submit">
+               Submit
+            </Button>
+         </Form.Item>
       </Form>
    );
 }

@@ -5,3 +5,11 @@ export const programLanguageColors: string[] = ['magenta', 'volcano', 'orange', 
 export const gutter: [Gutter, Gutter] = [6, 16];
 
 export const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+export enum DurationUnit {
+   'year' = 1,
+   'month',
+   'day',
+   'week',
+   'hour'
+}

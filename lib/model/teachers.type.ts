@@ -1,3 +1,5 @@
+import { Paginator } from './api.type';
+
 export interface Teacher {
    id: number;
    name: string;
@@ -14,4 +16,8 @@ export interface Teacher {
 export interface Skill {
    name: string;
    level: number;
+}
+
+export interface TeachersRequest extends Partial<Paginator> {
+   query?: string;
 }

@@ -102,11 +102,9 @@ a {
 }
 
 .dynamic-delete-button {
-   position: relative;
-   top: 4px;
-   margin: 0 8px;
+   padding-top: 10px;
    color: #999;
-   font-size: 24px;
+   font-size: 15px;
    cursor: pointer;
    transition: all 0.3s;
 }

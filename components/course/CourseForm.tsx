@@ -1,17 +1,27 @@
-import { Col, DatePicker, Form, Input, InputNumber, Row, Select, UploadProps } from 'antd';
+import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select, Spin, UploadProps } from 'antd';
+import { CloseCircleOutlined, InboxOutlined, KeyOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 import TextArea from 'antd/lib/input/TextArea';
 import Dragger from 'antd/lib/upload/Dragger';
-import { InboxOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { Course } from '../../lib/types/students.type';
-import { useState } from 'react';
+import { Course } from '../../lib/model/students.type';
+import { useEffect, useState } from 'react';
 import { RcFile, UploadFile } from 'antd/lib/upload/interface';
-import { getTime } from 'date-fns';
+import { format, getTime } from 'date-fns';
+import { addCourse, createCourseCode, getCourseTypes } from '../../lib/api/course.api';
+import { AddCourseRequest } from '../../lib/model/courses.type';
+import { useForm } from 'antd/lib/form/Form';
+import { getTeachers } from '../../lib/api/teacher.api';
+import { Teacher } from '../../lib/model/teachers.type';
 
 export interface AddCourseFormProps {
    course?: Course;
    onSuccess?: (course: Course) => void;
+}
+
+export interface CourseType {
+   id: number;
+   name: string;
 }
 
 /**
@@ -63,8 +73,13 @@ const UploadInner = styled.div`
    }
 `;
 
-export default function CreateCourseForm() {
+export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
+   const [form] = useForm();
+   const [data, setData] = useState();
+   const [genCode, setGenCode] = useState();
+   const [isTeacherSearching, setIsTeacherSearching] = useState<boolean>(false);
    const [courseTypes, setCourseTypes] = useState<CourseType[]>([]);
+   const [teachers, setTeachers] = useState<Teacher[]>([]);
    const [fileList, setFileList] = useState<UploadFile[]>([
       {
          uid: '-1',
@@ -73,9 +88,33 @@ export default function CreateCourseForm() {
          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
       }
    ]);
+   const getCode = () => {
+      createCourseCode().then((res) => {
+         setGenCode(res.data.data);
+      });
+   };
+
+   useEffect(() => {
+      getCode();
+      getCourseTypes().then((res) => {
+         setCourseTypes(res.data.data);
+      });
+   }, []);
 
    const onFinish = (values: any) => {
-      console.log('Success:', values);
+      const req: AddCourseRequest = {
+         ...values,
+         duration: +values.duration.number,
+         startTime: values.startTime && format(values.startTime, 'yyy-MM-dd'),
+         teacherId: +values.teacherId,
+         durationUnit: +values.duration.unit
+      };
+
+      addCourse(req).then((response) => setData(response.data.data));
+
+      if (!!onSuccess && !!data) {
+         onSuccess(data);
+      }
    };
 
    const selectAfter = (
@@ -108,7 +147,7 @@ export default function CreateCourseForm() {
    };
 
    return (
-      <Form layout="vertical" onFinish={onFinish}>
+      <Form layout="vertical" onFinish={onFinish} form={form}>
          <Row className="flex justify-between">
             <Col span={8} style={{ marginRight: 15 }}>
                <Form.Item label="Course Name" name="name" rules={[{ required: true }, { max: 100, min: 3 }]}>
@@ -117,13 +156,28 @@ export default function CreateCourseForm() {
             </Col>
 
             <Col span={5}>
-               <Form.Item label="Teacher" name="teacherId" rules={[{ required: true }]}>
-                  <Select placeholder="Select teacher">
-                     {/* {teachers.map(({ id, name }) => (
+               <Form.Item label="Teacher" name="teacherId">
+                  <Select
+                     placeholder="Select teacher"
+                     notFoundContent={isTeacherSearching ? <Spin size="small" /> : null}
+                     filterOption={false}
+                     showSearch
+                     onSearch={(query: string) => {
+                        setIsTeacherSearching(true);
+                        getTeachers({ query }).then((res) => {
+                           const data = res.data.data;
+                           if (!!data) {
+                              setTeachers(data.teachers);
+                           }
+                           setIsTeacherSearching(false);
+                        });
+                     }}
+                  >
+                     {teachers.map(({ id, name }) => (
                         <Select.Option key={id} value={id}>
                            {name}
                         </Select.Option>
-                     ))} */}
+                     ))}
                   </Select>
                </Form.Item>
             </Col>
@@ -131,23 +185,23 @@ export default function CreateCourseForm() {
             <Col span={5}>
                <Form.Item label="Type" name="type" rules={[{ required: true }]}>
                   <Select mode="multiple">
-                     {/* {courseTypes.map((type) => (
+                     {courseTypes.map((type) => (
                         <Select.Option value={type.id} key={type.id}>
                            {type.name}
                         </Select.Option>
-                     ))} */}
+                     ))}
                   </Select>
                </Form.Item>
             </Col>
 
             <Col span={5}>
-               <Form.Item label="Course Code" name="uid" rules={[{ required: true }]}>
-                  <Input type="text" placeholder="course code" disabled />
+               <Form.Item label="Course Code" name="uid">
+                  <Input type="text" placeholder={genCode} value={genCode} disabled />
                </Form.Item>
             </Col>
          </Row>
 
-         <Row className="flex justify-between">
+         <Row className="flex justify-between" style={{ marginTop: 30 }}>
             <Col span={8}>
                <Form.Item label="Start Date" name="startTime">
                   <DatePicker
@@ -223,6 +277,11 @@ export default function CreateCourseForm() {
                </UploadItem>
             </Col>
          </Row>
+         <Form.Item style={{ marginTop: 40 }}>
+            <Button type="primary" htmlType="submit">
+               Create Course
+            </Button>
+         </Form.Item>
       </Form>
    );
 }

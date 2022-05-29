@@ -1,6 +1,6 @@
 import { Cascader, Input, Select, Tabs } from 'antd';
 
-export default function EditCourseForm() {
+export default function EditCoursePage() {
    const options = [
       {
          value: 'zhejiang',

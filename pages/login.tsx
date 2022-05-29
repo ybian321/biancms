@@ -5,7 +5,7 @@ import { Form, Input, Button, Checkbox, Radio, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { loginAuth } from '../lib/api/auth.api';
 
-import { LoginFormValues } from '../lib/types/login.type';
+import { LoginFormValues } from '../lib/model/login.type';
 
 export default function LoginPage() {
    const onFinish = (values: LoginFormValues) => {

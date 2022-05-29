@@ -3,7 +3,7 @@ import { Button, Card, Divider, List, message, Spin } from 'antd';
 import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Course } from '../../../../lib/types/courses.type';
+import { Course } from '../../../../lib/model/courses.type';
 import { getCourses } from '../../../../lib/api/course.api';
 import BackToTop from '../../../../components/common/BackToTop';
 

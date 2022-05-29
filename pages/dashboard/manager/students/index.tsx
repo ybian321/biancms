@@ -6,7 +6,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { deleteStudentById, getStudents, searchStudentsByName } from '../../../../lib/api/students.api';
 import AddStudent from '../../../../components/studentList/AddStudent';
 import UpdateStudent from '../../../../components/studentList/UpdateStudent';
-import { Course, Student, Type } from '../../../../lib/types/students.type';
+import { Course, Student, Type } from '../../../../lib/model/students.type';
 
 export default function StudentListPage() {
    const [data, setData] = useState<Student[]>([]);

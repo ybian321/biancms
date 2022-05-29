@@ -1,4 +1,4 @@
-import { AddStudentRequest } from '../types/students.type';
+import { AddStudentRequest } from '../model/students.type';
 import { axiosApi } from './base.api';
 
 export function getStudents() {

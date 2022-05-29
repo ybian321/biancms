@@ -2,7 +2,7 @@ import { Avatar, Card, Col, Divider, Row, Table, Tabs, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { AntDesignOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
-import { Course, StudentProfile } from '../../../../lib/types/students.type';
+import { Course, StudentProfile } from '../../../../lib/model/students.type';
 import { getStudentDetail } from '../../../../lib/api/students.api';
 import { programLanguageColors } from '../../../../lib/constant/config';
 

@@ -1,5 +1,5 @@
 import { AES } from 'crypto-js';
-import { LoginFormValues } from '../types/login.type';
+import { LoginFormValues } from '../model/login.type';
 import { axiosApi } from './base.api';
 
 export function loginAuth(props: LoginFormValues) {

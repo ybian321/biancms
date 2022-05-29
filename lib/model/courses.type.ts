@@ -66,3 +66,25 @@ export interface CourseTeacher {
    phone: string;
    profileId: number;
 }
+
+export type AddCourseRequest = Pick<
+   Course,
+   'cover' | 'detail' | 'duration' | 'durationUnit' | 'maxStudents' | 'name' | 'price' | 'startTime' | 'uid'
+> & { type: number | number[]; teacherId: number };
+
+export type AddCourseResponse = Course;
+
+export interface UpdateCourseRequest {
+   id: number;
+}
+
+export type UpdateCourseResponse = Course;
+
+export interface ScheduleRequest {
+   scheduleId?: number;
+   courseId?: number;
+   current?: number;
+   statue?: number;
+   chapters?: Omit<Chapter, 'id'>[];
+   classTime?: string[];
+}

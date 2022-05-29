@@ -6,7 +6,7 @@ import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import { getCourseDetail } from '../../../../lib/api/course.api';
 import { CourseStatusBadge } from '../../../../lib/constant/course';
 import ClassTable from '../../../../components/course/ClassTable';
-import { CourseDetail } from '../../../../lib/types/courses.type';
+import { CourseDetail } from '../../../../lib/model/courses.type';
 
 const H2 = styled.h2`
    color: #7356f1;
