@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import DashboardLayout from '../components/DashboardLayout';
+import DashboardLayout from '../components/layout/DashboardLayout';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
    const currentUrl = useRouter().asPath;

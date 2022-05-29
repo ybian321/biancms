@@ -2,10 +2,10 @@ import React from 'react';
 import { useState } from 'react';
 import { Affix, Button, Dropdown, Layout } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined, BellOutlined } from '@ant-design/icons';
-import Logout from './Logout';
+import Logout from '../common/Logout';
 import SmartSiderNav from './SmartSiderNav';
 import SmartBreadcrumb from './SmartBreadcrumb';
-import useLoginState from './custom-hooks/useLoginState';
+import useLoginState from '../custom-hooks/useLoginState';
 
 const { Header, Footer, Sider, Content } = Layout;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Button, message } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
-import { logoutAuth } from '../lib/api/auth.api';
+import { logoutAuth } from '../../lib/api/auth.api';
 import router from 'next/router';
 
 export default function Logout() {

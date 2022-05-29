@@ -30,6 +30,20 @@ const UploadItem = styled(Form.Item)`
    .ant-form-item-control-input div {
       height: 100%;
    }
+   .ant-upload-list-item-progress,
+   .ant-tooltip {
+     height: auto !important;
+     .ant-tooltip-arrow {
+       height: 13px;
+     }
+   }
+   .ant-upload-list-picture-card-container {
+     width: 100%;
+   }
+   .ant-upload-list-item-actions {
+     .anticon-delete {
+       color: red;
+   }
 `;
 
 const UploadInner = styled.div`
