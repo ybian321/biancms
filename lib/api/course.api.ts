@@ -25,8 +25,8 @@ export function getCourseDetail(id: string) {
 export function addCourse(req: AddCourseRequest) {
    const result = axiosApi({
       url: 'courses',
-      method: 'put',
-      params: req
+      method: 'post',
+      data: req
    });
    return result;
 }
@@ -34,7 +34,7 @@ export function addCourse(req: AddCourseRequest) {
 export function updateSchedule(req: ScheduleRequest) {
    const result = axiosApi({
       url: 'courses/schedule',
-      method: 'post',
+      method: 'put',
       params: req
    });
    return result;

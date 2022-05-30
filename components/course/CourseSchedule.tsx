@@ -2,6 +2,9 @@ import { Button, Col, Form, Input, Row, Select, TimePicker } from 'antd';
 import { MinusCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { gutter, weekDays } from '../../lib/constant/config';
+import { format } from 'date-fns';
+import { ScheduleRequest } from '../../lib/model/courses.type';
+import { updateSchedule } from '../../lib/api/course.api';
 
 export interface AddChapterFormProps {
    courseId?: number;
@@ -10,11 +13,39 @@ export interface AddChapterFormProps {
    isAdd?: boolean;
 }
 
+const { Option } = Select;
+const clsTime = 'classTime';
+const cpts = 'chapters';
+
+type ChapterFormValue = {
+   [cpts]: {
+      name: string;
+      content: string;
+   }[];
+   [clsTime]: {
+      weekday: string;
+      time: Date;
+   }[];
+};
+
 export default function CourseScheduleForm({ courseId, onSuccess, scheduleId, isAdd = true }: AddChapterFormProps) {
    const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
+   const onFinish = (values: ChapterFormValue) => {
+      //big question 2
+      const { classTime: origin, chapters } = values;
+      const classTime = origin.map(({ weekday, time }) => `${weekday} ${format(time, 'hh:mm:ss')}`);
+      const req: ScheduleRequest = {
+         chapters: chapters.map((item, index) => ({ ...item, order: index + 1 })),
+         classTime,
+         scheduleId,
+         courseId
+      };
+
+      updateSchedule(req);
+   };
 
    return (
-      <Form>
+      <Form name="schedule" onFinish={onFinish}>
          <h2>Chapter Detail</h2>
          <Row gutter={gutter}>
             <Col span={12}>
@@ -59,7 +90,12 @@ export default function CourseScheduleForm({ courseId, onSuccess, scheduleId, is
                         {fields.map((field) => (
                            <Row key={field.key} gutter={20}>
                               <Col span={8}>
-                                 <Form.Item>
+                                 <Form.Item
+                                    {...field}
+                                    name={[field.name, 'weekday']}
+                                    fieldKey={[field.fieldKey, 'weekday']}
+                                    rules={[{ required: true }]}
+                                 >
                                     <Select
                                        size="large"
                                        onChange={(value: string) =>
@@ -78,7 +114,7 @@ export default function CourseScheduleForm({ courseId, onSuccess, scheduleId, is
                                  </Form.Item>
                               </Col>
                               <Col span={12}>
-                                 <Form.Item rules={[{ required: true }]}>
+                                 <Form.Item>
                                     <TimePicker size="large" style={{ width: '100%' }} />
                                  </Form.Item>
                               </Col>
@@ -101,7 +137,7 @@ export default function CourseScheduleForm({ courseId, onSuccess, scheduleId, is
                </Form.List>
             </Col>
          </Row>
-         <Form.Item>
+         <Form.Item style={{ marginTop: 40 }}>
             <Button type="primary" htmlType="submit">
                Submit
             </Button>

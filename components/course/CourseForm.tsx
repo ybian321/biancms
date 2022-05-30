@@ -1,8 +1,7 @@
-import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select, Spin, UploadProps } from 'antd';
+import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select, Spin, Upload, UploadProps } from 'antd';
 import { CloseCircleOutlined, InboxOutlined, KeyOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 import TextArea from 'antd/lib/input/TextArea';
-import Dragger from 'antd/lib/upload/Dragger';
 import styled from 'styled-components';
 import { Course } from '../../lib/model/students.type';
 import { useEffect, useState } from 'react';
@@ -36,9 +35,18 @@ const DescriptionTextArea = styled(Form.Item)`
 `;
 
 const UploadItem = styled(Form.Item)`
+   .ant-upload.ant-upload-select-picture-card {
+      width: 100%;
+      margin: 0;
+   }
+
+   .ant-upload-picture-card-wrapper,
    .ant-form-item-control-input,
    .ant-form-item-control-input div {
       height: 100%;
+   }
+   .ant-upload-picture-card-wrapper img {
+      object-fit: cover !important;
    }
    .ant-upload-list-item-progress,
    .ant-tooltip {
@@ -73,21 +81,25 @@ const UploadInner = styled.div`
    }
 `;
 
+const DeleteIcon = styled(CloseCircleOutlined)`
+   color: red;
+   position: absolute;
+   right: -10px;
+   top: 1em;
+   font-size: 24px;
+   opacity: 0.5;
+`;
+
 export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
    const [form] = useForm();
    const [data, setData] = useState();
    const [genCode, setGenCode] = useState();
+   const [isUploading, setIsUploading] = useState<boolean>(false);
    const [isTeacherSearching, setIsTeacherSearching] = useState<boolean>(false);
    const [courseTypes, setCourseTypes] = useState<CourseType[]>([]);
-   const [teachers, setTeachers] = useState<Teacher[]>([]);
-   const [fileList, setFileList] = useState<UploadFile[]>([
-      {
-         uid: '-1',
-         name: 'image.png',
-         status: 'done',
-         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-      }
-   ]);
+   const [teachers, setTeachers] = useState<Teacher[]>(['aaa1']);
+   const [fileList, setFileList] = useState([]);
+
    const getCode = () => {
       createCourseCode().then((res) => {
          setGenCode(res.data.data);
@@ -102,15 +114,22 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
    }, []);
 
    const onFinish = (values: any) => {
+      //big question 1
       const req: AddCourseRequest = {
-         ...values,
-         duration: +values.duration.number,
-         startTime: values.startTime && format(values.startTime, 'yyy-MM-dd'),
-         teacherId: +values.teacherId,
-         durationUnit: +values.duration.unit
+         detail: '666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666',
+         duration: 6,
+         durationUnit: 1,
+         maxStudents: 6,
+         name: '123',
+         price: 9007199254740991,
+         startTime: '2022-05-31',
+         teacherId: 1,
+         type: [2],
+         uid: 'e8a6967c-9045-4bdb-8100-82f9ab697993',
+         cover: '6666666'
       };
 
-      addCourse(req).then((response) => setData(response.data.data));
+      addCourse(req).then((response) => setData(response));
 
       if (!!onSuccess && !!data) {
          onSuccess(data);
@@ -256,7 +275,7 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
             <Col span={8} style={{ paddingLeft: 20 }}>
                <UploadItem label="Cover" name="cover" style={{ height: '100%' }}>
                   <ImgCrop rotate aspect={16 / 9}>
-                     <Dragger
+                     <Upload
                         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                         listType="picture-card"
                         fileList={fileList}
@@ -272,9 +291,18 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
                               </p>
                            </UploadInner>
                         )}
-                     </Dragger>
+                     </Upload>
                   </ImgCrop>
                </UploadItem>
+
+               {isUploading && (
+                  <DeleteIcon
+                     onClick={() => {
+                        setIsUploading(false);
+                        setFileList([]);
+                     }}
+                  />
+               )}
             </Col>
          </Row>
          <Form.Item style={{ marginTop: 40 }}>
