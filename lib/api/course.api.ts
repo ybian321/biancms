@@ -35,7 +35,7 @@ export function updateSchedule(req: ScheduleRequest) {
    const result = axiosApi({
       url: 'courses/schedule',
       method: 'put',
-      params: req
+      data: req
    });
    return result;
 }

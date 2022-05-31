@@ -78,6 +78,7 @@ export interface AddCourseRequest {
    teacherId: number;
    type: number[];
    uid: string;
+   cover: string;
 }
 
 export enum DurationUnit {

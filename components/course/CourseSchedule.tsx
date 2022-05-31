@@ -13,7 +13,6 @@ export interface AddChapterFormProps {
    isAdd?: boolean;
 }
 
-const { Option } = Select;
 const clsTime = 'classTime';
 const cpts = 'chapters';
 
@@ -31,14 +30,13 @@ type ChapterFormValue = {
 export default function CourseScheduleForm({ courseId, onSuccess, scheduleId, isAdd = true }: AddChapterFormProps) {
    const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
    const onFinish = (values: ChapterFormValue) => {
-      //big question 2
       const { classTime: origin, chapters } = values;
-      const classTime = origin.map(({ weekday, time }) => `${weekday} ${format(time, 'hh:mm:ss')}`);
+      const classTime = ['Friday 06:06:06'];
       const req: ScheduleRequest = {
-         chapters: chapters.map((item, index) => ({ ...item, order: index + 1 })),
+         chapters: [{ name: '22222', content: '222222222222', order: 1 }],
          classTime,
-         scheduleId,
-         courseId
+         scheduleId: 1,
+         courseId: 2
       };
 
       updateSchedule(req);

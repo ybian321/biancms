@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Course } from '../../lib/model/students.type';
 import { useEffect, useState } from 'react';
 import { RcFile, UploadFile } from 'antd/lib/upload/interface';
-import { format, getTime } from 'date-fns';
+import { getTime } from 'date-fns';
 import { addCourse, createCourseCode, getCourseTypes } from '../../lib/api/course.api';
 import { AddCourseRequest } from '../../lib/model/courses.type';
 import { useForm } from 'antd/lib/form/Form';
@@ -94,6 +94,7 @@ const DeleteIcon = styled(CloseCircleOutlined)`
 export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
    const [form] = useForm();
    const [data, setData] = useState();
+   const [unit, setUnit] = useState<number>(2);
    const [genCode, setGenCode] = useState();
    const [isUploading, setIsUploading] = useState<boolean>(false);
    const [isTeacherSearching, setIsTeacherSearching] = useState<boolean>(false);
@@ -104,7 +105,7 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
    const getCode = () => {
       createCourseCode().then((res) => {
          setGenCode(res.data.data);
-         form.setFieldsValue(res.data.data);
+         form.setFieldsValue({ uid: res.data.data });
       });
    };
 
@@ -116,18 +117,18 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
    }, []);
 
    const onFinish = (values: any) => {
-      console.log('🚀 ~ file: CourseForm.tsx ~ line 117 ~ onFinish ~ values', values);
       const req: AddCourseRequest = {
          detail: values.detail,
-         duration: values.duration.number,
-         durationUnit: values.duration.unit,
+         duration: values.duration,
+         durationUnit: unit,
          maxStudents: values.maxStudents,
          name: values.name,
          price: values.price,
-         startTime: moment(values.startTime).format('yyyy-MM-dd'),
+         startTime: moment(values.startTime).format('YYYY-MM-DD'),
          teacherId: values.teacherId,
          type: values.type,
-         uid: '0f5c9968-8aeb-41b7-8c3a-52ff205df33c'
+         uid: values.uid,
+         cover: values.cover
       };
 
       addCourse(req).then((response) => setData(response.data.data));
@@ -138,12 +139,12 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
    };
 
    const selectAfter = (
-      <Select defaultValue="2" className="select-after">
-         <Select.Option value="1">year</Select.Option>
-         <Select.Option value="2">month</Select.Option>
-         <Select.Option value="3">day</Select.Option>
-         <Select.Option value="4">week</Select.Option>
-         <Select.Option value="5">hour</Select.Option>
+      <Select value={unit} className="select-after" onChange={(newUnit) => setUnit(newUnit)}>
+         <Select.Option value={1}>year</Select.Option>
+         <Select.Option value={2}>month</Select.Option>
+         <Select.Option value={3}>day</Select.Option>
+         <Select.Option value={4}>week</Select.Option>
+         <Select.Option value={5}>hour</Select.Option>
       </Select>
    );
 
@@ -212,7 +213,7 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
 
             <Col span={5}>
                <Form.Item label="Course Code" name="uid" rules={[{ required: true }]}>
-                  <Input type="text" placeholder="course code" />
+                  <Input type="text" placeholder="course code" disabled />
                </Form.Item>
             </Col>
          </Row>
@@ -252,19 +253,7 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
             </Col>
 
             <Col span={8} style={{ paddingLeft: 20 }}>
-               <DescriptionTextArea
-                  style={{ height: '100%' }}
-                  label="Description"
-                  name="detail"
-                  rules={[
-                     { required: true },
-                     {
-                        min: 100,
-                        max: 1000,
-                        message: 'Description length must between 100 - 1000 characters.'
-                     }
-                  ]}
-               >
+               <DescriptionTextArea style={{ height: '100%' }} label="Description" name="detail" rules={[{ required: true }]}>
                   <TextArea placeholder="Course description" style={{ height: '100%' }} />
                </DescriptionTextArea>
             </Col>
@@ -277,6 +266,13 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
                         listType="picture-card"
                         fileList={fileList}
                         onChange={({ fileList: newFileList, file }) => {
+                           const { status } = file;
+
+                           if (file?.response) {
+                              const { url } = file.response;
+                              form.setFieldsValue({ cover: url });
+                           }
+
                            setIsUploading(status === 'uploading');
                            setFileList(newFileList);
                         }}
