@@ -12,6 +12,7 @@ import { AddCourseRequest } from '../../lib/model/courses.type';
 import { useForm } from 'antd/lib/form/Form';
 import { getTeachers } from '../../lib/api/teacher.api';
 import { Teacher } from '../../lib/model/teachers.type';
+import moment from 'moment';
 
 export interface AddCourseFormProps {
    course?: Course;
@@ -97,12 +98,13 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
    const [isUploading, setIsUploading] = useState<boolean>(false);
    const [isTeacherSearching, setIsTeacherSearching] = useState<boolean>(false);
    const [courseTypes, setCourseTypes] = useState<CourseType[]>([]);
-   const [teachers, setTeachers] = useState<Teacher[]>(['aaa1']);
-   const [fileList, setFileList] = useState([]);
+   const [teachers, setTeachers] = useState<Teacher[]>([]);
+   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
    const getCode = () => {
       createCourseCode().then((res) => {
          setGenCode(res.data.data);
+         form.setFieldsValue(res.data.data);
       });
    };
 
@@ -114,22 +116,21 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
    }, []);
 
    const onFinish = (values: any) => {
-      //big question 1
+      console.log('🚀 ~ file: CourseForm.tsx ~ line 117 ~ onFinish ~ values', values);
       const req: AddCourseRequest = {
-         detail: '666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666',
-         duration: 6,
-         durationUnit: 1,
-         maxStudents: 6,
-         name: '123',
-         price: 9007199254740991,
-         startTime: '2022-05-31',
-         teacherId: 1,
-         type: [2],
-         uid: 'e8a6967c-9045-4bdb-8100-82f9ab697993',
-         cover: '6666666'
+         detail: values.detail,
+         duration: values.duration.number,
+         durationUnit: values.duration.unit,
+         maxStudents: values.maxStudents,
+         name: values.name,
+         price: values.price,
+         startTime: moment(values.startTime).format('yyyy-MM-dd'),
+         teacherId: values.teacherId,
+         type: values.type,
+         uid: '0f5c9968-8aeb-41b7-8c3a-52ff205df33c'
       };
 
-      addCourse(req).then((response) => setData(response));
+      addCourse(req).then((response) => setData(response.data.data));
 
       if (!!onSuccess && !!data) {
          onSuccess(data);
@@ -137,18 +138,14 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
    };
 
    const selectAfter = (
-      <Select defaultValue="month" className="select-after">
-         <Select.Option value="year">year</Select.Option>
-         <Select.Option value="month">month</Select.Option>
-         <Select.Option value="day">day</Select.Option>
-         <Select.Option value="week">week</Select.Option>
-         <Select.Option value="hour">hour</Select.Option>
+      <Select defaultValue="2" className="select-after">
+         <Select.Option value="1">year</Select.Option>
+         <Select.Option value="2">month</Select.Option>
+         <Select.Option value="3">day</Select.Option>
+         <Select.Option value="4">week</Select.Option>
+         <Select.Option value="5">hour</Select.Option>
       </Select>
    );
-
-   const onChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-      setFileList(newFileList);
-   };
 
    const onPreview = async (file: UploadFile) => {
       let src = file.url as string;
@@ -183,7 +180,7 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
                      showSearch
                      onSearch={(query: string) => {
                         setIsTeacherSearching(true);
-                        getTeachers({ query }).then((res) => {
+                        getTeachers(query).then((res) => {
                            const data = res.data.data;
                            if (!!data) {
                               setTeachers(data.teachers);
@@ -214,8 +211,8 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
             </Col>
 
             <Col span={5}>
-               <Form.Item label="Course Code" name="uid">
-                  <Input type="text" placeholder={genCode} value={genCode} disabled />
+               <Form.Item label="Course Code" name="uid" rules={[{ required: true }]}>
+                  <Input type="text" placeholder="course code" />
                </Form.Item>
             </Col>
          </Row>
@@ -279,7 +276,10 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
                         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                         listType="picture-card"
                         fileList={fileList}
-                        onChange={onChange}
+                        onChange={({ fileList: newFileList, file }) => {
+                           setIsUploading(status === 'uploading');
+                           setFileList(newFileList);
+                        }}
                         onPreview={onPreview}
                         style={{ backgroundColor: 'rgb(240, 240, 240)' }}
                      >

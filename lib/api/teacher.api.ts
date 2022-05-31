@@ -1,7 +1,6 @@
-import { TeachersRequest } from '../model/teachers.type';
 import { axiosApi } from './base.api';
 
-export function getTeachers(req?: TeachersRequest) {
+export function getTeachers(req: string) {
    const result = axiosApi({
       url: 'teachers',
       method: 'get',

@@ -11,7 +11,7 @@ export interface Course {
    price: number;
    uid: string;
    star: number;
-   startTime: Date;
+   startTime: string;
    status: number;
    scheduleId: number;
    teacherId: number;
@@ -67,10 +67,26 @@ export interface CourseTeacher {
    profileId: number;
 }
 
-export type AddCourseRequest = Pick<
-   Course,
-   'cover' | 'detail' | 'duration' | 'durationUnit' | 'maxStudents' | 'name' | 'price' | 'startTime' | 'uid'
-> & { type: number | number[]; teacherId: number };
+export interface AddCourseRequest {
+   detail: string;
+   duration: number;
+   durationUnit: number;
+   maxStudents: number;
+   name: string;
+   price: number;
+   startTime: string;
+   teacherId: number;
+   type: number[];
+   uid: string;
+}
+
+export enum DurationUnit {
+   'year' = 1,
+   'month',
+   'day',
+   'week',
+   'hour'
+}
 
 export type AddCourseResponse = Course;
 
