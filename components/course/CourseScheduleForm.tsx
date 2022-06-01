@@ -1,10 +1,11 @@
 import { Button, Col, Form, Input, Row, Select, TimePicker } from 'antd';
 import { MinusCircleOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { gutter, weekDays } from '../../lib/constant/config';
 import { format } from 'date-fns';
 import { ScheduleRequest } from '../../lib/model/courses.type';
-import { updateSchedule } from '../../lib/api/course.api';
+import { getScheduleById, updateSchedule } from '../../lib/api/course.api';
+import moment from 'moment';
 
 export interface AddChapterFormProps {
    courseId?: number;
@@ -13,41 +14,76 @@ export interface AddChapterFormProps {
    isAdd?: boolean;
 }
 
-const clsTime = 'classTime';
-const cpts = 'chapters';
+const classTime = 'classTime';
+const chapters = 'chapters';
 
 type ChapterFormValue = {
-   [cpts]: {
+   [chapters]: {
       name: string;
       content: string;
    }[];
-   [clsTime]: {
+   [classTime]: {
       weekday: string;
       time: Date;
    }[];
 };
 
-export default function CourseScheduleForm({ courseId, onSuccess, scheduleId, isAdd = true }: AddChapterFormProps) {
+export default function CourseScheduleForm({ courseId, onSuccess, scheduleId }: any) {
+   const [form] = Form.useForm();
    const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
-   const onFinish = (values: ChapterFormValue) => {
-      const { classTime: origin, chapters } = values;
-      const classTime = ['Friday 06:06:06'];
-      const req: ScheduleRequest = {
-         chapters: [{ name: '22222', content: '222222222222', order: 1 }],
-         classTime,
-         scheduleId: 1,
-         courseId: 2
-      };
 
-      updateSchedule(req);
+   const initialChapters = [{ name: '', content: '' }];
+   const initialClassTime = [{ weekday: '', time: '' }];
+   const initialScheduleValue = {
+      chapters: initialChapters,
+      classTime: initialClassTime
    };
 
+   const onFinish = (values: ChapterFormValue) => {
+      console.log('🚀 ~ file: CourseScheduleForm.tsx ~ line 43 ~ onFinish ~ values', values);
+      const formattedChapters = values.chapters.map((item, index) => ({
+         ...item,
+         order: index + 1
+      }));
+
+      const formattedClassTime = values.classTime.map((item) => `${item.weekday} ${moment(item.time).format('hh:mm:ss')}`);
+
+      const req: ScheduleRequest = {
+         chapters: formattedChapters,
+         classTime: formattedClassTime,
+         scheduleId: scheduleId,
+         courseId: courseId
+      };
+
+      updateSchedule(req).then(() => onSuccess());
+   };
+
+   useEffect(() => {
+      if (scheduleId) {
+         getScheduleById(scheduleId).then((res) => {
+            if (res.data.data) {
+               const chapters = res.data.data.chapters.length ? res.data.data.chapters : initialChapters;
+               const classTime = res.data.data.classTime
+                  ? res.data.data.classTime.map((item: { split: (arg0: string) => [any, any] }) => {
+                       const [weekday, time] = item.split(' ');
+                       return { weekday, time: moment(time, 'hh-mm-ss') };
+                    })
+                  : initialClassTime;
+               form.setFieldsValue({ chapters, classTime });
+               setSelectedWeekdays(classTime.map((item: { weekday: any }) => item.weekday));
+            }
+         });
+      } else {
+         form.setFieldsValue(initialScheduleValue);
+      }
+   }, [scheduleId]);
+
    return (
-      <Form name="schedule" onFinish={onFinish}>
+      <Form form={form} name="schedule" onFinish={onFinish}>
          <h2>Chapter Detail</h2>
          <Row gutter={gutter}>
             <Col span={12}>
-               <Form.List name="names">
+               <Form.List name="chapters">
                   {(fields, { add, remove }) => (
                      <>
                         {fields.map((field) => (

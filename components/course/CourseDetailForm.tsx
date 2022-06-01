@@ -1,5 +1,5 @@
-import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select, Spin, Upload, UploadProps } from 'antd';
-import { CloseCircleOutlined, InboxOutlined, KeyOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select, Spin, Upload } from 'antd';
+import { CloseCircleOutlined, InboxOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 import TextArea from 'antd/lib/input/TextArea';
 import styled from 'styled-components';
@@ -91,7 +91,7 @@ const DeleteIcon = styled(CloseCircleOutlined)`
    opacity: 0.5;
 `;
 
-export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
+export default function CourseDetailForm({ course, onSuccess }: AddCourseFormProps) {
    const [form] = useForm();
    const [data, setData] = useState();
    const [unit, setUnit] = useState<number>(2);
@@ -114,7 +114,11 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
       getCourseTypes().then((res) => {
          setCourseTypes(res.data.data);
       });
-   }, []);
+
+      if (onSuccess && !!data) {
+         onSuccess(data);
+      }
+   }, [data]);
 
    const onFinish = (values: any) => {
       const req: AddCourseRequest = {
@@ -132,10 +136,6 @@ export default function CourseForm({ course, onSuccess }: AddCourseFormProps) {
       };
 
       addCourse(req).then((response) => setData(response.data.data));
-
-      if (!!onSuccess && !!data) {
-         onSuccess(data);
-      }
    };
 
    const selectAfter = (

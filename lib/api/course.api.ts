@@ -64,3 +64,11 @@ export function createCourseCode() {
    });
    return result;
 }
+
+export function getScheduleById(id: number) {
+   const result = axiosApi({
+      url: 'courses/schedule?scheduleId=' + id,
+      method: 'get'
+   });
+   return result;
+}

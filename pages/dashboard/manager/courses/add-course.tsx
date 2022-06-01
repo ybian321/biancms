@@ -1,23 +1,18 @@
 import { useState } from 'react';
-import { Button, message, Result, Steps } from 'antd';
-import CreateCourseForm from '../../../../components/course/CourseForm';
-import UpdateCourseSchedule from '../../../../components/course/CourseSchedule';
 import { useRouter } from 'next/router';
+import { Button, message, Result, Steps } from 'antd';
 import { useUserRole } from '../../../../components/custom-hooks/useLoginState';
+import CourseDetailForm from '../../../../components/course/CourseDetailForm';
+import CourseScheduleForm from '../../../../components/course/CourseScheduleForm';
 
 export default function AddCoursePage() {
    const router = useRouter();
    const userRole = useUserRole();
 
-   const [step, setStep] = useState(0);
-   const [availableNavigate, setAvailableNavigate] = useState<number[]>([0]);
+   const [current, setCurrent] = useState(0);
+   const [availableStep, setAvailableStep] = useState(0);
    const [courseId, setCourseId] = useState(null);
    const [scheduleId, setScheduleId] = useState(null);
-   const moveToNext = () => {
-      setStep(step + 1);
-      setAvailableNavigate([...availableNavigate, step + 1]);
-   };
-   const [current, setCurrent] = useState(0);
 
    const next = () => {
       setCurrent(current + 1);
@@ -31,18 +26,18 @@ export default function AddCoursePage() {
       {
          title: 'Course Detail',
          content: (
-            <CreateCourseForm
+            <CourseDetailForm
                onSuccess={(course: any) => {
                   setCourseId(course.id);
                   setScheduleId(course.scheduleId);
-                  moveToNext();
+                  next();
                }}
             />
          )
       },
       {
          title: 'Course Schedule',
-         content: <UpdateCourseSchedule courseId={courseId} scheduleId={scheduleId} onSuccess={moveToNext} />
+         content: <CourseScheduleForm courseId={courseId} scheduleId={scheduleId} onSuccess={() => next()} />
       },
       {
          title: 'Success',
@@ -51,11 +46,7 @@ export default function AddCoursePage() {
                status="success"
                title="Successfully Create Course!"
                extra={[
-                  <Button
-                     type="primary"
-                     key="detail"
-                     onClick={() => router.push(`/dashboard/${userRole}/courses/${courseId}`)} // !跳转后mirage状态丢失，新的的数据找不到，所以这里会报500
-                  >
+                  <Button type="primary" key="detail" onClick={() => router.push(`/dashboard/${userRole}/courses/${courseId}`)}>
                      Go Course
                   </Button>,
                   <Button
@@ -81,24 +72,6 @@ export default function AddCoursePage() {
          </Steps>
 
          <div className="steps-content">{steps[current].content}</div>
-
-         <div className="steps-action">
-            {current < steps.length - 1 && (
-               <Button type="primary" onClick={() => next()}>
-                  Next
-               </Button>
-            )}
-            {current === steps.length - 1 && (
-               <Button type="primary" onClick={() => message.success('Processing complete!')}>
-                  Done
-               </Button>
-            )}
-            {current > 0 && (
-               <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
-                  Previous
-               </Button>
-            )}
-         </div>
       </>
    );
 }
