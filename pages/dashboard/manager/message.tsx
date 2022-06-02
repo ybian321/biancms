@@ -1,16 +1,46 @@
-import { Avatar, Col, List, Row, Select, Space, Spin, Typography } from 'antd';
+import { Avatar, Col, Divider, List, Row, Select, Space, Spin, Typography } from 'antd';
 import { MessageType } from 'antd/lib/message';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getMessages } from '../../../lib/api/message.api';
-import { Message } from '../../../lib/model/message';
+import { Message, MessagesRequest } from '../../../lib/model/message';
 import { AlertOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { flatten } from 'lodash';
+import { format } from 'date-fns';
+
+type DataSource = [string, Message[]][];
 
 export default function MessagePage() {
+   const [loading, setLoading] = useState(false);
    const [type, setType] = useState<MessageType>();
-   // const { paginator, setPaginator, data, hasMore } = getMessages(req)
    const [source, setSource] = useState<{ [key: string]: Message[] }>({});
+   const [data, setData] = useState<Message[]>([]);
+
+   const req: MessagesRequest = {
+      userId: 3,
+      status: 1,
+      type: 'notification',
+      page: 1,
+      limit: 50
+   };
+
+   const loadMoreData = () => {
+      if (loading) {
+         return;
+      }
+      setLoading(true);
+      getMessages(req).then((response) => {
+         setData([...data, ...response.data.data.message]);
+         setLoading(false);
+      });
+   };
+
+   useEffect(() => {
+      (async () => {
+         getMessages(req).then((response) => setSource(response.data.data.courses));
+         loadMoreData();
+      })();
+   }, []);
 
    return (
       <>
@@ -38,28 +68,32 @@ export default function MessagePage() {
 
          <div id="msg-container" style={{ padding: '0 20px', overflowY: 'scroll', maxHeight: '75vh' }}>
             <InfiniteScroll
+               dataLength={data.length}
+               next={loadMoreData}
+               hasMore={data.length < 568}
                loader={
-                  <div style={{ textAlign: 'center' }}>
+                  <Divider plain>
                      <Spin />
-                  </div>
+                  </Divider>
                }
-               dataLength={flatten(Object.values(source)).length}
-               endMessage={<div style={{ textAlign: 'center' }}>No more</div>}
-               scrollableTarget="msg-container"
+               endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+               scrollableTarget="scrollableDiv"
             >
                <List
                   itemLayout="vertical"
-                  // dataSource={dataSource}
+                  dataSource={data}
                   renderItem={([date, values]: [string, Message[]], index) => (
                      <>
                         <Space size="large">
                            <Typography.Title level={4}>{date}</Typography.Title>
                         </Space>
+
                         {values.map((item) => (
                            <List.Item
                               key={item.createdAt}
                               style={{ opacity: item.status ? 0.4 : 1 }}
-                              // actions={[<Space>{item.createdAt}</Space>]}
+                              // eslint-disable-next-line react/jsx-key
+                              actions={[<Space>{item.createdAt}</Space>]}
                               extra={<Space>{item.type === 'notification' ? <AlertOutlined /> : <MessageOutlined />}</Space>}
                               onClick={() => {
                                  if (item.status === 1) {
