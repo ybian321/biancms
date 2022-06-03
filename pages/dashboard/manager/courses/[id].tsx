@@ -4,9 +4,9 @@ import Meta from 'antd/lib/card/Meta';
 import styled from 'styled-components';
 import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import { getCourseDetail } from '../../../../lib/api/course.api';
-import { CourseStatusBadge } from '../../../../lib/constant/course';
-import ClassTable from '../../../../components/course/ClassTable';
-import { CourseDetail } from '../../../../lib/model/courses.type';
+import { CourseStatusBadge, CourseStatusColor, CourseStatusText } from '../../../../lib/constant/course';
+import { CourseDetail, Schedule } from '../../../../lib/model/courses.type';
+import WeekCalendar from '../../../../components/common/WeekCalendar';
 
 const H2 = styled.h2`
    color: #7356f1;
@@ -45,6 +45,15 @@ const StyledCol = styled(Col)`
       font-size: 24px;
    }
 `;
+
+const genExtra = (schedule: Schedule, index: number) => {
+   let status = schedule.status;
+   if (schedule.status === 1) {
+      const currentIndex = schedule.chapters.findIndex((item: { id: any }) => item.id === schedule.current);
+      status = index === currentIndex ? 1 : index < currentIndex ? 2 : 0;
+   }
+   return <Tag color={CourseStatusColor[status]}>{CourseStatusText[status]}</Tag>;
+};
 
 export default function CourseDetailPage() {
    const [course, setCourse] = useState<CourseDetail>();
@@ -132,9 +141,9 @@ export default function CourseDetailPage() {
                <p>{course?.uid}</p>
 
                <H3>Class Time</H3>
-               <ClassTable />
+               <WeekCalendar data={course?.schedule.classTime} />
 
-               <H3>Category</H3>
+               <H3 style={{ marginTop: '15px' }}>Category</H3>
                <Row style={{ marginBottom: '15px' }}>
                   {course?.type?.map((item) => (
                      <Tag color={'geekblue'} key={item.id}>
@@ -149,8 +158,8 @@ export default function CourseDetailPage() {
                <H3>Chapter</H3>
                {course?.schedule && (
                   <Collapse defaultActiveKey={course.schedule.current}>
-                     {course.schedule.chapters.map((item) => (
-                        <Collapse.Panel header={item.name} key={item.id}>
+                     {course.schedule.chapters.map((item, index) => (
+                        <Collapse.Panel header={item.name} key={item.id} extra={genExtra(course.schedule, index)}>
                            <p>{item.content}</p>
                         </Collapse.Panel>
                      ))}

@@ -56,7 +56,7 @@ export default function EditCoursePage() {
       <>
          <Row gutter={gutter} style={{ marginBottom: 30 }}>
             <Col span={12}>
-               <Input.Group compact size="large" style={{ display: 'flex' }}>
+               <Input.Group compact style={{ display: 'flex' }}>
                   <Select defaultValue="uid" onChange={(value) => setSearchBy(value)}>
                      <Option value="uid">Code</Option>
                      <Option value="name">Name</Option>

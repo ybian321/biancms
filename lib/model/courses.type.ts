@@ -105,3 +105,19 @@ export interface ScheduleRequest {
    chapters?: Omit<Chapter, 'id'>[];
    classTime?: string[];
 }
+
+export interface ScheduleTime {
+   Sunday: string;
+   Monday: string;
+   Tuesday: string;
+   Wednesday: string;
+   Thursday: string;
+   Friday: string;
+   Saturday: string;
+}
+
+export interface ScheduleTableData extends ScheduleTime {
+   key: string;
+}
+
+export type Weekday = keyof ScheduleTime;
