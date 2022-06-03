@@ -2,7 +2,6 @@ import { Button, Col, Form, Input, Row, Select, TimePicker } from 'antd';
 import { MinusCircleOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { gutter, weekDays } from '../../lib/constant/config';
-import { format } from 'date-fns';
 import { ScheduleRequest } from '../../lib/model/courses.type';
 import { getScheduleById, updateSchedule } from '../../lib/api/course.api';
 import moment from 'moment';
@@ -40,7 +39,6 @@ export default function CourseScheduleForm({ courseId, onSuccess, scheduleId }: 
    };
 
    const onFinish = (values: ChapterFormValue) => {
-      console.log('🚀 ~ file: CourseScheduleForm.tsx ~ line 43 ~ onFinish ~ values', values);
       const formattedChapters = values.chapters.map((item, index) => ({
          ...item,
          order: index + 1
@@ -89,12 +87,12 @@ export default function CourseScheduleForm({ courseId, onSuccess, scheduleId }: 
                         {fields.map((field) => (
                            <Row key={field.key} gutter={20}>
                               <Col span={8}>
-                                 <Form.Item>
+                                 <Form.Item {...field} name={[field.name, 'name']} fieldKey={[field.key, 'name']} rules={[{ required: true }]}>
                                     <Input size="large" placeholder="Chapter Name" />
                                  </Form.Item>
                               </Col>
                               <Col span={12}>
-                                 <Form.Item>
+                                 <Form.Item {...field} name={[field.name, 'content']} fieldKey={[field.key, 'content']} rules={[{ required: true }]}>
                                     <Input size="large" placeholder="Chapter content" />
                                  </Form.Item>
                               </Col>
@@ -124,12 +122,7 @@ export default function CourseScheduleForm({ courseId, onSuccess, scheduleId }: 
                         {fields.map((field) => (
                            <Row key={field.key} gutter={20}>
                               <Col span={8}>
-                                 <Form.Item
-                                    {...field}
-                                    name={[field.name, 'weekday']}
-                                    fieldKey={[field.fieldKey, 'weekday']}
-                                    rules={[{ required: true }]}
-                                 >
+                                 <Form.Item {...field} name={[field.name, 'weekday']} fieldKey={[field.key, 'weekday']} rules={[{ required: true }]}>
                                     <Select
                                        size="large"
                                        onChange={(value: string) =>
@@ -148,7 +141,7 @@ export default function CourseScheduleForm({ courseId, onSuccess, scheduleId }: 
                                  </Form.Item>
                               </Col>
                               <Col span={12}>
-                                 <Form.Item>
+                                 <Form.Item {...field} name={[field.name, 'time']} fieldKey={[field.key, 'time']} rules={[{ required: true }]}>
                                     <TimePicker size="large" style={{ width: '100%' }} />
                                  </Form.Item>
                               </Col>
