@@ -7,7 +7,7 @@ import { RcFile, UploadFile } from 'antd/lib/upload/interface';
 import TextArea from 'antd/lib/input/TextArea';
 import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select, Spin, Upload } from 'antd';
 import { CloseCircleOutlined, InboxOutlined } from '@ant-design/icons';
-import { addCourse, createCourseCode, getCourseTypes } from '../../lib/api/course.api';
+import { addCourse, createCourseCode, getCourseTypes, updateCourse } from '../../lib/api/course.api';
 import { getTeachers } from '../../lib/api/teacher.api';
 import { AddCourseRequest, Course } from '../../lib/model/courses.type';
 import { Teacher } from '../../lib/model/teachers.type';
@@ -152,7 +152,9 @@ export default function CourseDetailForm({ course, onSuccess }: AddCourseFormPro
          cover: values.cover
       };
 
-      addCourse(req).then((response) => setData(response.data.data));
+      course
+         ? updateCourse({ ...req, id: course?.id }).then((response) => setData(response.data.data))
+         : addCourse(req).then((response) => setData(response.data.data));
    };
 
    const selectAfter = (
@@ -320,7 +322,7 @@ export default function CourseDetailForm({ course, onSuccess }: AddCourseFormPro
          </Row>
          <Form.Item style={{ marginTop: 40 }}>
             <Button type="primary" htmlType="submit">
-               Create Course
+               {course ? 'Update Course' : 'Create Course'}
             </Button>
          </Form.Item>
       </Form>

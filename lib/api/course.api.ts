@@ -40,7 +40,7 @@ export function updateCourse(req: UpdateCourseRequest) {
    const result = axiosApi({
       url: 'courses',
       method: 'put',
-      params: req
+      data: req
    });
    return result;
 }

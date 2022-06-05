@@ -44,12 +44,12 @@ export default function SmartBreadcrumb() {
          parentBreadcrumb: 'Course',
          breadcrumbName: 'All Courses'
       },
-      // {
-      //    path: root + '/courses/' + forthLayer,
-      //    grandparent: 'Course',
-      //    parentBreadcrumb: 'All Courses',
-      //    breadcrumbName: 'Detail'
-      // },
+      {
+         path: root + '/courses/' + 2,
+         grandparent: 'Course',
+         parentBreadcrumb: 'All Courses',
+         breadcrumbName: 'Detail'
+      },
       {
          path: root + '/courses/add-course',
          parentBreadcrumb: 'Course',
@@ -59,6 +59,10 @@ export default function SmartBreadcrumb() {
          path: root + '/courses/edit-course',
          parentBreadcrumb: 'Course',
          breadcrumbName: 'Edit Course'
+      },
+      {
+         path: root + '/message',
+         breadcrumbName: 'Message'
       }
    ];
 

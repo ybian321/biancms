@@ -10,16 +10,13 @@ export default function AddCoursePage() {
    const userRole = useUserRole();
 
    const [current, setCurrent] = useState(0);
-   const [availableStep, setAvailableStep] = useState(0);
+   const [availableNavigate, setAvailableNavigate] = useState<number[]>([0]);
    const [courseId, setCourseId] = useState(null);
    const [scheduleId, setScheduleId] = useState(null);
 
    const next = () => {
       setCurrent(current + 1);
-   };
-
-   const prev = () => {
-      setCurrent(current - 1);
+      setAvailableNavigate([...availableNavigate, current + 1]);
    };
 
    const steps = [
@@ -31,6 +28,7 @@ export default function AddCoursePage() {
                   setCourseId(course.id);
                   setScheduleId(course.scheduleId);
                   next();
+                  message.info('New Course created.');
                }}
             />
          )
@@ -65,7 +63,15 @@ export default function AddCoursePage() {
 
    return (
       <>
-         <Steps type="navigation" current={current}>
+         <Steps
+            type="navigation"
+            current={current}
+            onChange={(current) => {
+               if (availableNavigate.includes(current)) {
+                  setCurrent(current);
+               }
+            }}
+         >
             {steps.map((item, index) => (
                <Steps.Step key={index} title={item.title} />
             ))}

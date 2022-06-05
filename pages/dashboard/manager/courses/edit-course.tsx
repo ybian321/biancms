@@ -14,7 +14,6 @@ export default function EditCoursePage() {
    const [searchBy, setSearchBy] = useState<'uid' | 'name' | 'type'>('uid');
    const [searchResult, setSearchResult] = useState<Course[]>([]);
    const [course, setCourse] = useState<Course>();
-   console.log('🚀 ~ file: edit-course.tsx ~ line 17 ~ EditCoursePage ~ course', course);
 
    const search = useCallback(
       debounce((value: string) => {
