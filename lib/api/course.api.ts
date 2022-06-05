@@ -1,11 +1,10 @@
 import { AddCourseRequest, CourseRequest, ScheduleRequest, UpdateCourseRequest } from '../model/courses.type';
 import { axiosApi } from './base.api';
 
-export function getCourses(req: Partial<CourseRequest>) {
+export function getCourses() {
    const result = axiosApi({
       url: 'courses',
-      method: 'get',
-      params: req
+      method: 'get'
    });
    return result;
 }
@@ -32,6 +31,15 @@ export function updateSchedule(req: ScheduleRequest) {
       url: 'courses/schedule',
       method: 'put',
       data: req
+   });
+   return result;
+}
+
+export function getCourse(req: Partial<CourseRequest>) {
+   const result = axiosApi({
+      url: 'courses',
+      method: 'get',
+      params: req
    });
    return result;
 }

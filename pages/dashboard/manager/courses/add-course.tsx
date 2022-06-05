@@ -5,6 +5,8 @@ import { useUserRole } from '../../../../components/custom-hooks/useLoginState';
 import CourseDetailForm from '../../../../components/course/CourseDetailForm';
 import CourseScheduleForm from '../../../../components/course/CourseScheduleForm';
 
+const { Step } = Steps;
+
 export default function AddCoursePage() {
    const router = useRouter();
    const userRole = useUserRole();
@@ -19,10 +21,23 @@ export default function AddCoursePage() {
       setAvailableNavigate([...availableNavigate, current + 1]);
    };
 
-   const steps = [
-      {
-         title: 'Course Detail',
-         content: (
+   return (
+      <>
+         <Steps
+            type="navigation"
+            current={current}
+            onChange={(current) => {
+               if (availableNavigate.includes(current)) {
+                  setCurrent(current);
+               }
+            }}
+         >
+            <Step title="Course Detail" />
+            <Step title="Course Schedule" />
+            <Step title="Success" />
+         </Steps>
+
+         <div style={{ display: current === 0 ? 'block' : 'none' }}>
             <CourseDetailForm
                onSuccess={(course: any) => {
                   setCourseId(course.id);
@@ -31,15 +46,13 @@ export default function AddCoursePage() {
                   message.info('New Course created.');
                }}
             />
-         )
-      },
-      {
-         title: 'Course Schedule',
-         content: <CourseScheduleForm courseId={courseId} scheduleId={scheduleId} onSuccess={() => next()} />
-      },
-      {
-         title: 'Success',
-         content: (
+         </div>
+
+         <div style={{ display: current === 1 ? 'block' : 'none' }}>
+            <CourseScheduleForm courseId={courseId} scheduleId={scheduleId} onSuccess={() => next()} />
+         </div>
+
+         <div style={{ display: current === 2 ? 'block' : 'none' }}>
             <Result
                status="success"
                title="Successfully Create Course!"
@@ -57,27 +70,7 @@ export default function AddCoursePage() {
                   </Button>
                ]}
             />
-         )
-      }
-   ];
-
-   return (
-      <>
-         <Steps
-            type="navigation"
-            current={current}
-            onChange={(current) => {
-               if (availableNavigate.includes(current)) {
-                  setCurrent(current);
-               }
-            }}
-         >
-            {steps.map((item, index) => (
-               <Steps.Step key={index} title={item.title} />
-            ))}
-         </Steps>
-
-         <div className="steps-content">{steps[current].content}</div>
+         </div>
       </>
    );
 }

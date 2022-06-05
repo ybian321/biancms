@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import { useCallback, useState } from 'react';
 import CourseDetailForm from '../../../../components/course/CourseDetailForm';
 import CourseScheduleForm from '../../../../components/course/CourseScheduleForm';
-import { getCourses } from '../../../../lib/api/course.api';
+import { getCourse } from '../../../../lib/api/course.api';
 import { gutter } from '../../../../lib/constant/config';
 import { Course } from '../../../../lib/model/courses.type';
 
@@ -23,7 +23,7 @@ export default function EditCoursePage() {
 
          setIsSearching(true);
 
-         getCourses({ [searchBy]: value, userId: 3 })
+         getCourse({ [searchBy]: value, userId: 3 })
             .then((res) => {
                const { data } = res;
 

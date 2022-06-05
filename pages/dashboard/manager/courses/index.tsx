@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Card, Divider, List, message, Spin } from 'antd';
+import { Button, Card, Divider, List, Spin } from 'antd';
 import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
 import InfiniteScroll from 'react-infinite-scroll-component';
