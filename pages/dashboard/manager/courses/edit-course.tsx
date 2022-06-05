@@ -1,7 +1,6 @@
-import { Cascader, Col, Input, Row, Select, Spin, Tabs } from 'antd';
+import { Col, Input, Row, Select, Spin, Tabs } from 'antd';
 import { debounce } from 'lodash';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import CourseDetailForm from '../../../../components/course/CourseDetailForm';
 import CourseScheduleForm from '../../../../components/course/CourseScheduleForm';
 import { getCourses } from '../../../../lib/api/course.api';
@@ -11,30 +10,27 @@ import { Course } from '../../../../lib/model/courses.type';
 const { Option } = Select;
 
 export default function EditCoursePage() {
-   const router = useRouter();
-
    const [isSearching, setIsSearching] = useState(false);
    const [searchBy, setSearchBy] = useState<'uid' | 'name' | 'type'>('uid');
    const [searchResult, setSearchResult] = useState<Course[]>([]);
    const [course, setCourse] = useState<Course>();
+   console.log('🚀 ~ file: edit-course.tsx ~ line 17 ~ EditCoursePage ~ course', course);
 
    const search = useCallback(
-      debounce((value: string, cb?: (courses?: Course[]) => void) => {
+      debounce((value: string) => {
          if (!value) {
             return;
          }
 
          setIsSearching(true);
 
-         getCourses({ [searchBy]: value, userId: storage.userId })
+         getCourses({ [searchBy]: value, userId: 3 })
             .then((res) => {
                const { data } = res;
 
                if (!!data) {
-                  setSearchResult(data.courses);
-                  if (!!cb) {
-                     cb(data.courses);
-                  }
+                  setSearchResult(data.data.courses);
+                  setCourse(data.data.courses[0]);
                }
             })
             .finally(() => setIsSearching(false));
@@ -42,32 +38,22 @@ export default function EditCoursePage() {
       [searchBy]
    );
 
-   useEffect(() => {
-      const { uid } = router.query;
-
-      if (uid) {
-         search(uid as string, (courses) => {
-            setCourse(courses[0]);
-         });
-      }
-   }, []);
-
    return (
       <>
          <Row gutter={gutter} style={{ marginBottom: 30 }}>
             <Col span={12}>
                <Input.Group compact style={{ display: 'flex' }}>
-                  <Select defaultValue="uid" onChange={(value) => setSearchBy(value)}>
+                  <Select defaultValue="uid" onChange={(value: any) => setSearchBy(value)}>
                      <Option value="uid">Code</Option>
                      <Option value="name">Name</Option>
                      <Option value="type">Category</Option>
                   </Select>
+
                   <Select
-                     placeholder={`Search course by ${searchBy}`}
-                     notFoundContent={isSearching ? <Spin size="small" /> : null}
-                     filterOption={false}
-                     showSearch
                      onSearch={(value) => search(value)}
+                     showSearch
+                     notFoundContent={isSearching ? <Spin size="small" /> : null}
+                     placeholder={`Search course by ${searchBy}`}
                      style={{ flex: 1 }}
                      onSelect={(id: number) => {
                         const course = searchResult.find((item) => item.id === id);
@@ -75,7 +61,7 @@ export default function EditCoursePage() {
                         setCourse(course);
                      }}
                   >
-                     {searchResult.map(({ id, name, teacherName, uid }) => (
+                     {searchResult?.map(({ id, name, teacherName, uid }) => (
                         <Select.Option key={id} value={id}>
                            {name} - {teacherName} - {uid}
                         </Select.Option>
@@ -87,10 +73,10 @@ export default function EditCoursePage() {
 
          <Tabs type="card" defaultActiveKey="1" animated={true} size={'large'} style={{ marginBottom: 32 }}>
             <Tabs.TabPane tab="Course Detail" key="1">
-               <CourseDetailForm />
+               <CourseDetailForm course={course} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Course Schedule" key="2">
-               <CourseScheduleForm />
+               <CourseScheduleForm courseId={course?.id} scheduleId={course?.scheduleId} />
             </Tabs.TabPane>
          </Tabs>
       </>

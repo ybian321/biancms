@@ -1,18 +1,17 @@
+import { useEffect, useState } from 'react';
+import moment from 'moment';
+import { getTime } from 'date-fns';
+import { useForm } from 'antd/lib/form/Form';
+import ImgCrop from 'antd-img-crop';
+import { RcFile, UploadFile } from 'antd/lib/upload/interface';
+import TextArea from 'antd/lib/input/TextArea';
 import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select, Spin, Upload } from 'antd';
 import { CloseCircleOutlined, InboxOutlined } from '@ant-design/icons';
-import ImgCrop from 'antd-img-crop';
-import TextArea from 'antd/lib/input/TextArea';
-import styled from 'styled-components';
-import { Course } from '../../lib/model/students.type';
-import { useEffect, useState } from 'react';
-import { RcFile, UploadFile } from 'antd/lib/upload/interface';
-import { getTime } from 'date-fns';
 import { addCourse, createCourseCode, getCourseTypes } from '../../lib/api/course.api';
-import { AddCourseRequest } from '../../lib/model/courses.type';
-import { useForm } from 'antd/lib/form/Form';
 import { getTeachers } from '../../lib/api/teacher.api';
+import { AddCourseRequest, Course } from '../../lib/model/courses.type';
 import { Teacher } from '../../lib/model/teachers.type';
-import moment from 'moment';
+import styled from 'styled-components';
 
 export interface AddCourseFormProps {
    course?: Course;
@@ -119,6 +118,24 @@ export default function CourseDetailForm({ course, onSuccess }: AddCourseFormPro
          onSuccess(data);
       }
    }, [data]);
+
+   useEffect(() => {
+      if (!!course) {
+         console.log('🚀 ~ file: CourseDetailForm.tsx ~ line 125 ~ useEffect ~ course', course);
+         const values = {
+            ...course,
+            type: course.type.map((item) => item.id),
+            teacherId: course.teacherName,
+            startTime: moment(course.startTime),
+            duration: course.duration,
+            durationUnit: course.durationUnit
+         };
+
+         form.setFieldsValue(values);
+
+         setFileList([{ name: 'Cover Image', url: course.cover, uid: '' }]);
+      }
+   }, [course]);
 
    const onFinish = (values: any) => {
       const req: AddCourseRequest = {

@@ -1,3 +1,5 @@
+import { Paginator } from './api.type';
+
 export interface Course {
    createdAt: Date;
    updatedAt: Date;
@@ -121,3 +123,11 @@ export interface ScheduleTableData extends ScheduleTime {
 }
 
 export type Weekday = keyof ScheduleTime;
+
+export interface CourseRequest extends Paginator {
+   code?: string;
+   name?: string;
+   type?: number;
+   userId?: number;
+   own?: any; // ?这个字段是多余的，真实的后台可以根据token等鉴定用户权限
+}

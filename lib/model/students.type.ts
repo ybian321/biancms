@@ -13,7 +13,7 @@ export interface Student {
    country: string;
    profileId: number;
    type: Type;
-   courses: Course[];
+   courses: StudentCourse[];
 }
 
 export interface Type {
@@ -21,7 +21,7 @@ export interface Type {
    name: string;
 }
 
-export interface Course {
+export interface StudentCourse {
    id: number;
    courseId: number;
    name: string;

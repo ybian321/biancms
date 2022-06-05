@@ -1,15 +1,11 @@
-import { IResponse } from '../model/api.type';
-import { AddCourseRequest, AddCourseResponse, ScheduleRequest, UpdateCourseRequest, UpdateCourseResponse } from '../model/courses.type';
+import { AddCourseRequest, CourseRequest, ScheduleRequest, UpdateCourseRequest } from '../model/courses.type';
 import { axiosApi } from './base.api';
 
-export function getCourses() {
+export function getCourses(req: Partial<CourseRequest>) {
    const result = axiosApi({
       url: 'courses',
       method: 'get',
-      params: {
-         page: 1,
-         limit: 20
-      }
+      params: req
    });
    return result;
 }
