@@ -2,13 +2,13 @@ import { Avatar, Card, Col, Divider, Row, Table, Tabs, Tag } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { AntDesignOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
-import { Course, StudentProfile } from '../../../../lib/model/students.type';
+import { StudentCourse, StudentProfile } from '../../../../lib/model/students.type';
 import { getStudentDetail } from '../../../../lib/api/students.api';
 import { programLanguageColors } from '../../../../lib/constant/config';
 
 export default function StudentDetailPage() {
    const [data, setData] = useState<StudentProfile>();
-   const [courses, setCourses] = useState<Course[]>([]);
+   const [courses, setCourses] = useState<StudentCourse[]>([]);
    const [info, setInfo] = useState<{ label: string; value: string | number }[]>([]);
    const [about, setAbout] = useState<{ label: string; value: string | number }[]>([]);
 
@@ -43,7 +43,7 @@ export default function StudentDetailPage() {
       })();
    }, []);
 
-   const columns: ColumnType<Course>[] = [
+   const columns: ColumnType<StudentCourse>[] = [
       {
          title: 'No.',
          dataIndex: 'key',

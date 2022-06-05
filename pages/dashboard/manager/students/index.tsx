@@ -4,23 +4,22 @@ import { Button, Input, message, Modal, Popconfirm, Space, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { formatDistanceToNow } from 'date-fns';
 import { deleteStudentById, getStudents, searchStudentsByName } from '../../../../lib/api/students.api';
-import AddStudent from '../../../../components/studentList/AddStudent';
-import UpdateStudent from '../../../../components/studentList/UpdateStudent';
+import StudentDetailForm from '../../../../components/studentList/StudentDetailForm';
 import { StudentCourse, Student, Type } from '../../../../lib/model/students.type';
+import ModalForm from '../../../../components/common/ModalForm';
 
 export default function StudentListPage() {
    const [data, setData] = useState<Student[]>([]);
    const [student, setStudent] = useState();
-   const [modal1Visible, setModal1Visible] = useState(false);
-   const [modal2Visible, setModal2Visible] = useState(false);
+   const [isModalDisplay, setModalDisplay] = useState(false);
 
    const handleStudent = (record: any) => {
       setStudent(record);
    };
 
-   const handleCancel = () => {
-      setModal1Visible(false);
-      setModal2Visible(false);
+   const cancel = () => {
+      setModalDisplay(false);
+      setStudent(undefined);
    };
 
    useEffect(() => {
@@ -126,7 +125,7 @@ export default function StudentListPage() {
                <Button
                   type="link"
                   onClick={() => {
-                     setModal1Visible(true);
+                     setModalDisplay(true);
                      handleStudent(record);
                   }}
                >
@@ -152,34 +151,14 @@ export default function StudentListPage() {
 
    return (
       <>
-         <Modal
-            title="Edit Student"
-            style={{ top: 20 }}
-            visible={modal1Visible}
-            footer={[
-               <Button key="back" onClick={handleCancel}>
-                  Cancel
-               </Button>
-            ]}
-         >
-            <UpdateStudent record={student} />
-         </Modal>
-
-         <Modal
-            title="Add Student"
-            style={{ top: 20 }}
-            visible={modal2Visible}
-            footer={[
-               <Button key="back" onClick={handleCancel}>
-                  Cancel
-               </Button>
-            ]}
-         >
-            <AddStudent />
-         </Modal>
-
          <div className="flex-container">
-            <Button type="primary" onClick={() => setModal2Visible(true)}>
+            <Button
+               type="primary"
+               onClick={() => {
+                  setModalDisplay(true);
+                  setStudent(undefined);
+               }}
+            >
                + Add
             </Button>
 
@@ -187,6 +166,25 @@ export default function StudentListPage() {
          </div>
 
          <Table columns={columns} dataSource={data} pagination={pagination} />
+
+         <ModalForm title={!!student ? 'Edit Student' : 'Add Student'} centered visible={isModalDisplay} cancel={cancel}>
+            <StudentDetailForm
+               onFinish={(student: Student) => {
+                  /**
+                   * update local data if editing success
+                   */
+                  if (!!data) {
+                     const index = data.findIndex((item) => item.id === student.id);
+
+                     data[index] = student;
+                     setData([...data]);
+                  }
+
+                  setModalDisplay(false);
+               }}
+               student={student}
+            />
+         </ModalForm>
       </>
    );
 }
