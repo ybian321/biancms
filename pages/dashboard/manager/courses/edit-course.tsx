@@ -54,11 +54,6 @@ export default function EditCoursePage() {
                      notFoundContent={isSearching ? <Spin size="small" /> : null}
                      placeholder={`Search course by ${searchBy}`}
                      style={{ flex: 1 }}
-                     onSelect={(id: number) => {
-                        const course = searchResult.find((item) => item.id === id);
-
-                        setCourse(course);
-                     }}
                   >
                      {searchResult?.map(({ id, name, teacherName, uid }) => (
                         <Select.Option key={id} value={id}>
