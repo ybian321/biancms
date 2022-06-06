@@ -8,6 +8,7 @@ import SmartBreadcrumb from './SmartBreadcrumb';
 import useLoginState from '../custom-hooks/useLoginState';
 import Link from 'next/link';
 import styled from 'styled-components';
+import MessagePage from '../../pages/dashboard/manager/message';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -128,10 +129,14 @@ export default function DashboardLayout({ children }: React.PropsWithChildren<an
                                  animated
                               >
                                  <TabPane key={'notification'} tab={'notification'}>
-                                    <MessageContainer></MessageContainer>
+                                    <MessageContainer>
+                                       <MessagePage />
+                                    </MessageContainer>
                                  </TabPane>
                                  <TabPane key={'message'} tab={'message'}>
-                                    <MessageContainer></MessageContainer>
+                                    <MessageContainer>
+                                       <MessagePage />
+                                    </MessageContainer>
                                  </TabPane>
                               </Tabs>
 

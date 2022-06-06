@@ -1,4 +1,4 @@
-import { Avatar, Col, Divider, List, Row, Select, Space, Spin, Typography } from 'antd';
+import { Avatar, Button, Card, Col, Divider, List, Row, Select, Space, Spin, Typography } from 'antd';
 import { MessageType } from 'antd/lib/message';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -7,6 +7,7 @@ import { Message, MessagesRequest } from '../../../lib/model/message';
 import { AlertOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { flatten } from 'lodash';
 import { format } from 'date-fns';
+import Meta from 'antd/lib/card/Meta';
 
 type DataSource = [string, Message[]][];
 
@@ -30,17 +31,51 @@ export default function MessagePage() {
       }
       setLoading(true);
       getMessages(req).then((response) => {
-         setData([...data, ...response.data.data.message]);
+         setData([...data, ...response.data.data.messages]);
          setLoading(false);
       });
    };
 
    useEffect(() => {
       (async () => {
-         getMessages(req).then((response) => setSource(response.data.data.courses));
+         getMessages(req).then((response) => {
+            setData(response.data.data.messages);
+         });
          loadMoreData();
       })();
    }, []);
+
+   function setMessage(source: any) {
+      return (
+         <>
+            <List.Item.Meta
+               avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+               title={<p>{source.from.nickname}</p>}
+               description={source.content}
+            />
+            <p>{source.createdAt}</p>
+         </>
+      );
+   }
+
+   function MessageList() {
+      return (
+         <InfiniteScroll
+            dataLength={data.length}
+            next={loadMoreData}
+            hasMore={data.length < 50}
+            loader={
+               <Divider plain>
+                  <Spin />
+               </Divider>
+            }
+            endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+            scrollableTarget="scrollableDiv"
+         >
+            <List dataSource={data} renderItem={(item) => <List.Item>{setMessage(item)}</List.Item>} />
+         </InfiniteScroll>
+      );
+   }
 
    return (
       <>
@@ -67,47 +102,7 @@ export default function MessagePage() {
          </Row>
 
          <div id="msg-container" style={{ padding: '0 20px', overflowY: 'scroll', maxHeight: '75vh' }}>
-            <InfiniteScroll
-               dataLength={data.length}
-               next={loadMoreData}
-               hasMore={data.length < 568}
-               loader={
-                  <Divider plain>
-                     <Spin />
-                  </Divider>
-               }
-               endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-               scrollableTarget="scrollableDiv"
-            >
-               <List
-                  itemLayout="vertical"
-                  dataSource={data}
-                  renderItem={([date, values]: [string, Message[]], index) => (
-                     <>
-                        <Space size="large">
-                           <Typography.Title level={4}>{date}</Typography.Title>
-                        </Space>
-
-                        {values.map((item) => (
-                           <List.Item
-                              key={item.createdAt}
-                              style={{ opacity: item.status ? 0.4 : 1 }}
-                              // eslint-disable-next-line react/jsx-key
-                              actions={[<Space>{item.createdAt}</Space>]}
-                              extra={<Space>{item.type === 'notification' ? <AlertOutlined /> : <MessageOutlined />}</Space>}
-                              onClick={() => {
-                                 if (item.status === 1) {
-                                    return;
-                                 }
-                              }}
-                           >
-                              <List.Item.Meta avatar={<Avatar icon={<UserOutlined />} />} title={item.from.nickname} description={item.content} />
-                           </List.Item>
-                        ))}
-                     </>
-                  )}
-               ></List>
-            </InfiniteScroll>
+            {MessageList()}
          </div>
       </>
    );
