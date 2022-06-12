@@ -123,15 +123,7 @@ export default function CourseScheduleForm({ courseId, onSuccess, scheduleId }: 
                            <Row key={field.key} gutter={20}>
                               <Col span={8}>
                                  <Form.Item {...field} name={[field.name, 'weekday']} fieldKey={[field.key, 'weekday']} rules={[{ required: true }]}>
-                                    <Select
-                                       size="large"
-                                       onChange={(value: string) =>
-                                          /**
-                                           * !FIXME
-                                           */
-                                          setSelectedWeekdays([...selectedWeekdays, value])
-                                       }
-                                    >
+                                    <Select size="large" onChange={(value: string) => setSelectedWeekdays([...selectedWeekdays, value])}>
                                        {weekDays.map((day) => (
                                           <Select.Option key={day} value={day} disabled={selectedWeekdays.includes(day)}>
                                              {day}

@@ -1,21 +1,23 @@
-import { Avatar, Button, Card, Col, Divider, List, Row, Select, Space, Spin, Typography } from 'antd';
+import { Avatar, Col, Divider, List, Row, Select, Spin, Typography } from 'antd';
 import { MessageType } from 'antd/lib/message';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getMessages } from '../../../lib/api/message.api';
 import { Message, MessagesRequest } from '../../../lib/model/message';
-import { AlertOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
-import { flatten } from 'lodash';
-import { format } from 'date-fns';
-import Meta from 'antd/lib/card/Meta';
 
-type DataSource = [string, Message[]][];
+interface MessagesProps {
+   type: MessageType;
+   scrollTarget: string;
+   clearAll: number;
+   onRead?: (amount: number) => void;
+   message?: Message;
+}
 
 export default function MessagePage() {
    const [loading, setLoading] = useState(false);
+   const [data, setData] = useState<Message[]>([]);
    const [type, setType] = useState<MessageType>();
    const [source, setSource] = useState<{ [key: string]: Message[] }>({});
-   const [data, setData] = useState<Message[]>([]);
 
    const req: MessagesRequest = {
       userId: 3,
@@ -89,7 +91,6 @@ export default function MessagePage() {
                   defaultValue={null}
                   onSelect={(value: any) => {
                      setType(value);
-                     setPaginator({ ...paginator, page: 1 });
                      setSource({});
                   }}
                   style={{ minWidth: 100 }}

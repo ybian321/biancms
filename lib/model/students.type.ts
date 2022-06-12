@@ -1,3 +1,6 @@
+import { BaseType } from './api.type';
+import { Course, CourseType } from './courses.type';
+
 export interface Data {
    total: number;
    students: Student[];
@@ -54,4 +57,17 @@ export interface AddStudentRequest {
    country: string;
    email: string;
    type: number;
+}
+
+export interface StudentWithProfile extends Student<Course>, StudentProfile {}
+
+export interface Student<T = CourseType> {
+   id: number;
+   name: string;
+   updateAt: string;
+   country: string;
+   ctime: string;
+   email: string;
+   courses: StudentCourse[];
+   type: Type;
 }
