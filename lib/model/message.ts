@@ -23,3 +23,11 @@ export interface MessagesRequest extends Paginator {
    status?: number; // 0: unread 1: read;
    type: MessageType;
 }
+
+export interface MessagesProps {
+   type: MessageType;
+   scrollTarget: string;
+   clearAll: number;
+   onRead?: (amount: number) => void;
+   message?: Message;
+}

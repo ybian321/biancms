@@ -6,6 +6,7 @@ import Meta from 'antd/lib/card/Meta';
 import { Course } from '../../../../lib/model/courses.type';
 import { getCourses } from '../../../../lib/api/course.api';
 import BackToTop from '../../../../components/common/BackToTop';
+import { useListEffect } from '../../../../components/custom-hooks/useListEffect';
 
 export default function AllCoursesPage() {
    const [loading, setLoading] = useState(false);
@@ -28,6 +29,11 @@ export default function AllCoursesPage() {
          loadMoreData();
       })();
    }, []);
+
+   // ??
+   // useEffect(() => {
+   //    useListEffect(getCourses(), '?', false, '?')
+   // }, []);
 
    function setCourseCard(source: any) {
       return (

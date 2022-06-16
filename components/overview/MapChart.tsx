@@ -11,7 +11,7 @@ export default function MapChart({ data, title }: CommonChartComponentProps) {
          min: 0,
          stops: [
             [0, '#fff'],
-            [0.5, Highcharts?.getOptions().colors[0]],
+            [0.5, Highcharts.getOptions().colors[0]],
             [1, '#1890ff']
          ]
       },
