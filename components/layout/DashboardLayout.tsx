@@ -33,7 +33,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren<an
                   <div className="item-center">
                      <MessageDropdown />
                      <Dropdown overlay={<Logout />} placement="bottomLeft">
-                        <Button shape="circle" icon={<UserOutlined />} />
+                        <Button shape="circle" icon={<UserOutlined />} style={{ marginLeft: 20 }} />
                      </Dropdown>
                   </div>
                </Header>

@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { Button, Col, Dropdown, Row, Tabs } from 'antd';
+import { Badge, Button, Col, Dropdown, Row, Tabs } from 'antd';
 import { BellOutlined } from '@ant-design/icons';
 import MessageList from '../message/MessageList';
 import { getMessageStatistic } from '../../lib/api/message.api';
-import { useMsgStatistic } from '../provider';
 
 const MessageContainer = styled.div`
    height: 380px;
@@ -83,60 +82,79 @@ const DropdownFooter = styled(Row)`
 `;
 
 export function MessageDropdown() {
+   const [unreadMessage, setUnreadMessage] = useState<number>(0);
+   const [unreadNotification, setUnreadNotification] = useState<number>(0);
+   const totalUnread = unreadMessage + unreadNotification;
+
+   const role = localStorage?.getItem('role');
+   const [activeType, setActiveType] = useState('notification');
+   const [clean, setClean] = useState({
+      notification: 0,
+      message: 0
+   });
+
    useEffect(() => {
       getMessageStatistic().then((res) => {
-         const { data } = res;
-         console.log('🚀 ~ file: MessageDropdown.tsx ~ line 88 ~ getMessageStatistic ~ data ', data);
+         const { data } = res.data;
+         setUnreadMessage(data.receive.message.unread);
+         setUnreadNotification(data.receive.notification.unread);
       });
    }, []);
 
    return (
-      <Dropdown
-         overlayStyle={{
-            background: '#fff',
-            borderRadius: 4,
-            width: 400,
-            height: 500,
-            overflow: 'hidden'
-         }}
-         placement="bottomRight"
-         trigger={['click']}
-         overlay={
-            <>
-               <Tabs
-                  renderTabBar={(props, DefaultTabBar) => (
-                     <TabNavContainer>
-                        <DefaultTabBar {...props} />
-                     </TabNavContainer>
-                  )}
-                  animated
-               >
-                  <TabPane key={'notification'} tab={'notification'}>
-                     <MessageContainer>
-                        <MessageList type="notification" />
-                     </MessageContainer>
-                  </TabPane>
-                  <TabPane key={'message'} tab={'message'}>
-                     <MessageContainer>
-                        <MessageList type="message" />
-                     </MessageContainer>
-                  </TabPane>
-               </Tabs>
+      <Badge size="small" count={totalUnread} offset={[-10, -5]}>
+         <Dropdown
+            overlayStyle={{
+               background: '#fff',
+               borderRadius: 4,
+               width: 400,
+               height: 500,
+               overflow: 'hidden'
+            }}
+            placement="bottomRight"
+            trigger={['click']}
+            overlay={
+               <>
+                  <Tabs
+                     renderTabBar={(props, DefaultTabBar) => (
+                        <TabNavContainer>
+                           <DefaultTabBar {...props} />
+                        </TabNavContainer>
+                     )}
+                     onChange={(key) => {
+                        if (key !== activeType) {
+                           setActiveType(key);
+                        }
+                     }}
+                     animated
+                  >
+                     <TabPane key={'notification'} tab={`notification (${unreadNotification})`}>
+                        <MessageContainer>
+                           <MessageList type="notification" />
+                        </MessageContainer>
+                     </TabPane>
+                     <TabPane key={'message'} tab={`message (${unreadMessage})`}>
+                        <MessageContainer>
+                           <MessageList type="message" />
+                        </MessageContainer>
+                     </TabPane>
+                  </Tabs>
 
-               <DropdownFooter>
-                  <Col span={12}>
-                     <Button>Mark all as read</Button>
-                  </Col>
-                  <Col span={12}>
-                     <Button>
-                        <Link href={''}>View history</Link>
-                     </Button>
-                  </Col>
-               </DropdownFooter>
-            </>
-         }
-      >
-         <BellOutlined style={{ fontSize: 24, marginRight: 20, color: 'white' }} />
-      </Dropdown>
+                  <DropdownFooter>
+                     <Col span={12}>
+                        <Button onClick={() => setClean({ ...clean, [activeType]: ++clean[activeType] })}>Mark all as read</Button>
+                     </Col>
+                     <Col span={12}>
+                        <Button>
+                           <Link href={`/dashboard/${role}/message`}>View history</Link>
+                        </Button>
+                     </Col>
+                  </DropdownFooter>
+               </>
+            }
+         >
+            <BellOutlined style={{ fontSize: 24, marginRight: 20, color: 'white' }} />
+         </Dropdown>
+      </Badge>
    );
 }

@@ -1,5 +1,6 @@
-import { Avatar, Divider, List, Spin } from 'antd';
 import { useEffect, useState } from 'react';
+import { Avatar, Divider, List, Space, Spin } from 'antd';
+import { AlertOutlined, MessageOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getMessages } from '../../lib/api/message.api';
 import { Message, MessagesRequest } from '../../lib/model/message';
@@ -38,14 +39,11 @@ export default function MessageList(props) {
 
    function setMessage(source: any) {
       return (
-         <>
-            <List.Item.Meta
-               avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-               title={<p>{source.from.nickname}</p>}
-               description={source.content}
-            />
-            <p>{source.createdAt}</p>
-         </>
+         <List.Item.Meta
+            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+            title={<p>{source.from.nickname}</p>}
+            description={source.content}
+         />
       );
    }
 
@@ -63,7 +61,20 @@ export default function MessageList(props) {
             endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
             scrollableTarget="scrollableDiv"
          >
-            <List dataSource={data} renderItem={(item) => <List.Item>{setMessage(item)}</List.Item>} />
+            <List
+               dataSource={data}
+               renderItem={(item) => (
+                  <List.Item
+                     key={item.createdAt}
+                     style={{ opacity: item.status ? 0.4 : 1 }}
+                     // eslint-disable-next-line react/jsx-key
+                     actions={[<Space>{item.createdAt}</Space>]}
+                     extra={<Space>{item.type === 'notification' ? <AlertOutlined /> : <MessageOutlined />}</Space>}
+                  >
+                     {setMessage(item)}
+                  </List.Item>
+               )}
+            />
          </InfiniteScroll>
       </div>
    );
