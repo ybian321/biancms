@@ -17,3 +17,9 @@ export function getMessageStatistic(userId?: number) {
    });
    return result;
 }
+
+export function messageEvent() {
+   return new EventSource(`http://cms.chtoma.com/api/message/subscribe?userId=3`, {
+      withCredentials: true
+   });
+}

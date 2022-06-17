@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { Badge, Button, Col, Dropdown, Row, Tabs } from 'antd';
+import { Badge, Button, Col, Dropdown, notification, Row, Tabs } from 'antd';
 import { BellOutlined } from '@ant-design/icons';
 import MessageList from '../message/MessageList';
-import { getMessageStatistic } from '../../lib/api/message.api';
+import { getMessageStatistic, messageEvent } from '../../lib/api/message.api';
+import { Message } from '../../lib/model/message';
 
 const MessageContainer = styled.div`
    height: 380px;
@@ -82,11 +83,13 @@ const DropdownFooter = styled(Row)`
 `;
 
 export function MessageDropdown() {
+   const [role, setRole] = useState(null);
+   const [message, setMessage] = useState<Message>(null);
+
    const [unreadMessage, setUnreadMessage] = useState<number>(0);
    const [unreadNotification, setUnreadNotification] = useState<number>(0);
    const totalUnread = unreadMessage + unreadNotification;
 
-   const role = localStorage?.getItem('role');
    const [activeType, setActiveType] = useState('notification');
    const [clean, setClean] = useState({
       notification: 0,
@@ -94,11 +97,38 @@ export function MessageDropdown() {
    });
 
    useEffect(() => {
+      setRole(localStorage?.getItem('role'));
       getMessageStatistic().then((res) => {
          const { data } = res.data;
          setUnreadMessage(data.receive.message.unread);
          setUnreadNotification(data.receive.notification.unread);
       });
+
+      const sse = messageEvent();
+      console.log('🚀 ~ file: MessageDropdown.tsx ~ line 104 ~ useEffect ~ sse', sse);
+
+      sse.onmessage = (event) => {
+         let { data } = event;
+
+         data = JSON.parse(data || {});
+
+         if (data.type !== 'heartbeat') {
+            const content = data.content as Message;
+
+            if (content.type === 'message') {
+               notification.info({
+                  message: `You have a message from ${content.from.nickname}`,
+                  description: content.content
+               });
+            }
+
+            setMessage(content);
+         }
+      };
+
+      return () => {
+         sse.close();
+      };
    }, []);
 
    return (
