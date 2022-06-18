@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { Role } from '../../lib/model/role.type';
 
 export default function useLoginState() {
    const router = useRouter();
@@ -9,7 +8,7 @@ export default function useLoginState() {
       const token = localStorage?.getItem('token');
       const role = localStorage?.getItem('role');
 
-      const path = router.asPath;
+      const path = router.pathname;
       const currentRole = path.split('/').slice(2, 3);
 
       if (!token) {
@@ -24,7 +23,7 @@ export default function useLoginState() {
 
 export function useUserRole() {
    const router = useRouter();
-   const path = router.asPath;
+   const path = router.pathname;
    const currentRole = path.split('/').slice(2, 3);
    return currentRole;
 }

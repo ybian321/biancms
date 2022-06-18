@@ -22,7 +22,7 @@ interface SideNav {
 }
 
 export default function SiderNav() {
-   const currentUrl = useRouter().asPath;
+   const currentUrl = useRouter().pathname;
    const currenNav = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
 
    const items: SideNav[] = [

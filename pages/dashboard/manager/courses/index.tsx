@@ -30,10 +30,7 @@ export default function AllCoursesPage() {
       })();
    }, []);
 
-   // ??
-   // useEffect(() => {
-   //    useListEffect(getCourses(), '?', false, '?')
-   // }, []);
+   useListEffect(getCourses, 'courses', false);
 
    function setCourseCard(source: any) {
       return (

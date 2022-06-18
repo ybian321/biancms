@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import DashboardLayout from '../components/layout/DashboardLayout';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-   const currentUrl = useRouter().asPath;
+   const currentUrl = useRouter().pathname;
    if (currentUrl.includes('dashboard')) {
       return (
          <DashboardLayout>

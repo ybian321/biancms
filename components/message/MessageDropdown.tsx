@@ -105,8 +105,6 @@ export function MessageDropdown() {
       });
 
       const sse = messageEvent();
-      console.log('🚀 ~ file: MessageDropdown.tsx ~ line 104 ~ useEffect ~ sse', sse);
-
       sse.onmessage = (event) => {
          let { data } = event;
 

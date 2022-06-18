@@ -121,7 +121,6 @@ export default function CourseDetailForm({ course, onSuccess }: AddCourseFormPro
 
    useEffect(() => {
       if (!!course) {
-         console.log('🚀 ~ file: CourseDetailForm.tsx ~ line 125 ~ useEffect ~ course', course);
          const values = {
             ...course,
             type: course.type.map((item) => item.id),

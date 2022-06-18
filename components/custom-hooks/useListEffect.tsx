@@ -6,7 +6,7 @@ export function useListEffect<P, T extends ListResponse, U = any>(
    apiFn: (req) => Promise<IResponse<ListResponse>>,
    sourceKey,
    onlyFresh = true,
-   params
+   params = null
 ) {
    const [data, setData] = useState([]);
    const [paginator, setPaginator] = useState<Paginator>({ page: 1, limit: 20 });
@@ -23,16 +23,15 @@ export function useListEffect<P, T extends ListResponse, U = any>(
 
       const req = omitBy({ ...paginator, ...(params || {}) }, (item: string | number | boolean | null) => item === '' || item === null) as any;
 
-      // ??
       request(req).then((res) => {
          const { data: newData } = res;
-         const fresh = newData[sourceKey as string] as unknown as U[];
-         const source = onlyFresh ? fresh : [...data, ...fresh];
+         // const fresh = newData[sourceKey as string] as unknown as U[];
+         // const source = onlyFresh ? fresh : [...data, ...fresh];
 
-         setData(source);
-         setTotal(newData.total);
-         setHasMore(onlyFresh ? !!source.length && source.length < newData.total : newData.total > source.length);
-         setLoading(false);
+         // setData(source);
+         // setTotal(newData.total);
+         // setHasMore(onlyFresh ? !!source.length && source.length < newData.total : newData.total > source.length);
+         // setLoading(false);
       });
    }, [paginator, stringParams]);
 

@@ -10,7 +10,7 @@ interface Route {
 }
 
 export default function SmartBreadcrumb() {
-   const path = useRouter().asPath;
+   const path = useRouter().pathname;
    const paths = path.split('/').slice(1);
 
    const role = path.split('/').slice(2, 3).toString();
