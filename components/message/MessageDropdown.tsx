@@ -6,6 +6,7 @@ import { BellOutlined } from '@ant-design/icons';
 import MessageList from '../message/MessageList';
 import { getMessageStatistic, messageEvent } from '../../lib/api/message.api';
 import { Message } from '../../lib/model/message';
+import { useMsgStatistic } from '../provider';
 
 const MessageContainer = styled.div`
    height: 380px;
@@ -85,6 +86,7 @@ const DropdownFooter = styled(Row)`
 export function MessageDropdown() {
    const [role, setRole] = useState(null);
    const [message, setMessage] = useState<Message>(null);
+   const { msgStore, dispatch } = useMsgStatistic();
 
    const [unreadMessage, setUnreadMessage] = useState<number>(0);
    const [unreadNotification, setUnreadNotification] = useState<number>(0);
@@ -107,27 +109,25 @@ export function MessageDropdown() {
       const sse = messageEvent();
       sse.onmessage = (event) => {
          let { data } = event;
-
          data = JSON.parse(data || {});
 
          if (data.type !== 'heartbeat') {
             const content = data.content as Message;
-
-            if (content.type === 'message') {
-               notification.info({
-                  message: `You have a message from ${content.from.nickname}`,
-                  description: content.content
-               });
-            }
+            notification.info({
+               message: `You have a message from ${content.from.nickname}`,
+               description: content.content
+            });
 
             setMessage(content);
+            dispatch({ type: 'increment', payload: { type: content.type, count: 1 } });
          }
       };
 
       return () => {
          sse.close();
+         dispatch({ type: 'reset' });
       };
-   }, []);
+   }, [message]);
 
    return (
       <Badge size="small" count={totalUnread} offset={[-10, -5]}>

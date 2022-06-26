@@ -23,3 +23,17 @@ export function messageEvent() {
       withCredentials: true
    });
 }
+
+export function markAsRead(ids) {
+   const result = axiosApi({
+      url: '/message',
+      method: 'put',
+      params: {
+         id: ids
+      },
+      data: {
+         status: 1
+      }
+   });
+   return result;
+}

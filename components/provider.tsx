@@ -38,6 +38,7 @@ export function messageReducer(state: StoreState, action: MessageAction) {
          return { ...state };
    }
 }
+
 export const MessageStatisticsContext = createContext<{
    msgStore: StoreState;
    dispatch: Dispatch<MessageAction>;
